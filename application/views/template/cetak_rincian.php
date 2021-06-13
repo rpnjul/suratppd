@@ -84,6 +84,22 @@
 }
 .tabel tr{vertical-align: top;}
 .tabel tr td,.tabel tr th{padding: 8px 4px; word-break: break-all;}
+.tabell{
+	width: 100%;
+}
+/* .tabell th{
+	font-weight: bold;
+	vertical-align: left;
+} */
+.tabell td{
+	vertical-align: left;
+}
+.tabell,.tabell th,.tabell td{
+	border:none;
+	padding: 8px;
+}
+.tabell tr{vertical-align: top;}
+.tabell tr td,.tabell tr th{padding: 8px 4px;word-break: break-all;}
 body{
 	margin: 37px 37px;
 }
@@ -92,18 +108,8 @@ body{
 
 <body>
 	<div class="header">
-		<img src="<?php echo $logo ?>" alt="logo" class="logo">
-		<div class="head-1">
-			KEMENTERIAN KEUANGAN REPUBLIK INDONESIA<br>	
-			DIREKTORAT JENDRAL KEKAYAAN NEGARA<br>
-			KANTOR PELAYANAN KEKAYAAN NEGARA DAN LELANG<br>Bekasi<br>	
-		</div>
-	<small style="margin-top:-10px;margin-left:24px;position:relative;text-align:center;display:block;font-weight: normal;line-height: 1.0;font-size: 10px;">JALAN SERSAN ASWAN NO. 8D, BEKASI.<br>TELEPON (021) 880-8888, FAKSIMILE (021) 880-3832</small>
-	</div>
-	<div class="line-separator"></div>
-	<div class="header">
 		<div class="head-2">
-				Rincian Biaya Perjalanan Dinas <?php echo $st['srtgs_tmt']; ?>				
+					Rincian Biaya Perjalanan Dinas				
 		</div>
 	</div>
 	<br>
@@ -120,65 +126,127 @@ body{
 				</span>
 			</td>
 			<?php endif ?>	
-			<td class="list-inline-r"><?php echo $this->loader->konversi_tanggal($rincian['rcn_tgl']); ?></td>
-			<td class="list-normal">Tanggal bertugas<span class="spacer-1">: <?php echo $this->loader->konversi_tanggal($st['srtgs_tgl']); ?></span></td>
-			<td class="list-normal">Tempat Tujuan<span class="spacer-1">: <?php echo $st['srtgs_tmt'] ?></span></td>
-			<td class="list-normal">No. Surat Tugas<span class="spacer-1">: <?php echo $st['srtgs_no'] ?></span></td>
-			<td class="list-normal">Pegawai<span class="spacer-1">: <?php echo ($st['pgw_nm']); ?></span></td>
+			<td class="list-normal">Lampiran SPD Nomor  <span class="spacer-3">: <?php echo $st['srtgs_no'] ?></span></td>
+			<td class="list-normal">Tanggal<span class="spacer-3">: <?php echo $this->loader->konversi_tanggal($st['srtgs_tgl']); ?></span></td>
 		</tr>
 	</table>
 	<br>
-	<div class="line-separator"></div>
+	<!-- <div class="line-separator"></div> -->
 	<table class="tabel">
 		<?php 
-		$e = 1;
-		$d=0;
-		$row[0] 		= (isset($detail['rnd_binap']) 	|| $detail['rnd_binap']!=0 ? 'Biaya penginapan '.$detail['rnd_jmlinap'].($detail['rnd_jmlinap']>1?' hari':'') : null);
-		$row[1] 		= (isset($detail['rnd_btrkt']) 	|| $detail['rnd_binap']!=0 ? 'Biaya transportasi berangkat Bekasi - '.$st['srtgs_tmt'] : null);
-		$row[2] 		= (isset($detail['rnd_bplg']) 	|| $detail['rnd_binap']!=0 ? 'Biaya transportasi pulang '.$st['srtgs_tmt'].' - Bekasi' : null);
-		$row[3] 		= (isset($detail['rnd_sku']) 	|| $detail['rnd_sku']!=0 ? 'Uang saku': 'Uang saku');
-		$row[4] 		= (isset($detail['rnd_ketlln']) || !empty($detail['rnd_ketlln'])||$detail['rnd_ketlln']!=null ? $detail['rnd_ketlln'] : 'Lain-lain');
-		 ?>
+			$e = 1;
+			$d=0;
+			$row[0] 		= (isset($detail['rnd_binap']) 	|| $detail['rnd_binap']!=0 ? 'Biaya penginapan '.$detail['rnd_jmlinap'].($detail['rnd_jmlinap']>1?' hari':'') : null);
+			$row[1] 		= (isset($detail['rnd_btrkt']) 	|| $detail['rnd_binap']!=0 ? 'Jakarta - '.$st['srtgs_tmt'] : null);
+			$row[2] 		= (isset($detail['rnd_bplg']) 	|| $detail['rnd_binap']!=0 ? $st['srtgs_tmt'].' - Jakarta' : null);
+			$row[3] 		= (isset($detail['rnd_sku']) 	|| $detail['rnd_sku']!=0 ? 'Uang saku': 'Uang saku');
+			$row[4] 		= (isset($detail['rnd_kettmbhn']) || !empty($detail['rnd_kettmbhn'])||$detail['rnd_kettmbhn']!=null ? $detail['rnd_kettmbhn'] : 'Lain-lain');
+			switch ($detail['rnd_ttype']) {
+				case 'kereta':
+					$type = 'Kereta';
+					break;
+				case 'klaut':
+					$type = 'Kapal Laut';
+					break;
+				case 'pudara':
+					$type = 'Pesawat Udara';
+					break;
+				case 'tonline':
+					$type = 'Transportasi Online';
+					break;
+				case 'tkonvensional':
+					$type = 'Transportasi Konvensional';
+					break;
+				default:
+					$type = $detail['rnd_ttype'];
+					break;
+			}
+		?>
 		<thead>
 			<tr>
 				<th width="30">No.</th>
+				<th>Perincian Biaya</th>
+				<th>Jumlah</th>
 				<th>Keterangan</th>
-				<th>Biaya</th>
 			</tr>
 		</thead>
 		<tbody>
-			 	<tr>
-			 			<td align="center"><?php echo $e;$e++; ?></td>
-			 			<td><?php echo $row[0] ?></td>
-			 			<td><?php echo $this->loader->rupiah($detail['rnd_binap']*($detail['rnd_jmlinap']<1?1:$detail['rnd_jmlinap'])) ?></td>
-			 	</tr>
-			 	<tr>
-			 			<td align="center"><?php echo $e;$e++; ?></td>
-			 			<td><?php echo $row[1] ?></td>
-			 			<td><?php echo $this->loader->rupiah($detail['rnd_btrkt']) ?></td>
-			 	</tr>
-				 <tr>
-				 		<td align="center"><?php echo $e;$e++; ?></td>
-				 		<td><?php echo $row[2] ?></td>
-				 		<td><?php echo $this->loader->rupiah($detail['rnd_bplg']) ?></td>
-				 </tr>
 				<tr>
-						<td align="center"><?php echo $e;$e++; ?></td>
-						<td><?php echo 'Uang saku' ?></td>
-						<td><?php echo $this->loader->rupiah($detail['rnd_sku']) ?></td>
+					<td><?php echo $e;$e++; ?></td>
+					<td>Transport<br>
+						<?php echo $row[1] ?><br>
+						<?php echo $row[2] ?><br>
+					</td>
+					<td><br>
+						<?php echo $this->loader->rupiah($detail['rnd_btrkt']) ?> <br>
+						<?php echo $this->loader->rupiah($detail['rnd_bplg']) ?>
+					</td>
+					<td><br>
+						<?php echo $type; ?><br>
+						<?php echo $type; ?></td>
 				</tr>
 				<tr>
 						<td align="center"><?php echo $e;$e++; ?></td>
-						<td><?php echo $row[4]!= null?$row[4]:"Lain-lain"   ?></td>
-						<td><?php echo $this->loader->rupiah($detail['rnd_lln']) ?></td>
+						<td>Uang Harian <br>
+							<?php echo $detail['rnd_jmlsaku'].' Hari  * '. $this->loader->rupiah($detail['rnd_sku']) ?></td>
+						<td><br><?php echo $this->loader->rupiah((int)$detail['rnd_jmlsaku']*(int)$detail['rnd_sku']) ?></td>
+						<td></td>
+				</tr>
+			 	<tr>
+			 			<td align="center"><?php echo $e;$e++; ?></td>
+			 			<td>Penginapan <br>
+							<?php echo $detail['rnd_jmlinap'].' Hari  * '. $this->loader->rupiah($detail['rnd_binap']) ?></td>
+						<td><br><?php echo $this->loader->rupiah((int)$detail['rnd_jmlinap']*(int)$detail['rnd_binap']) ?></td>
+						<td></td>
+				</tr>
+				<tr>
+						<td align="center"><?php echo $e;$e++; ?></td>
+						<td><?php echo $row[4]!= null?$row[4]:"Pengeluaran Rill"   ?></td>
+						<td><?php echo $this->loader->rupiah($detail['rnd_kettmbhn']) ?></td>
+						<td></td>
 				</tr>
 		</tbody>				
 		<tfoot>
 			<tr>
-				<td colspan="2">Total</td>
+				<td></td>
+				<td align="center"><b>JUMLAH</b></td>
 				<td><?php echo $this->loader->rupiah($detail['total']); ?></td>
+				<td></td>
 			</tr>
 		</tfoot>
+	</table><br>
+	<table class="tabell" cellspacing="0" cellpadding="0">
+		<thead>
+			<tr>
+				<th align="left" width="60%"></th>
+				<th align="left">Jakarta,</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td align="left">Telah Dibayar Sejumlah</td>
+				<td align="left">Telah Menerima Uang Sebesar</td>
+			</tr>
+			<tr>
+				<td align="left"><b>Rp. 0</b></td>
+				<td align="left"><b>Rp. 0</b></td>
+			</tr>
+			<tr>
+				<td align="left">Bendahara Pengeluaran.</td>
+				<td align="left">Yang Menerima.</td>
+			</tr>
+			<tr>
+				<td align="left"></td>
+				<td align="left"></td>
+			</tr>
+			<tr>
+				<td align="left">Paidin<br>
+				NIP : 10101010101010
+				</td>
+				<td align="left"><?php echo ($st['pgw_nm']); ?><br>
+				NIP : <?php echo ($st['pgw_nip']); ?></td>
+			</tr>
+		</tbody>
 	</table>
 </body>
 </html>

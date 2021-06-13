@@ -66,25 +66,25 @@
 							<div class="row">
 								<div class="col-md-3 col-sm-6">
 									<div class="form-group">
-										<label for="#dok1" class="control-label"><span class="text-danger">*</span> Ubah Lmp. Data Barang</label>
+										<label for="#dok1" class="control-label"><span class="text-danger">*</span> Ubah Dokumen Pendukung 1</label>
 										<input type="file" class="form-control-file" id="dok1" name="files[0]" accept=".jpg, .png, .jpeg, .bmp">
 									</div>
 								</div>
 								<div class="col-md-3 col-sm-6">
 									<div class="form-group">
-										<label for="#dok2" class="control-label"><span class="text-danger">*</span> Ubah Lmp. Nomor rekenking piutang</label>
+										<label for="#dok2" class="control-label"><span class="text-danger">*</span> Ubah Dokumen Pendukung 2</label>
 										<input type="file" class="form-control-file" id="dok2" name="files[1]" accept=".jpg, .png, .jpeg, .bmp">
 									</div>
 								</div>
 								<div class="col-md-3 col-sm-6">
 									<div class="form-group">
-										<label for="#dok3" class="control-label"><span class="text-danger">*</span> Ubah Lmp. Sertifikat Hak Tanah</label>
+										<label for="#dok3" class="control-label"><span class="text-danger">*</span> Ubah Dokumen Pendukung 3</label>
 										<input type="file" class="form-control-file" id="dok3" name="files[2]" accept=".jpg, .png, .jpeg, .bmp">
 									</div>
 								</div>
 								<div class="col-md-3 col-sm-6">
 									<div class="form-group">
-										<label for="#dok4" class="control-label"><span class="text-danger">*</span> Ubah Lmp. Perjanjian Pengalihan Piutang</label>
+										<label for="#dok4" class="control-label"><span class="text-danger">*</span> Ubah Dokumen Pendukung 4</label>
 										<input type="file" class="form-control-file" id="dok4" name="files[3]" accept=".jpg, .png, .jpeg, .bmp">
 									</div>
 								</div>
@@ -127,6 +127,16 @@
 								<label for="#psl_srt" class="control-label"><span class="text-danger">*</span> Isi Surat</label>
 								<textarea type="text" id="psl_srt" name="psl_srt" rows="4" ><?php echo ($this->input->post('psl_srt')?$this->input->post('psl_srt'):$permohonan['psl_srt']) ?></textarea>
 								<span class="text-danger"><?php echo form_error('psl_srt');?></span>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="form-group">
+								<label for="#psl_sts" class="control-label"><span class="text-danger">*</span>Ubah Status</label>
+								<select name="psl_sts" class="form-control" id="psl_sts">
+									<option value="0" <?php if($permohonan['psl_sts']==0):?> selected <?php endif; ?>>Belum Disetujui</option>
+									<option value="1" <?php if($permohonan['psl_sts']!=0):?> selected <?php endif; ?>>Telah Disetujui</option>
+								</select>
+								<span class="text-danger"><?php echo form_error('psl_sts');?></span>
 							</div>
 						</div>
 

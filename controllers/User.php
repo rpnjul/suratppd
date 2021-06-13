@@ -117,15 +117,7 @@ class User extends CI_Controller{
                         );
                     $this->session->set_userdata($login);
                     redirect('dash');
-                }else{
-                    $data['_view'] = 'v_home/index';
-                    $data['_landing'] = true;
-                    $this->load->view('layouts/main',$data);
                 }
-            }else{
-                    $data['_view'] = 'v_home/index';
-                    $data['_landing'] = true;
-                    $this->load->view('layouts/main',$data);
             }
         }
        

@@ -1,4 +1,5 @@
 <?php
+ob_start();
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Permohonan extends CI_Controller {
@@ -10,8 +11,8 @@ class Permohonan extends CI_Controller {
 			$this->load->model('M_permohonan');
 			$this->load->model('M_Direktur');
 			$this->load->library('Loader');
-			$this->load->helper('url');
 			$this->load->library('PDFGenerator');
+			$this->load->helper('url');
 		}else{
 			redirect('login','refresh');
 		}
@@ -460,8 +461,9 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 	  public function active()
 	    {
 	       $id = $this->input->post('id');
-	       if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Kepala Sub Bagian Umum' || $this->session->userdata('level')=='Admin')) {
+	       if ($this->session->has_userdata('status') & $this->session->userdata('level')=='Kepala Kantor') {
 	           $data= $this->M_permohonan->get_permohonan($id);
+	           //var_dump($data['psl_id']);
 	           if(isset($data['psl_id']))
 	           {
 						$params = array(
@@ -491,7 +493,6 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 		    $this->pagination->initialize($config);
 		    $data['permohonan'] = $this->M_permohonan->get_all_permohonan($params);        
 		    $data['_view'] = 'v_permohonan/index';
-		    $data['level'] = $this->session->userdata('level')??'Pegawai';
 		    $data['_landing'] = false;
 		    $data['judul'] = "Data permohonan";
 		    $load = $this->loader->load($data);
@@ -504,12 +505,20 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 
 	private function kodeotomatis(){
 
+            ///P-999/WKN.08/08.9999
             $res = $this->db->query('select max(right(psl_no,7)) as `urut_tgl`,max(substring(psl_no,3,3)) as `urut` from tb_psl')->row();
             $tgl = date('/m.Y');
+           // echo $res->urut.'<br>';
             if (isset($res->urut)) {
+                //$urut = intval($res->urut);
                 $urut = intval($res->urut);
                 $bln = substr($res->urut_tgl, 0,2);
                 $thn = substr($res->urut_tgl, 3,4);
+/*                echo $urut.'<br>';
+                echo $bln.'<br>';
+                echo $thn.'<br>';
+                echo substr($tgl, 1,2).'<br>';
+                echo substr($tgl, 4,4).'<br>';*/
                 if (substr($tgl, 1,2)==$bln) { ## bulan
                     if (substr($tgl, 4,4)==$thn) { ## tahun
                         if ($urut >= 999) {
@@ -528,7 +537,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
             }
             $str_length = strlen($urut);
             $dig = substr("000{$urut}", $str_length);
-            return 'P-'.$dig.'/BSI.08'.$tgl;
+            return 'P-'.$dig.'/WKN.08'.$tgl;
     }
 
     function rules(){
@@ -586,9 +595,89 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 	public function upload()
 	{
 		if ($this->session->has_userdata('status')&& ($this->session->userdata('level')=='Admin' || $this->session->userdata('level')=='Kepala Kantor')) {
+			$this->load->library('form_validation');
+			$this->form_validation->set_rules('direktur_no','Nomor direktur','required|callback_cek_direktur');
+			$this->form_validation->set_rules('psl_no','Nomor Permohonan','callback_cek_psl');
+			$this->form_validation->set_rules('psl_prh','Perihal Permohonan','required|max_length[100]');
+			$this->form_validation->set_rules('psl_srt','Isi Surat Permohonan','required');
+			$this->rules();
+			if ($this->form_validation->run()) {
+				$sts = ($this->session->userdata('level')=='Kepala Kantor'?1:0); // 1 diterima, 0 belom
+				$tgl = date('Y-m-d');
+				$object = array(
+					'direktur_no'=>$this->input->post('direktur_no'),
+					'psl_no'=>$this->kodeotomatis(),
+					'psl_tgl'=>$tgl,
+					'psl_prh'=>$this->input->post('psl_prh'),
+					'psl_srt'=>$this->input->post('psl_srt'),
+					'psl_sts'=>$sts
+				);
+				$id = $this->M_permohonan->add_permohonan($object);
+				if (!empty($id)) {
+								$q = $this->db->query("SELECT `AUTO_INCREMENT`+1 as n
+														FROM  INFORMATION_SCHEMA.TABLES
+														WHERE TABLE_SCHEMA = DATABASE()
+														AND   TABLE_NAME   = 'tb_psllmp';")
+													->row();
+					$data = [];
+					$count = count($_FILES['files']['name']);
+					for($i=0;$i<$count;$i++){
+						if(!empty($_FILES['files']['name'][$i])){
+						
+							$_FILES['file']['name'] = $_FILES['files']['name'][$i];
+							$_FILES['file']['type'] = $_FILES['files']['type'][$i];
+							$_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
+							$_FILES['file']['error'] = $_FILES['files']['error'][$i];
+							$_FILES['file']['size'] = $_FILES['files']['size'][$i];
+							$config['upload_path'] = 'upload/'; 
+							$config['allowed_types'] = 'pdf';
+							$config['max_size'] = '5000'; // max_size in kb
+							//$config['file_name'] = $_FILES['files']['name'][$i];
+							$tmp = explode('.', $_FILES['files']['name'][$i]);
+							$file_ext = end($tmp);
+							$config['file_name'] = $q->n.'_'.$id.'_'.strtotime(date('Y-m-d H:i:s')).'.'.$file_ext;
+							$this->load->library('upload',$config); 
+							if($this->upload->do_upload('file')){
+								$uploadData = $this->upload->data();
+								$file_encode[$i]=$uploadData['file_name'];
+							}
+						}
+					
+					}
+					$object = array(
+						'psl_id'=>$id,
+						'psllmp_dok1'=>$file_encode[0],
+						'psllmp_dok2'=>$file_encode[1],
+						'psllmp_dok3'=>$file_encode[2],
+						'psllmp_dok4'=>$file_encode[3]
+					);
+					if ($this->db->insert('tb_psllmp', $object)) {
+						redirect('permohonan');
+					}
+					
+				}
+			} else {
+				$data['_view'] = 'v_permohonan/add';
+				$data['_landing'] = false;
+				$data['kode'] = $this->kodeotomatis();
+				if ($this->input->get('direktur')) {
+					$data['direktur'] = $res;
+				}
+				$data['judul'] = "Data Permohonan";
+				$load = $this->loader->load($data);
+				$this->load->view('layouts/content',$load);
+			}
+		}else{
+			redirect('login');
+		}
+		
+	}
+
+		public function re_upload($psl_id)
+	{
+		if ($this->session->has_userdata('status')&& ($this->session->userdata('level')=='Admin' || $this->session->userdata('level')=='Kepala Kantor')) {
         $this->load->library('form_validation');
-		$this->form_validation->set_rules('direktur_no','Nomor Direktur','required|callback_cek_direktur');
-		$this->form_validation->set_rules('psl_no','Nomor Permohonan','callback_cek_psl');
+		$this->form_validation->set_rules('direktur_no','Nomor direktur','required|callback_cek_direktur');
 		$this->form_validation->set_rules('psl_prh','Perihal Permohonan','required|max_length[100]');
 		$this->form_validation->set_rules('psl_srt','Isi Surat Permohonan','required');
 		$this->rules();
@@ -597,107 +686,10 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 			$tgl = date('Y-m-d');
 			$object = array(
 				'direktur_no'=>$this->input->post('direktur_no'),
-				'psl_no'=>$this->kodeotomatis(),
 				'psl_tgl'=>$tgl,
 				'psl_prh'=>$this->input->post('psl_prh'),
 				'psl_srt'=>$this->input->post('psl_srt'),
 				'psl_sts'=>$sts
-			);
-			$id = $this->M_permohonan->add_permohonan($object);
-			if (!empty($id)) {
-							$q = $this->db->query("
-				SELECT `AUTO_INCREMENT`+1 as n
-				FROM  INFORMATION_SCHEMA.TABLES
-				WHERE TABLE_SCHEMA = DATABASE()
-				AND   TABLE_NAME   = 'tb_psllmp';")->row();
-				$data = [];
-				$count = count($_FILES['files']['name']);
-				for($i=0;$i<$count;$i++){
-				
-				  if(!empty($_FILES['files']['name'][$i])){
-				
-				    $_FILES['file']['name'] = $_FILES['files']['name'][$i];
-				    $_FILES['file']['type'] = $_FILES['files']['type'][$i];
-				    $_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
-				    $_FILES['file']['error'] = $_FILES['files']['error'][$i];
-				    $_FILES['file']['size'] = $_FILES['files']['size'][$i];
-				    $config['upload_path'] = 'upload/'; 
-				    $config['allowed_types'] = 'pdf';
-				    $config['max_size'] = '5000'; // max_size in kb
-				    //$config['file_name'] = $_FILES['files']['name'][$i];
-					$tmp = explode('.', $_FILES['files']['name'][$i]);
-					$file_ext = end($tmp);
-					$config['file_name'] = $q->n.'_'.$id.'_'.strtotime(date('Y-m-d H:i:s')).'.'.$file_ext;
-				    $this->load->library('upload',$config); 
-					//var_dump($_FILES['file']['name']);
-
-				
-				    if($this->upload->do_upload('file')){
-				     /* $uploadData = $this->upload->data();
-				      $filename = $uploadData['file_name'];
-
-				      $data['totalFiles'][] = $filename;*/
-
-				      $uploadData = $this->upload->data();
-				      $file_encode[$i]=$uploadData['file_name'];
-				      /*$imgdata = file_get_contents($uploadData['full_path']);
-				      $file_encode[$i]=base64_encode($imgdata);
-				      $filename = $uploadData['file_name'];
-					  //$file_ext[$i]=strtolower(end(explode('.',$uploadData['file_name'])));
-					  $tmp = explode('.', $_FILES['files']['name'][$i]);
-					  $file_ext[$i] = end($tmp);
-				      $data['totalFiles'][] = $filename;
-				      unlink($uploadData['full_path']);*/
-				    }
-				  }
-				
-				}
-				$object = array(
-				    'psl_id'=>$id,
-				    'psllmp_dok1'=>$file_encode[0],
-				    'psllmp_dok2'=>$file_encode[1],
-				    'psllmp_dok3'=>$file_encode[2],
-				    'psllmp_dok4'=>$file_encode[3]
-				  );
-				if ($this->db->insert('tb_psllmp', $object)) {
-					redirect('permohonan');
-				}
-				
-			}
-		} else {
-			$data['_view'] = 'v_permohonan/add';
-			$data['_landing'] = false;
-			$data['kode'] = $this->kodeotomatis();
-			if ($this->input->get('direktur')) {
-				$data['direktur'] = $res;
-			}
-			$data['judul'] = "Data Permohonan Sidang";
-			$load = $this->loader->load($data);
-			$this->load->view('layouts/content',$load);
-		}
-	}else{
-		redirect('login');
-	}
-		
-	}
-
-		public function re_upload($psl_id)
-	{
-		if ($this->session->has_userdata('status')&& ($this->session->userdata('level')=='Admin' || $this->session->userdata('level')=='Kepala Kantor' || $this->session->userdata('level')=='Kepala Sub Bagian Umum')) {
-        $this->load->library('form_validation');
-		$this->form_validation->set_rules('direktur_no','Nomor Direktur','required|callback_cek_direktur');
-		$this->form_validation->set_rules('psl_prh','Perihal Permohonan','required|max_length[100]');
-		$this->form_validation->set_rules('psl_srt','Isi Surat Permohonan','required');
-		$this->rules();
-		if ($this->form_validation->run()) {
-			// $sts = ($this->session->userdata('level')=='Kepala Kantor'?1:0); // 1 diterima, 0 belom
-			$tgl = date('Y-m-d');
-			$object = array(
-				'direktur_no'=>$this->input->post('direktur_no'),
-				'psl_tgl'=> $tgl,
-				'psl_prh'=> $this->input->post('psl_prh'),
-				'psl_srt'=> $this->input->post('psl_srt'),
-				'psl_sts'=> $this->input->post('psl_sts')
 			);
 			$id = $this->M_permohonan->update_permohonan($psl_id,$object);
 			$dok= $this->M_permohonan->get_lampiran($psl_id);
@@ -714,81 +706,72 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 				$object_lamp[]=null;
 				if (!empty($_FILES['files']['name'])) {
 					for($i=0;$i<$count;$i++){
-					
-					if(!empty($_FILES['files']['name'][$i])){
-					
-					    $_FILES['file']['name'] = $_FILES['files']['name'][$i];
-					    $_FILES['file']['type'] = $_FILES['files']['type'][$i];
-					    $_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
-					    $_FILES['file']['error'] = $_FILES['files']['error'][$i];
-					    $_FILES['file']['size'] = $_FILES['files']['size'][$i];
-					    $config['upload_path'] = 'upload/'; 
-					    $config['allowed_types'] = 'pdf';
-					    $config['max_size'] = '5000'; // max_size in kb
-						$tmp = explode('.', $_FILES['files']['name'][$i]);
-						$file_ext = end($tmp);
-						$config['file_name'] = $q->n.'_'.$id.'_'.strtotime(date('Y-m-d H:i:s')).'.'.$file_ext;
-					    $this->load->library('upload',$config); 
-					    if($this->upload->do_upload('file')){
-							$uploadData = $this->upload->data();
-							$imgdata = file_get_contents($uploadData['full_path']);
-							$file_encode[$i]=$uploadData['file_name'];
-							switch ($i) {
-								case 0:
-									$object_lamp['psllmp_dok1']		=$file_encode[0];
-									break;
-								case 1:
-									$object_lamp['psllmp_dok2']		=$file_encode[1];
-									break;
-								case 2:
-									$object_lamp['psllmp_dok3']		=$file_encode[2];
-									break;
-								default:
-									$object_lamp['psllmp_dok4']		=$file_encode[3];
-									break;
+						if(!empty($_FILES['files']['name'][$i])){
+						
+							$_FILES['file']['name'] = $_FILES['files']['name'][$i];
+							$_FILES['file']['type'] = $_FILES['files']['type'][$i];
+							$_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
+							$_FILES['file']['error'] = $_FILES['files']['error'][$i];
+							$_FILES['file']['size'] = $_FILES['files']['size'][$i];
+							$config['upload_path'] = 'upload/'; 
+							$config['allowed_types'] = 'pdf';
+							$config['max_size'] = '5000'; // max_size in kb
+							$tmp = explode('.', $_FILES['files']['name'][$i]);
+							$file_ext = end($tmp);
+							$config['file_name'] = $q->n.'_'.$id.'_'.strtotime(date('Y-m-d H:i:s')).'.'.$file_ext;
+							$this->load->library('upload',$config); 
+						
+							if($this->upload->do_upload('file')){
+								$uploadData = $this->upload->data();
+								$imgdata = file_get_contents($uploadData['full_path']);
+								$file_encode[$i]=$uploadData['file_name'];
+								switch ($i) {
+									case 0:
+										# dok 1
+										$object_lamp['psllmp_dok1'] = $file_encode[0];
+										break;
+									case 1:
+										# dok 1
+										$object_lamp['psllmp_dok2'] = $file_encode[1];
+										break;
+									case 2:
+										# dok 1
+										$object_lamp['psllmp_dok3'] = $file_encode[2];
+										break;
+									
+									default:
+										$object_lamp['psllmp_dok4'] = $file_encode[3];
+										break;
+								}
+								$data['totalFiles'][] = $filename;
 							}
-					      	$data['totalFiles'][] = $filename;
-					    }
-					    unset($object_lamp[0]);
-					    $cek = $this->M_permohonan->get_lampiran($psl_id);
-					    if (isset($object_lamp['psllmp_dok1']) || isset($object_lamp['psllmp_dok4']) || isset($object_lamp['psllmp_dok4']) || isset($object_lamp['psllmp_dok4'])) {
-					    	if (isset($cek['psl_id'])) {
-					    		if ($this->M_permohonan->update_lampiran($psl_id,$object_lamp)) {
-					    			$this->session->set_flashdata('pesan_success', 'berhasil mengubah data');
-					    			redirect('permohonan','refresh');
-					    		}
-					    	}else{
-					    		$object_lamp['psl_id'] = $psl_id;
-					    		if ($this->db->insert('tb_psllmp', $object_lamp)) {
-					    			$this->session->set_flashdata('pesan_success', 'berhasil mengubah data');
-					    		}else{
-					    			$this->session->set_flashdata('pesan_error', 'gagal menambahkan data');
-					    		}
-					    	}
-					    }else{
-					    	$this->session->set_flashdata('pesan_success', 'berhasil mengubah data');
-					    }
-					}else{
-                        redirect('permohonan','refresh');
-                    }
+							unset($object_lamp[0]);
+							$cek = $this->M_permohonan->get_lampiran($psl_id);
+							if (isset($object_lamp['psllmp_dok1']) || isset($object_lamp['psllmp_dok4']) || isset($object_lamp['psllmp_dok4']) || isset($object_lamp['psllmp_dok4'])) {
+								if (isset($cek['psl_id'])) {
+									if ($this->M_permohonan->update_lampiran($psl_id,$object_lamp)) {
+										$this->session->set_flashdata('pesan_success', 'berhasil mengubah data');
+										redirect('permohonan','refresh');
+									}
+								}else{
+									$object_lamp['psl_id'] = $psl_id;
+									if ($this->db->insert('tb_psllmp', $object_lamp)) {
+										$this->session->set_flashdata('pesan_success', 'berhasil mengubah data');
+									}else{
+										$this->session->set_flashdata('pesan_error', 'gagal menambahkan data');
+									}
+								}
+							}else{
+								$this->session->set_flashdata('pesan_success', 'berhasil mengubah data');
+							}
+						}else{
+							redirect('permohonan','refresh');
+						}
 					
 					}
 				}else{
 					redirect('permohonan','refresh');
 				}
-
-				/*$object = array(
-				    'psllmp_dok1'=>(!isset($file_encode[0])?(isset($dok['psllmp_dok1'])?$dok['psllmp_dok1']:null):$file_encode[0]),
-				    'psllmp_dok2'=>(!isset($file_encode[1])?(isset($dok['psllmp_dok2'])?$dok['psllmp_dok2']:null):$file_encode[1]),
-				    'psllmp_dok3'=>(!isset($file_encode[2])?(isset($dok['psllmp_dok3'])?$dok['psllmp_dok3']:null):$file_encode[2]),
-				    'psllmp_dok4'=>(!isset($file_encode[3])?(isset($dok['psllmp_dok4'])?$dok['psllmp_dok4']:null):$file_encode[3]),
-				    'psllmp_ftipe_1'=>(!isset($file_encode[0])?(isset($dok['psllmp_ftipe_1'])?$dok['psllmp_ftipe_1']:null):$file_ext[0]),
-				    'psllmp_ftipe_2'=>(!isset($file_encode[1])?(isset($dok['psllmp_ftipe_2'])?$dok['psllmp_ftipe_2']:null):$file_ext[1]),
-				    'psllmp_ftipe_3'=>(!isset($file_encode[2])?(isset($dok['psllmp_ftipe_3'])?$dok['psllmp_ftipe_3']:null):$file_ext[2]),
-				    'psllmp_ftipe_4'=>(!isset($file_encode[3])?(isset($dok['psllmp_ftipe_4'])?$dok['psllmp_ftipe_4']:null):$file_ext[3]),
-				  );*/
-				
-				
 				
 			}else{
 				redirect('permohonan','refresh');
@@ -801,7 +784,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 				$res=$this->M_Direktur->get_direktur($this->input->get('direktur'));
 				$data['direktur'] = $res;
 			}
-			$data['judul'] = "Data Permohonan Sidang";
+			$data['judul'] = "Data Permohonan";
 			$load = $this->loader->load($data);
 			$this->load->view('layouts/content',$load);
 		}
@@ -813,7 +796,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 
 	public function add()
 	{
-		if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Admin' | $this->session->userdata('level')=='Kepala Kantor' | $this->session->userdata('level')=='Direktur')) {
+		if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Admin' | $this->session->userdata('level')=='Kepala Kantor')) {
 			$data['_view'] = 'v_permohonan/add';
 				$data['_landing'] = false;
 				$data['kode'] = $this->kodeotomatis();
@@ -821,7 +804,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 					$res = $this->M_Direktur->get_direktur($this->input->get('direktur'));
 					$data['direktur'] = $res;
 				}
-				$data['judul'] = "Data Permohonan Sidang";
+				$data['judul'] = "Data Permohonan";
 				$load = $this->loader->load($data);
 				$this->load->view('layouts/content',$load);
 		}else{
@@ -836,7 +819,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 				$data['_view'] = 'v_permohonan/edit';
 				$data['_landing'] = false;
 				$data['dok'] = $this->M_permohonan->get_lampiran($psl_id);
-				$data['judul'] = "Data Permohonan Perjalanan Dinas";
+				$data['judul'] = "Data Permohonan";
 				$load = $this->loader->load($data);
 				$this->load->view('layouts/content',$load);
 		}else{
@@ -851,7 +834,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 				$data['_view'] = 'v_permohonan/view';
 				$data['_landing'] = false;
 				$data['dok'] = $this->M_permohonan->get_lampiran($psl_id);
-				$data['judul'] = "Data Permohonan Sidang";
+				$data['judul'] = "Data Permohonan";
 				$load = $this->loader->load($data);
 				$this->load->view('layouts/content',$load);
 		}else{

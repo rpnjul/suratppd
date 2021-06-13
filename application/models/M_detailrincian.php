@@ -18,7 +18,7 @@ class M_detailrincian extends CI_Model {
 
 	function get_daftar_rincian_by_rcn($rcn_id)
 	{
-		$this->db->select('*,((rnd_binap * rnd_jmlinap) + rnd_btrkt + rnd_bplg + rnd_sku + rnd_lln ) as `total` ');
+		$this->db->select('*,((rnd_binap * rnd_jmlinap) + rnd_btrkt + rnd_bplg + rnd_sku + rnd_kettmbhn ) as `total` ');
 	    return $this->db->get_where('tb_rcndtl',array('rcn_id'=>$rcn_id))->row_array();
 	}
 	

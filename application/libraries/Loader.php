@@ -142,32 +142,32 @@ class Loader extends FPDF
     }
 
 	function angka_penyebut($nilai) {
-			$nilai = abs($nilai);
-			$huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
-			$temp = "";
-			if ($nilai < 12) {
-				$temp = " ". $huruf[$nilai];
-			} else if ($nilai <20) {
-				$temp = $this->angka_penyebut($nilai - 10). " belas";
-			} else if ($nilai < 100) {
-				$temp = $this->angka_penyebut($nilai/10)." puluh". $this->angka_penyebut($nilai % 10);
-			} else if ($nilai < 200) {
-				$temp = " seratus" . $this->angka_penyebut($nilai - 100);
-			} else if ($nilai < 1000) {
-				$temp = $this->angka_penyebut($nilai/100) . " ratus" . $this->angka_penyebut($nilai % 100);
-			} else if ($nilai < 2000) {
-				$temp = " seribu" . $this->angka_penyebut($nilai - 1000);
-			} else if ($nilai < 1000000) {
-				$temp = $this->angka_penyebut($nilai/1000) . " ribu" . $this->angka_penyebut($nilai % 1000);
-			} else if ($nilai < 1000000000) {
-				$temp = $this->angka_penyebut($nilai/1000000) . " juta" . $this->angka_penyebut($nilai % 1000000);
-			} else if ($nilai < 1000000000000) {
-				$temp = $this->angka_penyebut($nilai/1000000000) . " milyar" . $this->angka_penyebut(fmod($nilai,1000000000));
-			} else if ($nilai < 1000000000000000) {
-				$temp = $this->angka_penyebut($nilai/1000000000000) . " trilyun" . $this->angka_penyebut(fmod($nilai,1000000000000));
-			}     
-			return $temp;
-		}
+        $nilai = abs($nilai);
+        $huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
+        $temp = "";
+        if ($nilai < 12) {
+            $temp = " ". $huruf[$nilai];
+        } else if ($nilai <20) {
+            $temp = $this->angka_penyebut($nilai - 10). " belas";
+        } else if ($nilai < 100) {
+            $temp = $this->angka_penyebut($nilai/10)." puluh". $this->angka_penyebut($nilai % 10);
+        } else if ($nilai < 200) {
+            $temp = " seratus" . $this->angka_penyebut($nilai - 100);
+        } else if ($nilai < 1000) {
+            $temp = $this->angka_penyebut($nilai/100) . " ratus" . $this->angka_penyebut($nilai % 100);
+        } else if ($nilai < 2000) {
+            $temp = " seribu" . $this->angka_penyebut($nilai - 1000);
+        } else if ($nilai < 1000000) {
+            $temp = $this->angka_penyebut($nilai/1000) . " ribu" . $this->angka_penyebut($nilai % 1000);
+        } else if ($nilai < 1000000000) {
+            $temp = $this->angka_penyebut($nilai/1000000) . " juta" . $this->angka_penyebut($nilai % 1000000);
+        } else if ($nilai < 1000000000000) {
+            $temp = $this->angka_penyebut($nilai/1000000000) . " milyar" . $this->angka_penyebut(fmod($nilai,1000000000));
+        } else if ($nilai < 1000000000000000) {
+            $temp = $this->angka_penyebut($nilai/1000000000000) . " trilyun" . $this->angka_penyebut(fmod($nilai,1000000000000));
+        }     
+        return $temp;
+    }
 	
 	function angka_terbilang($nilai) {
 		$nilai = (int) $nilai;
@@ -205,7 +205,7 @@ class Loader extends FPDF
 	}
 
 	function rupiah($angka){	
-		$hasil_rupiah = "Rp " . number_format($angka,0,',','.');
+		$hasil_rupiah = "Rp " . number_format((int)$angka,0,',','.');
 		return $hasil_rupiah; 
 	}
 
@@ -599,17 +599,17 @@ function ParseTable($Table)
 		$this->SetFont('Arial','','12');
 		//$this->Cell(80);
 		$this->Ln();
-		$this->Cell($default['header_cell'],5,"SISTEM INFORMASI SPPD",0,1,'C');
+		// $this->Cell($default['header_cell'],5,"SISTEM INFORMASI SPPD",0,1,'C');
 		//$this->SetFont('Arial','B','10');
-		$this->Cell($default['header_cell'],5,"(Surat Perintah Perjalanan Dinas)",0,1,'C');
+		// $this->Cell($default['header_cell'],5,"(Surat Perintah Perjalanan Dinas)",0,1,'C');
 		//$this->Cell($default['header_cell'],5,"KANTOR WILAYAH DJKN JAWA BARAT",0,1,'C');
 		//$this->SetFont('Arial','B','10');
-		$this->Cell($default['header_cell'],5,"STMIK NUSA MANDIRI",0,1,'C');
-		$this->Cell($default['header_cell'],5,"DEPOK",0,1,'C');
+		// $this->Cell($default['header_cell'],5,"STMIK NUSA MANDIRI",0,1,'C');
+		// $this->Cell($default['header_cell'],5,"DEPOK",0,1,'C');
 		$this->SetFont('Arial','','8');
 		// $this->Cell($default['header_cell'],4,"JALAN SERSAN ASWAN NO. 8D, DEPOK.",0,1,'C');
 		// $this->Cell($default['header_cell'],3,"TELEPON (021) 880-8888, FAKSIMILE (021) 880-3832",0,1,'C');
-		$this->Line(20,38,$default['header_line'],38);
+		// $this->Line(20,38,$default['header_line'],38);
 		$this->Ln(10);
 		if (isset($data['judul'])) {
 			$this->SetFont('Times','BU','12');
@@ -655,7 +655,7 @@ function ParseTable($Table)
 			$this->Cell(48,6,"Jabatan",1,1,'C',true);
 			$this->SetTextColor(0, 0, 0);
 			$this->SetFont('Arial','','9');
-			foreach ($data['pegawai'] as $num => $row){
+			foreach ($data['pengikut_tugas'] as $num => $row){
 				 $tgl=$this->konversi_tanggal($row->pgw_tll);
 				 $this->Cell(10);
 				 $this->Cell(10,6,++$num,1,0,'C');
@@ -721,7 +721,7 @@ function ParseTable($Table)
                     $this->Ln(3);
                 }
                 $this->Ln(3);
-                $this->MultiCell(160,6,"Untuk melaksanakan ".strtolower($data['surat_tugas']['psl_prh'])." atas permintaan ".$data['surat_tugas']['direktur_nm'].', yang bertempat di '.$data['surat_tugas']['srtgs_tmt'].'.',0,'J',false);
+                $this->MultiCell(160,6,"Untuk melaksanakan ".strtolower($data['surat_tugas']['psl_prh']??"perjalanan dinas")." atas permintaan ".$data['surat_tugas']['direktur_nm'].', yang bertempat di '.$data['surat_tugas']['srtgs_tmt'].'.',0,'J',false);
                 $this->Ln(5);
                 $this->SetFont('Times','B','12');
                 $tgl_tgs = date_create($data['surat_tugas']['srtgs_tgl']);

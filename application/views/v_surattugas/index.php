@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-header">
                 <h4>Data Surat Tugas</h4>
-            	<?php if ($level=='Kepala Sub Bagian Umum') {?>
+            	<?php if ($level=='Kepala Sub Bagian Umum' | $level=='Admin' | $level=='Direktur' | $level=='Pegawai') {?>
                     <div class="card-header-action">
                         <a class="btn btn-success btn-sm" href="<?php echo site_url('surat_tugas/add'); ?>" > <span class="fa fa-plus"></span> Tambah</a> 
                     </div>
@@ -16,8 +16,8 @@
                 <table class="table table-striped" id="tableData">
                 <thead>
                     <tr>
-                        <th>No. Surat Masuk</th>
                         <th>No. Surat Tugas</th>
+                        <th>No. Surat Masuk</th>
                         <th>NIP Pegawai</th>
                         <th>Nama Pegawai</th>
                         <th>Berangkat</th>
@@ -29,8 +29,8 @@
                     <tbody>
                         <?php foreach($surat_tugas as $key => $S){ ?>
                         <tr id="srtgs<?php echo $S['srtgs_id'];?>">
-                            <td><?php echo $S['srtms_no']; ?></td>
                             <td><?php echo $S['srtgs_no']; ?></td>
+                            <td><?php echo $S['srtms_no']; ?></td>
                             <td><?php echo $S['pgw_nip']; ?></td>
                             <td><?php echo $S['pgw_nm']; ?></td>
                             <td><?php echo $this->loader->konversi_tanggal($S['srtgs_tgl']); ?></td>

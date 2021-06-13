@@ -73,7 +73,7 @@
                 <div class="col-6">
                   <label for="pgw_tll" class="control-label">Tanggal Lahir</label>
                   <div class="form-group">
-                    <input required autocomplete="off" type="text" name="pgw_tll" readonly="" value="<?php echo $this->input->post('pgw_tll'); ?>" class="form-control" id="pgw_tll" />
+                    <input required autocomplete="off" type="text" name="pgw_tll" value="<?php echo $this->input->post('pgw_tll'); ?>" placeholder="YYYY-MM-DD" class="form-control" id="pgw_tll" />
                     <div class="text-danger"><?php echo form_error('pgw_tll');?></div>
                   </div>
                 </div> 
@@ -124,8 +124,10 @@
                       <?php 
                       $pgw_jab_values = array(
                         'Admin',
+                        'Pejabat Lelang',
                         'Kepala Sub Bagian Umum',
-                        'Pejabat Lelang'
+                        'Kepala Kantor',
+                        'Pegawai'
                       );
 
                       foreach($pgw_jab_values as $value => $display_text)

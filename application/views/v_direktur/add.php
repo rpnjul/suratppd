@@ -18,12 +18,12 @@
             <div class="col-sm-12 col-md-6">
               <label for="direktur_nm" class="control-label">NIP Direktur</label>
               <div class="form-group">
-                <input autocomplete="off" readonly="" type="text" name="direktur_kd" value="<?php echo $kode; ?>" class="form-control" id="direktur_kd" />
+                <input autocomplete="off" type="text" name="direktur_kd" placeholder="Masukan NIP Direktur" class="form-control" id="direktur_kd" />
                 <div class="text-danger"><?php echo form_error('direktur_kd');?></div>
               </div>                     
             </div>
             <div class="col-sm-12 col-md-6">
-              <label for="direktur_nm" class="control-label">Nama Lengkap / Instansi</label>
+              <label for="direktur_nm" class="control-label">Nama Lengkap</label>
               <div class="form-group">
                 <input required autocomplete="off" type="text" name="direktur_nm" maxlength="55" value="<?php echo $this->input->post('direktur_nm'); ?>" class="form-control" id="direktur_nm" />
                 <div class="text-danger"><?php echo form_error('direktur_nm');?></div>
@@ -43,7 +43,7 @@
                 <div class="text-danger"><?php echo form_error('direktur_alm');?></div>
               </div>
             </div>
-            <div class="col-md-6 col-sm-12">
+            <div class="col-sm-12">
               <div class="row">
               <div class="col-md-6">
                 <label for="direktur_eml" class="control-label">Alamat Email</label>

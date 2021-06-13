@@ -8,7 +8,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <div class="card card-primary">
         <div class="login-brand">
-          <!-- <img src="<?php echo base_url(); ?>resources/img/logo.png" alt="logo" width="100" class="shadow-light"> -->
           <br><strong>Surat Perintah Perjalanan Dinas</strong>
         </div>
       <div class="card-header d-none" id="alert">
@@ -16,8 +15,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
       <div class="card-body">
       <form class="needs-validation novalidate" id="loginfrm">
-        <!-- php $attributes = array('class' => 'needs-validation','novalidate'=> "");
-            echo form_open('pegawai/login',$attributes); ?> -->
             <div class="form-group">
               <label for="email">Email / NIP</label>
               <input type="text" class="form-control" placeholder="Email / NIP" name="u_email" id="u_email" required autofocus>
@@ -65,10 +62,8 @@ $('#loginfrm').on('submit',function(e){
         $('#alertinf').addClass('alert alert'+data.class);
         $('#alertinf').html(data.desc);
         if(data.code==200){
-          // $('#submitlgn').html('Berhasil');
           location.reload("<?php echo base_url();?>dash");
-        }else{
-          $('#submitlgn').html('Masuk');
+          e.preventDefault();
         }
       },
     );

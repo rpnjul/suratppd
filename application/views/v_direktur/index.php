@@ -20,8 +20,8 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Kode</th>
-                <th>Nama Lengkap / Instansi</th>
+                <th>NIP</th>
+                <th>Nama Lengkap</th>
                 <th>Nomor Telepon</th>
                 <th>Email</th>
                 <th>Alamat</th>

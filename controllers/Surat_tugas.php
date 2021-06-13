@@ -33,7 +33,14 @@ class Surat_tugas extends CI_Controller{
         $config['base_url'] = site_url('surat_tugas/index?');
         $config['total_rows'] = $this->M_surattugas->get_all_surattugas_count();
         $this->pagination->initialize($config);
+
+       // if ($this->session->userdata('level')!='Pejabat Lelang') {
         $data['surat_tugas'] = $this->M_surattugas->get_all_surattugas($params);
+        //}else{
+        //    $data['surat_tugas'] = $this->M_surattugas->get_all_surattugas_by_nip($params,$this->session->userdata('nip'));
+        //}
+        // $data['pegawai']=$this->M_pegawai->get_pegawai_by_nip( $data['surat_tugas']['pgw_nip']);
+        
         $data['_view'] = 'v_surattugas/index';
         $data['_landing'] = false;
         $data['judul'] = "Surat tugas";
@@ -132,7 +139,7 @@ class Surat_tugas extends CI_Controller{
     function add()
     {   
 
-        if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Kepala Sub Bagian Umum' | $this->session->userdata('level')=='Admin' | $this->session->userdata('level')=='Pegawai')) {
+        if ($this->session->has_userdata('status') & $this->session->userdata('level')=='Kepala Sub Bagian Umum') {
         $this->load->library('form_validation');
 
 		//$this->form_validation->set_rules('srtgs_no','Nomor Surat Tugas','required|is_unique[`tb_srtgs`.srtgs_no]|max_length[30]');
@@ -153,6 +160,7 @@ class Surat_tugas extends CI_Controller{
             $params = array(
 				'srtgs_no' => $kode,
                 'srtms_no' => $this->input->post('srtms_no'),
+                'srtgs_tbr' => $this->input->post('srtgs_tbr'),
                 'srtgs_tmt' => $this->input->post('srtgs_tmt'),
 				'srtgs_tgl' => $tgl,
                 'srtgs_kmb' => $kmb,
@@ -289,23 +297,19 @@ class Surat_tugas extends CI_Controller{
     public function cetak($value='')
     {
         if($this->session->has_userdata('status')){
-            //if ($this->session->userdata('level')!='Pejabat Lelang'||$this->session->userdata('level')!='Pelaksana') {
-                $data['logo'] = site_url('resources/img/logo.png');
-                $data['judul']="SURAT TUGAS";
-                $data['surat_tugas']= $this->M_surattugas->get_surattugas_by_join($value);
-                //var_dump(  $data['surat_tugas']);
-                if (isset($data['surat_tugas'])) {
-                    $data['pengikut_tugas']= $this->M_pengikuttgs->get_pengikut_tgs_by_no_join($data['surat_tugas']['srtgs_no']);
-                    $data['nama_file']  = 'Surat tugas '.$this->loader->konversi_tanggal($data['surat_tugas']['srtgs_tgl']);
-                    $data['kepala_kantor'] = $this->M_pegawai->search_pegawai('Kepala Kantor');
-                    $data['tembusan'] = $this->M_pegawai->search_pegawai('Kepala Sub Bagian Umum');
-                    $this->loader->cetak('P',$data);
-                }else{
-                    redirect('surat_tugas');
-                }
-/*            }else{
-                redirect('login');
-            }*/
+            $data['logo'] = "";
+            $data['judul']="SURAT TUGAS";
+            $data['surat_tugas']= $this->M_surattugas->get_surattugas_by_join($value);
+            //var_dump(  $data['surat_tugas']);
+            if (isset($data['surat_tugas'])) {
+                $data['pengikut_tugas']= $this->M_pengikuttgs->get_pengikut_tgs_by_no_join($data['surat_tugas']['srtgs_no']);
+                $data['nama_file']  = 'Surat tugas '.$this->loader->konversi_tanggal($data['surat_tugas']['srtgs_tgl']);
+                $data['kepala_kantor'] = $this->M_pegawai->search_pegawai('Kepala Kantor');
+                $data['tembusan'] = $this->M_pegawai->search_pegawai('Kepala Sub Bagian Umum');
+                $this->loader->cetak('P',$data);
+            }else{
+                redirect('surat_tugas');
+            }
         }else{
             redirect('login');
         }

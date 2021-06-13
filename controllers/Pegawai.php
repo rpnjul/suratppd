@@ -16,13 +16,13 @@ class Pegawai extends CI_Controller{
         $uri = $this->uri->segment(1);
         $uri2 = $this->uri->segment(2);
         //var_dump($uri);
-        // if (!$this->session->has_userdata('status')) {
-        //     if ( $uri != 'register' & $uri != 'forgot' & $uri2 != 'lupa_sandi') {
-        //         $data['_view'] = 'v_home/index';
-        //         $data['_landing'] = true;
-        //         $this->load->view('layouts/content',$data);
-        //     }
-        // }
+        if (!$this->session->has_userdata('status')) {
+            // if ( $uri != 'register' & $uri != 'forgot' & $uri2 != 'lupa_sandi') {
+            //     $data['_view'] = 'v_home/index';
+            //     $data['_landing'] = true;
+            //     $this->load->view('layouts/content',$data);
+            // }
+        }
 
        // error_reporting(0);
     } 
@@ -156,7 +156,6 @@ class Pegawai extends CI_Controller{
             $result = $this->M_pegawai->search_pegawai_pejabat_lelang($_GET['term']);
             if (count($result) > 0) {
                 foreach ($result as $row)
-                    //$arr_result[] = $row->pgw_nip.' - '.$row->pgw_nm.' ('.$row->pgw_jab.') ' ;
                     $arr_result[] = array(
                             'label'         => $row->pgw_nip,
                             'description'   => $row->pgw_nm,
@@ -542,71 +541,55 @@ class Pegawai extends CI_Controller{
 
     public function login()
     {
-        if ($this->M_pegawai->cek_kepala()>0) {
-            // echo 'Kepala Found';
-            // die();
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules('u_email','Email atau NIP','required');
-            $this->form_validation->set_rules('u_password','Password','required');
-            if ($this->form_validation->run()) {
-                // echo 'Form Dijalankan';
-                // die();
-                $email = $this->input->post('u_email');
-                $password = $this->input->post('u_password');
-                $data['user'] = $this->M_pegawai->get_login($email,$password);
-                if (!isset($data['user']['pgw_id'])) {
-                    return $this->output
-                        ->set_content_type('application/json')
-                        ->set_status_header(200)
-                        ->set_output(json_encode(array(
-                                'code' => 205,
-                                'class' => '-danger',
-                                'desc' => 'Email/NIP atau Katasandi anda salah! silahkan coba lagi'
-                        )));
-                }
-                $data['pegawai'] = $this->M_pegawai->get_pegawai_by_nip($data['user']['pgw_nip']);
-                if($data['pegawai']['pgw_sts']==0){
-                    echo 'Status anda 0';
-                    die();
-                    return $this->output
-                    ->set_content_type('application/json')
-                    ->set_status_header(200)
-                    ->set_output(json_encode(array(
-                            'code' => 400,
-                            'class' => '-danger',
-                            'desc' => 'Tidak dapat mengakses dengan status non aktif'
-                    )));	
-                }
-                $login = array(
-                    'id_login' => $data['user']['pgw_id'],
-                    'nip' => $data['user']['pgw_nip'],
-                    'nama' => $data['user']['pgw_nm'],
-                    'email' => $data['user']['pgw_eml'],
-                    'level' => $data['user']['pgw_jab'],
-                    'sts' => $data['pegawai']['pgw_sts'],
-                    'status' => "login"
-                    );
-                $this->session->set_userdata($login);
-                return $this->output
-                ->set_content_type('application/json')
-                ->set_status_header(200)
-                ->set_output(json_encode(array(
-                        'code' => 200,
-                        'class' => '-success',
-                        'desc' => 'Anda Berhasil Login!'
-                )));
-            }else{
-                if(!$this->session->has_userdata('status')){
+        // $code = ['status' => 400, 'desc' => Bad Method Gateway];
+        // return json_encode($code);
+        if ($this->session->has_userdata('status')) {
+			if($this->session->userdata('sts')==0){
+				echo '<script>alert("Tidak dapat mengkases dengan status non aktif");</script>';	
+                $this->session->sess_destroy();
+                $response = ['code' => 401, 'desc' => 'Akun anda berstatus non aktif, Silahkan hubungi bagian IT', 'class'=>'-danger'];
+			}else{
+            	redirect('dash');
+			}
+        }else{
+            if ($this->M_pegawai->cek_kepala()>0) {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('u_email','Email atau NIP','required');
+                $this->form_validation->set_rules('u_password','Password','required');
+                if ($this->form_validation->run()) {
+                    $email = $this->input->post('u_email');
+                    $password = $this->input->post('u_password');
+                    $data['user'] = $this->M_pegawai->get_login($email,$password);
+                    if (isset($data['user']['pgw_id'])) {
+                        $data['pegawai'] = $this->M_pegawai->get_pegawai_by_nip($data['user']['pgw_nip']);
+                        $login = array(
+                            'id_login' => $data['user']['pgw_id'],
+                            'nip' => $data['user']['pgw_nip'],
+                            'nama' => $data['user']['pgw_nm'],
+                            'email' => $data['user']['pgw_eml'],
+                            'level' => $data['user']['pgw_jab'],
+                            'sts' => $data['pegawai']['pgw_sts'],
+                            'status' => "login"
+                            );
+                        $this->session->set_userdata($login);
+                        $response = ['code'=>200 ,'desc'=>'Berhasil! Anda Akan Dialihkan Ke Dashboard', 'class'=>'-success'];
+                        // $this->login();
+                        }else{
+                            $response = ['code'=>202 ,'desc'=>'Email/NIP atau Kata sandi salah!','class'=>'-danger'];
+                        }
+                }else{
                     $data['_view'] = 'v_home/index';
                     $data['_landing'] = true;
-                    $this->load->view('layouts/content',$data);   
-                }else{
-                    redirect('dash');
-                }
-            }    
-        }else{
-            redirect('register/head-office','refresh');
+                    return $this->load->view('layouts/content',$data);
+                    
+                }    
+            }else{
+                redirect('register/head-office','refresh');
+            }
         }
+        return $this->output->set_content_type('application/json')
+                            ->set_status_header(200)
+                            ->set_output(json_encode($response));
        
     }
 

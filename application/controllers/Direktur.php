@@ -17,12 +17,12 @@ class Direktur extends CI_Controller{
         $uri2 = $this->uri->segment(2);
         //var_dump($uri);
         if (!$this->session->has_userdata('status')) {
-           
-                if ( $uri != 'daftar' & $uri != 'forgot' & $uri2 != 'lupa_sandi') {
-                    $data['_view'] = 'v_home/index';
-                    $data['_landing'] = true;
-                    $this->load->view('layouts/content',$data);
-                }
+            if ($uri2 != 'login') {
+                // $data['_view'] = 'v_home/index';
+                // $data['_landing'] = true;
+                // $this->load->view('layouts/content',$data);
+                redirect('login');
+            }
             
         }else{
           
@@ -1411,43 +1411,52 @@ class Direktur extends CI_Controller{
 
     public function login()
     {
-        if ($this->session->has_userdata('status')) {
-            if($this->session->userdata('sts')==0){
-                echo '<script>alert("Tidak dapat mengkases dengan status non aktif");</script>';    
-                //sleep(3);
-                $this->session->sess_destroy();     
-                //redirect('login');
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('u_email','Email atau NIP','required');
+        $this->form_validation->set_rules('u_password','Password','required');
+        if ($this->form_validation->run()) {
+            $email = $this->input->post('u_email');
+            $password = $this->input->post('u_password');
+            $data['user'] = $this->M_direktur->get_login($email,$password);
+            if (isset($data['user']['direktur_id'])) {
+                $data['direktur'] = $this->M_direktur->get_direktur_by_no($data['user']['direktur_no']);
+                $login = array(
+                    'id_login' => $data['user']['direktur_id'],
+                    'nip' => $data['user']['direktur_no'],
+                    'nama' => $data['user']['direktur_nm'],
+                    'email' => $data['user']['direktur_eml'],
+                    'level' => 'Direktur',
+                    'sts' => $data['direktur']['direktur_sts'],
+                    'status' => "login"
+                );
+                $this->session->set_userdata($login);
+                return $this->output
+                    ->set_content_type('application/json')
+                    ->set_status_header(200)
+                    ->set_output(json_encode(array(
+                            'code' => 200,
+                            'class' => '-success',
+                            'desc' => 'Anda Berhasil Login!'
+                    )));
+            }else{
+                return $this->output
+                    ->set_content_type('application/json')
+                    ->set_status_header(200)
+                    ->set_output(json_encode(array(
+                            'code' => 205,
+                            'class' => '-danger',
+                            'desc' => 'Email/NIP atau Katasandi anda salah! silahkan coba lagi'
+                    )));
+            }
+        }else{
+            if(!$this->session->has_userdata('status')){
+                $data['_view'] = 'v_direktur/login';
+                $data['_landing'] = true;
+                $this->load->view('layouts/content',$data);   
             }else{
                 redirect('dash');
             }
-        }else{
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules('u_email','Email atau NIP','required');
-            $this->form_validation->set_rules('u_password','Password','required');
-            if ($this->form_validation->run()) {
-                $email = $this->input->post('u_email');
-                $password = $this->input->post('u_password');
-                $data['user'] = $this->M_direktur->get_login($email,$password);
-                if (isset($data['user']['direktur_id'])) {
-                    $data['direktur'] = $this->M_direktur->get_direktur_by_nip($data['user']['direktur_nip']);
-                    $login = array(
-                        'id_login' => $data['user']['direktur_id'],
-                        'nip' => $data['user']['direktur_nip'],
-                        'nama' => $data['user']['direktur_nm'],
-                        'email' => $data['user']['direktur_eml'],
-                        'level' => $data['user']['direktur_jab'],
-                        'sts' => $data['direktur']['direktur_sts'],
-                        'status' => "login"
-                        );
-                    $this->session->set_userdata($login);
-                    $this->login();
-                    }else{
-                        redirect('login');
-                    }
-                }
-           
         }
-       
     }
 
     function logout(){

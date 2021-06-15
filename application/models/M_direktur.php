@@ -11,11 +11,10 @@ class M_direktur extends CI_Model
         parent::__construct();
     }
     
-
     function get_login($username,$usr_pass)
     {
-        $sql = "SELECT * FROM tb_direktur WHERE direktur_eml = ?  AND direktur_snd = ?";
-        return $this->db->query($sql, array($username, $usr_pass))->result_array();
+        $sql = "SELECT * FROM tb_direktur WHERE (direktur_eml = ? OR direktur_no = ?)  AND direktur_snd = ?";
+        return $this->db->query($sql, array($username, $username, $usr_pass))->row_array();
     }
     
     /*

@@ -84,7 +84,7 @@ class Surat_masuk extends CI_Controller{
     }
 
     function cetak($value){
-        if($this->session->has_userdata('status') && $this->session->userdata('level')!='Pejabat Lelang'){
+        if($this->session->has_userdata('status') && $this->session->userdata('level')!='Kepala Kantor'){
             //if ($this->session->userdata('level')=='Admin') {
                 $data['surat_masuk']= $this->M_suratmasuk->get_suratmasuk_by_join($value);
                 //$data['surat_masuk']['pgw_nip']= $this->M_pegawai->get_pegawai_by_nip($data['surat_masuk']['pgw_nip']);

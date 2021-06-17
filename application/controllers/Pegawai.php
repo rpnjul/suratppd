@@ -142,7 +142,7 @@ class Pegawai extends CI_Controller{
 
     function cetak(){
         if ($this->session->has_userdata('status')) {
-            $data['logo'] = site_url('resources/img/logo.png');
+            $data['logo'] = '';
             $data['judul'] = "DATA PEGAWAI";
             $data['pegawai'] = $this->M_pegawai->get_all_pegawai_result();
             $this->loader->cetak('L',$data);

@@ -8,8 +8,8 @@
         <h4>Data Pegawai</h4>
         <div class="card-header-action">
           <?php if ($level=='Admin'||$level=='Kepala Kantor'): ?>
-            <a href="pegawai/add" class="btn btn-success">Tambah</a>
-            <a href="pegawai/cetak" class="btn btn-light">Cetak</a>
+            <a href="<?php echo base_url();?>/pegawai/add" class="btn btn-success">Tambah</a>
+            <a href="<?php echo base_url();?>/pegawai/cetak" class="btn btn-light">Cetak</a>
           <?php else: ?>
           <?php endif ?>
         </div>

@@ -640,7 +640,7 @@ function ParseTable($Table)
              $this->SetY(0);
              $this->SetFont('Arial','I','9');
              $this->Cell(0,10,$this->PageNo().' /{nb}',0,0,'R');
-		}elseif (isset($data['pegawai'])) {
+		}elseif(isset($data['pegawai'])) {
 			$this->Ln(8);
 			$this->Cell(10);
 			$this->SetFont('TImes','B','9');
@@ -655,17 +655,17 @@ function ParseTable($Table)
 			$this->Cell(48,6,"Jabatan",1,1,'C',true);
 			$this->SetTextColor(0, 0, 0);
 			$this->SetFont('Arial','','9');
-			foreach ($data['pengikut_tugas'] as $num => $row){
-				 $tgl=$this->konversi_tanggal($row->pgw_tll);
-				 $this->Cell(10);
-				 $this->Cell(10,6,++$num,1,0,'C');
-			     $this->Cell(28,6,$row->pgw_nip,1,0);
-			     $this->Cell(53,6,$row->pgw_nm,1,0);
-			     $this->Cell(30,6,$row->pgw_jnk,1,0);
-			     $this->Cell(44,6,$row->pgw_tlh.', '.$tgl,1,0); 
-			     $this->Cell(44,6,$row->pgw_gpt,1,0); 
-			     $this->Cell(48,6,$row->pgw_jab,1,1); 
-			 }
+            foreach ($data['pegawai'] as $num => $row){
+                $tgl=$this->konversi_tanggal($row->pgw_tll);
+                $this->Cell(10);
+                $this->Cell(10,6,++$num,1,0,'C');
+                $this->Cell(28,6,$row->pgw_nip,1,0);
+                $this->Cell(53,6,$row->pgw_nm,1,0);
+                $this->Cell(30,6,$row->pgw_jnk,1,0);
+                $this->Cell(44,6,$row->pgw_tlh.', '.$tgl,1,0); 
+                $this->Cell(44,6,$row->pgw_gpt,1,0); 
+                $this->Cell(48,6,$row->pgw_jab,1,1); 
+            }
 			 $this->SetY(0);
 			 $this->SetFont('Arial','I','9');
 			 $this->Cell(0,10,$this->PageNo().' /{nb}',0,0,'R');

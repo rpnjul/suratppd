@@ -132,7 +132,7 @@ class Surat_tugas extends CI_Controller{
     function add()
     {   
 
-        if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Kepala Sub Bagian Umum' | $this->session->userdata('level')=='Admin' | $this->session->userdata('level')=='Pegawai')) {
+        if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Direktur' | $this->session->userdata('level')=='Kepala Sub Bagian Umum' | $this->session->userdata('level')=='Admin' | $this->session->userdata('level')=='Pegawai')) {
         $this->load->library('form_validation');
 
 		//$this->form_validation->set_rules('srtgs_no','Nomor Surat Tugas','required|is_unique[`tb_srtgs`.srtgs_no]|max_length[30]');
@@ -141,6 +141,7 @@ class Surat_tugas extends CI_Controller{
         $this->form_validation->set_rules('srtms_no','Ref. Surat masuk','required|callback_cek_suratmasuk|is_unique[tb_srtgs.srtms_no]');
 		$this->form_validation->set_rules('pgw_nip','Pegawai','required|callback_cek_nip');
         $this->form_validation->set_rules('srtgs_tmt','Tempat bertugas','required');
+        $this->form_validation->set_rules('srtgs_tbr','Tempat Berangkat','required');
 		$this->rules();
         if($this->form_validation->run())     
         {   
@@ -288,7 +289,7 @@ class Surat_tugas extends CI_Controller{
 
     public function cetak($value='')
     {
-        if($this->session->has_userdata('status')){
+        if($this->session->has_userdata('status') && ($this->session->userdata('level')=='Kepala Kantor')){
             //if ($this->session->userdata('level')!='Pejabat Lelang'||$this->session->userdata('level')!='Pelaksana') {
                 $data['logo'] = site_url('resources/img/logo.png');
                 $data['judul']="SURAT TUGAS";

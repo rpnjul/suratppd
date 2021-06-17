@@ -138,7 +138,7 @@
 						</div>
 					</div>
 				</div>
-				<!-- <hr>
+				<hr>
 				<div class="row clearfix">
 					<div class="col-12">
 						<h6>Dokumen Pendukung</h6>
@@ -148,30 +148,30 @@
 							<div class="col-md-3 col-sm-6">
 								<div class="form-group">
 									<label for="#dok1" class="control-label">Dokumen Pendukung 1</label>
-									<input type="file"  class="form-control-file" id="dok1" name="files[0]" accept=".pdf, .jpe, .jpg, .jpeg .png, .bmp, .svg, .svgz">
+									<input type="file"  class="form-control-file" id="dok1" name="files[]" accept=".pdf, .jpe, .jpg, .jpeg .png, .bmp, .svg, .svgz">
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-6">
 								<div class="form-group">
 									<label for="#dok2" class="control-label"> Dokumen Pendukung 2</label>
-									<input type="file"  class="form-control-file" id="dok2" name="files[1]" accept=".pdf, .jpe, .jpg, .jpeg .png, .bmp, .svg, .svgz">
+									<input type="file"  class="form-control-file" id="dok2" name="files[]" accept=".pdf, .jpe, .jpg, .jpeg .png, .bmp, .svg, .svgz">
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-6">
 								<div class="form-group">
 									<label for="#dok3" class="control-label"> Dokumen Pendukung 3</label>
-									<input type="file"  class="form-control-file" id="dok3" name="files[2]" accept=".pdf, .jpe, .jpg, .jpeg .png, .bmp, .svg, .svgz">
+									<input type="file"  class="form-control-file" id="dok3" name="files[]" accept=".pdf, .jpe, .jpg, .jpeg .png, .bmp, .svg, .svgz">
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-6">
 								<div class="form-group">
 									<label for="#dok4" class="control-label"> Dokumen Pendukung 4</label>
-									<input type="file"  class="form-control-file" id="dok4" name="files[3]" accept=".pdf, .jpe, .jpg, .jpeg .png, .bmp, .svg, .svgz">
+									<input type="file"  class="form-control-file" id="dok4" name="files[]" accept=".pdf, .jpe, .jpg, .jpeg .png, .bmp, .svg, .svgz">
 								</div>
 							</div>
 						</div>
 					</div>
-				</div> -->
+				</div>
 			</div>
           	<div class="card-footer">
             	<button type="submit" class="btn btn-success">

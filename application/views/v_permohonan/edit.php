@@ -66,26 +66,27 @@
 							<div class="row">
 								<div class="col-md-3 col-sm-6">
 									<div class="form-group">
+										<input type="hidden" value="<?php echo $pnext['psllmp_id'] ?>">
 										<label for="#dok1" class="control-label"><span class="text-danger">*</span> Ubah Dokumen Pendukung 1</label>
-										<input type="file" class="form-control-file" id="dok1" name="files[0]" accept=".jpg, .png, .jpeg, .bmp">
+										<input type="file" class="form-control-file" id="dok1" name="files[]" accept=".pdf" value="<?php echo $pnext['psllmp_dok1'] ?>">
 									</div>
 								</div>
 								<div class="col-md-3 col-sm-6">
 									<div class="form-group">
 										<label for="#dok2" class="control-label"><span class="text-danger">*</span> Ubah Dokumen Pendukung 2</label>
-										<input type="file" class="form-control-file" id="dok2" name="files[1]" accept=".jpg, .png, .jpeg, .bmp">
+										<input type="file" class="form-control-file" id="dok2" name="files[]" accept=".pdf" value="<?php echo $pnext['psllmp_dok2'] ?>">
 									</div>
 								</div>
 								<div class="col-md-3 col-sm-6">
 									<div class="form-group">
 										<label for="#dok3" class="control-label"><span class="text-danger">*</span> Ubah Dokumen Pendukung 3</label>
-										<input type="file" class="form-control-file" id="dok3" name="files[2]" accept=".jpg, .png, .jpeg, .bmp">
+										<input type="file" class="form-control-file" id="dok3" name="files[]" accept=".pdf" value="<?php echo $pnext['psllmp_dok3'] ?>">
 									</div>
 								</div>
 								<div class="col-md-3 col-sm-6">
 									<div class="form-group">
 										<label for="#dok4" class="control-label"><span class="text-danger">*</span> Ubah Dokumen Pendukung 4</label>
-										<input type="file" class="form-control-file" id="dok4" name="files[3]" accept=".jpg, .png, .jpeg, .bmp">
+										<input type="file" class="form-control-file" id="dok4" name="files[]" accept=".pdf" value="<?php echo $pnext['psllmp_dok4'] ?>">
 									</div>
 								</div>
 							</div>

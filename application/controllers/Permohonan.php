@@ -410,7 +410,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 }
 		    public function remove()
 		    {
-		    	if ($this->session->has_userdata('status') & $this->session->userdata('level')=='Kepala Kantor') {
+		    	if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Admin' || $this->session->userdata('level')=='Kepala Kantor' || $this->session->userdata('level')=='Direktur')) {
 	    			$id = $this->input->post('id');
 	    		    $data= $this->M_permohonan->get_permohonan($id);
 	    		    if(isset($data['psl_id']))
@@ -561,7 +561,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 
     function cetak($value)
     {
-        if($this->session->has_userdata('status') && $this->session->userdata('level')!='Pejabat Lelang'){
+        if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Admin' || $this->session->userdata('level')=='Kepala Kantor' || $this->session->userdata('level')=='Direktur')) {
             //if ($this->session->userdata('level')=='Admin') {
                 $data['permohonan']= $this->M_permohonan->get_permohonan_by_join($value);
                 //$data['surat_masuk']['pgw_nip']= $this->M_pegawai->get_pegawai_by_nip($data['surat_masuk']['pgw_nip']);
@@ -606,15 +606,14 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 				);
 				$id = $this->M_permohonan->add_permohonan($object);
 				if (!empty($id)) {
-								$q = $this->db->query("
-					SELECT `AUTO_INCREMENT`+1 as n
-					FROM  INFORMATION_SCHEMA.TABLES
-					WHERE TABLE_SCHEMA = DATABASE()
-					AND   TABLE_NAME   = 'tb_psllmp';")->row();
+					$q = $this->db->query("
+						SELECT `AUTO_INCREMENT`+1 as n
+						FROM  INFORMATION_SCHEMA.TABLES
+						WHERE TABLE_SCHEMA = DATABASE()
+						AND   TABLE_NAME   = 'tb_psllmp';")->row();
 					$data = [];
 					$count = count($_FILES['files']['name']);
 					for($i=0;$i<$count;$i++){
-					
 					if(!empty($_FILES['files']['name'][$i])){
 					
 						$_FILES['file']['name'] = $_FILES['files']['name'][$i];
@@ -623,12 +622,12 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 						$_FILES['file']['error'] = $_FILES['files']['error'][$i];
 						$_FILES['file']['size'] = $_FILES['files']['size'][$i];
 						$config['upload_path'] = 'upload/'; 
-						$config['allowed_types'] = 'pdf';
+						$config['allowed_types'] = 'pdf|gif|jpg|png';
 						$config['max_size'] = '5000'; // max_size in kb
 						//$config['file_name'] = $_FILES['files']['name'][$i];
 						$tmp = explode('.', $_FILES['files']['name'][$i]);
 						$file_ext = end($tmp);
-						$config['file_name'] = $q->n.'_'.$id.'_'.strtotime(date('Y-m-d H:i:s')).'.'.$file_ext;
+						$config['file_name'] = 'Permohonan'.$q->n.'_'.$id.'_'.strtotime(date('Y-m-d H:i:s')).'.'.$file_ext;
 						$this->load->library('upload',$config); 
 						//var_dump($_FILES['file']['name']);
 
@@ -655,9 +654,9 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 						'psllmp_dok3'=>$file_encode[2]??NULL,
 						'psllmp_dok4'=>$file_encode[3]??NULL
 					);
-					// if ($this->db->insert('tb_psllmp', $object)) {
-					// 	redirect('permohonan');
-					// }
+					if ($this->db->insert('tb_psllmp', $object)) {
+						redirect('permohonan');
+					}
 					
 				}
 				redirect('permohonan');
@@ -820,6 +819,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 	{
 		if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Admin' | $this->session->userdata('level')=='Kepala Kantor')) {
 				$data['permohonan'] = $this->M_permohonan->get_permohonan($psl_id);
+				$data['pnext'] = $this->M_permohonan->get_permohonan_by_join($data['permohonan']['psl_id']);
 				$data['_view'] = 'v_permohonan/edit';
 				$data['_landing'] = false;
 				$data['dok'] = $this->M_permohonan->get_lampiran($psl_id);

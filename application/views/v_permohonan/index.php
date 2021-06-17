@@ -58,8 +58,8 @@
                 <td><?php echo (strlen($P['psl_prh'])>30 ? substr($P['psl_prh'], 0,28).'...' : $P['psl_prh']); ?></td>
                 <td id="psl-sts-<?php echo $P['psl_id'] ?>"><?php echo ($P['psl_sts']==0?'Belum Disetujui':'Telah Disetujui'); ?></td>
                 <td>
-                  <?php if ($level=='Direktur'): ?>
-                    <a class="btn btn-sm btn-primary btn-action mr-1" href="<?php echo site_url('permohonan/cetak/'.$P['psl_id']) ?>"><i class="fas fa-print"></i></a>
+                  <?php if ($level=='Direktur' || $level = 'Admin'): ?>
+                    <!-- <a class="btn btn-sm btn-primary btn-action mr-1" href="<?php echo site_url('permohonan/cetak/'.$P['psl_id']) ?>"><i class="fas fa-print"></i></a> -->
                     <a class="btn btn-sm btn-success btn-action mr-1" href="<?php echo site_url('permohonan/edit/'.$P['psl_id']) ?>"><i class="fas fa-pencil-alt"></i></a>
                     <a class="btn btn-sm btn-info btn-action mr-1" href="<?php echo site_url('permohonan/info/'.$P['psl_id']) ?>"><i class="fas fa-info"></i></a>
                   <?php endif ?>

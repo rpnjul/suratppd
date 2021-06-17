@@ -12,7 +12,7 @@
 	          </div>
 	        </div>
 	        <div class="card-body">
-	            <form method='post' action='<?php echo site_url('permohonan/upload') ?>' enctype='multipart/form-data'>
+	            <form method='post' action='<?php echo site_url('permohonan/upload') ?>' enctype="multipart/form-data">
 	          		<div class="row clearfix">
 	          			<div class="col-12 ">
 	          				<div class="row">
@@ -67,25 +67,25 @@
 								<div class="col-md-3 col-sm-6">
 									<div class="form-group">
 										<label for="#dok1" class="control-label">Dokumen Tambahan</label>
-										<input type="file"  class="form-control-file" id="dok1" name="files[0]" accept=".pdf">
+										<input type="file"  class="form-control-file" id="dok1" name="files[]" accept=".pdf">
 									</div>
 								</div>
 								<div class="col-md-3 col-sm-6">
 									<div class="form-group">
 										<label for="#dok2" class="control-label"> Dokumen Tambahan 2</label>
-										<input type="file"  class="form-control-file" id="dok2" name="files[1]" accept=".pdf">
+										<input type="file"  class="form-control-file" id="dok2" name="files[]" accept=".pdf">
 									</div>
 								</div>
 								<div class="col-md-3 col-sm-6">
 									<div class="form-group">
 										<label for="#dok3" class="control-label"> Dokumen Tambahan 3</label>
-										<input type="file"  class="form-control-file" id="dok3" name="files[2]" accept=".pdf">
+										<input type="file"  class="form-control-file" id="dok3" name="files[]" accept=".pdf">
 									</div>
 								</div>
 								<div class="col-md-3 col-sm-6">
 									<div class="form-group">
 										<label for="#dok4" class="control-label"> Dokumen Tambahan 4</label>
-										<input type="file"  class="form-control-file" id="dok4" name="files[3]" accept=".pdf">
+										<input type="file"  class="form-control-file" id="dok4" name="files[]" accept=".pdf">
 									</div>
 								</div>
 							</div>

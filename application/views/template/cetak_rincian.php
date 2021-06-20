@@ -210,8 +210,8 @@ body{
 			<tr>
 				<td></td>
 				<td align="center"><b>JUMLAH</b></td>
-				<td><?php echo $this->loader->rupiah($detail['total']); ?></td>
-				<td></td>
+				<td><?php echo $this->loader->rupiah($total); ?></td>
+				<td><?php echo $terbilang; ?></td>
 			</tr>
 		</tfoot>
 	</table><br>
@@ -219,7 +219,7 @@ body{
 		<thead>
 			<tr>
 				<th align="left" width="60%"></th>
-				<th align="left">Jakarta,</th>
+				<th align="left">Jakarta, <?php echo $this->loader->konversi_tanggal($st['srtgs_tgl']); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -240,8 +240,16 @@ body{
 				<td align="left"></td>
 			</tr>
 			<tr>
-				<td align="left">Paidin<br>
-				NIP : 10101010101010
+				<td align="left"></td>
+				<td align="left"></td>
+			</tr>
+			<tr>
+				<td align="left"></td>
+				<td align="left"></td>
+			</tr>
+			<tr>
+				<td align="left">Ahmad Rohmad<br>
+				NIP : 195845524853454
 				</td>
 				<td align="left"><?php echo ($st['pgw_nm']); ?><br>
 				NIP : <?php echo ($st['pgw_nip']); ?></td>

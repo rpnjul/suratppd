@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-header">
                 <h4>Data Rincian Perjalanan</h4>
-                <?php if ($level=='Kepala Sub Bagian Umum' || $level=='Admin' || $level=='Pegawai' || $level=='Direktur'): ?>
+                <?php if ($level=='Kepala Sub Bagian Umum' || $level=='Admin' || $level=='Direktur'): ?>
                   <div class="card-header-action">
                     <a href="<?php echo site_url('rincian/add'); ?>" class="btn btn-success btn-sm">Tambah</a> 
                   </div>
@@ -47,10 +47,8 @@
         </div>
     </div>
 </div>
-<?php if ($level=='Kepala Sub Bagian Umum'): ?>
-    <script>
-
-
+<?php if (isset($value['pgw_nip']) && $nip==$value['pgw_nip']): ?>
+<script>
 function deleterincian(a) {
     swal({ 
         title: "Anda Yakin?", 

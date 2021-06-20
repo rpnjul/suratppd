@@ -75,13 +75,7 @@ class Surat_tugas extends CI_Controller{
                // echo $res->urut.'<br>';
                 //echo substr($tgl, 1,4);
                 if (isset($res->urut)) {
-                    //$urut = intval($res->urut);
                     $urut = intval($res->urut);
-    /*                echo $urut.'<br>';
-                    echo $bln.'<br>';
-                    echo $thn.'<br>';
-                    echo substr($tgl, 1,2).'<br>';
-                    echo substr($tgl, 4,4).'<br>';*/
                     if (substr($tgl, 1,4)==$res->urut_tahun) { ## tahun
                         if ($urut >= 999) {
                                 $urut+=0;
@@ -96,7 +90,7 @@ class Surat_tugas extends CI_Controller{
                 }
                 $str_length = strlen($urut);
                 $dig = substr("000{$urut}", $str_length);
-                return 'ST-'.$dig.'/WKN.08'.$tgl;
+                return $dig.'/DJPB/SPT.S2/VII'.$tgl;
         }
 
     public function cek_nip($nip){
@@ -289,27 +283,24 @@ class Surat_tugas extends CI_Controller{
 
     public function cetak($value='')
     {
-        if($this->session->has_userdata('status') && ($this->session->userdata('level')=='Kepala Kantor')){
             //if ($this->session->userdata('level')!='Pejabat Lelang'||$this->session->userdata('level')!='Pelaksana') {
                 $data['logo'] = site_url('resources/img/logo.png');
                 $data['judul']="SURAT TUGAS";
                 $data['surat_tugas']= $this->M_surattugas->get_surattugas_by_join($value);
-                //var_dump(  $data['surat_tugas']);
+                // var_dump($data['surat_tugas']);
                 if (isset($data['surat_tugas'])) {
                     $data['pengikut_tugas']= $this->M_pengikuttgs->get_pengikut_tgs_by_no_join($data['surat_tugas']['srtgs_no']);
                     $data['nama_file']  = 'Surat tugas '.$this->loader->konversi_tanggal($data['surat_tugas']['srtgs_tgl']);
                     $data['kepala_kantor'] = $this->M_pegawai->search_pegawai('Kepala Kantor');
                     $data['tembusan'] = $this->M_pegawai->search_pegawai('Kepala Sub Bagian Umum');
-                    $this->loader->cetak('P',$data);
+                    // $this->loader->cetak('P',$data);
+
+                    $data['pdf'] = $this->load->library('PDFGenerator');
+                    $html = $this->load->view('template/cetak_surattugas',$data, TRUE);
+                    $this->pdfgenerator->generate($html,$data['nama_file']);
                 }else{
                     redirect('surat_tugas');
                 }
-/*            }else{
-                redirect('login');
-            }*/
-        }else{
-            redirect('login');
-        }
     }
     
 }

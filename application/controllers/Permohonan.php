@@ -8,7 +8,7 @@ class Permohonan extends CI_Controller {
 		parent::__construct();
 		if ($this->session->has_userdata('status')) {
 			$this->load->model('M_permohonan');
-			$this->load->model('M_Direktur');
+			$this->load->model('M_direktur');
 			$this->load->library('Loader');
 			$this->load->helper('url');
 			$this->load->library('PDFGenerator');
@@ -551,7 +551,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 
 
     public function cek_direktur($cek_direktur){
-    	$cek = $this->M_Direktur->get_direktur_by_no($cek_direktur);
+    	$cek = $this->M_direktur->get_direktur_by_no($cek_direktur);
     	if  (isset($cek['direktur_id'])) {
     		return true;
     	}else{
@@ -784,7 +784,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 			$data['_landing'] = false;
 			$data['permohonan'] = $this->M_permohonan->get_permohonan($psl_id);
 			if ($this->input->get('direktur')) {
-				$res=$this->M_Direktur->get_direktur($this->input->get('direktur'));
+				$res=$this->M_direktur->get_direktur($this->input->get('direktur'));
 				$data['direktur'] = $res;
 			}
 			$data['judul'] = "Data Permohonan Sidang";
@@ -804,7 +804,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 				$data['_landing'] = false;
 				$data['kode'] = $this->kodeotomatis();
 				if ($this->input->get('direktur')) {
-					$res = $this->M_Direktur->get_direktur($this->input->get('direktur'));
+					$res = $this->M_irektur->get_direktur($this->input->get('direktur'));
 					$data['direktur'] = $res;
 				}
 				$data['judul'] = "Data Permohonan Perjalanan Dinas";

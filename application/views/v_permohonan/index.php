@@ -33,7 +33,6 @@
               </button>
           </div>
         <?php else: ?>
-
         <?php endif ?>
         <div class="">
           <table class="table table-striped" id="tableData">
@@ -45,7 +44,9 @@
                 <th>Tanggal</th>
                 <th>Perihal</th>
                 <th>Status</th>
+                <?php if ($level=='Direktur' OR $level == 'Admin' OR $level=='Kepala Kantor' OR $level=='Kepala Sub Bagian Umum' OR $level == 'Admin'): ?>
                 <th>Aksi</th>
+                <?php endif ?>
               </tr>
             </thead>
             <tbody>     
@@ -57,18 +58,27 @@
                 <td><?php echo $this->loader->konversi_tanggal($P['psl_tgl']); ?></td>
                 <td><?php echo (strlen($P['psl_prh'])>30 ? substr($P['psl_prh'], 0,28).'...' : $P['psl_prh']); ?></td>
                 <td id="psl-sts-<?php echo $P['psl_id'] ?>"><?php echo ($P['psl_sts']==0?'Belum Disetujui':'Telah Disetujui'); ?></td>
-                <td>
-                  <?php if ($level=='Direktur' || $level = 'Admin'): ?>
-                    <!-- <a class="btn btn-sm btn-primary btn-action mr-1" href="<?php echo site_url('permohonan/cetak/'.$P['psl_id']) ?>"><i class="fas fa-print"></i></a> -->
-                    <a class="btn btn-sm btn-success btn-action mr-1" href="<?php echo site_url('permohonan/edit/'.$P['psl_id']) ?>"><i class="fas fa-pencil-alt"></i></a>
-                    <a class="btn btn-sm btn-info btn-action mr-1" href="<?php echo site_url('permohonan/info/'.$P['psl_id']) ?>"><i class="fas fa-info"></i></a>
+                
+                  <?php if ($level=='Direktur'): ?>
+                    <td>
+                      <a class="btn btn-sm btn-success btn-action mr-1" href="<?php echo site_url('permohonan/edit/'.$P['psl_id']) ?>"><i class="fas fa-pencil-alt"></i></a>
+                      <a class="btn btn-sm btn-info btn-action mr-1" href="<?php echo site_url('permohonan/info/'.$P['psl_id']) ?>"><i class="fas fa-info"></i></a>
+                    </td>
                   <?php endif ?>
-                  <!-- <a href="" class="btn btn-danger btn-action" ><i class="fas fa-trash"></i></a> -->                
-                <?php if ($level=='Kepala Kantor' || $level='Kepala Sub Bagian Umum' || $level = 'Admin'): ?>
+                <?php if ($level=='Kepala Kantor' OR $level=='Kepala Sub Bagian Umum'): ?>
+                  <td>
                      <a id="sts<?php echo $P['psl_id'] ?>" status="<?php echo($P['psl_sts']); ?>" class="btn-sts btn btn-sm <?php echo $P['psl_sts']==0 ? 'btn-success':'btn-danger' ?> btn-action"  ><i id="icon-sts-<?php echo ($P['psl_id'])?>" class="fas fa-<?php echo ($P['psl_sts']==0?'check':'power-off') ?>"></i></a>
                      <a id="remove<?php echo $P['psl_id'] ?>" onclick="return hapus(this)" class="btn btn-sm btn-danger btn-action"  ><i class="fas fa-trash ?>"></i></a>
-                <?php endif ?>
                 </td>
+                <?php endif ?>
+                <?php if ($level=='Admin'): ?>
+                  <td>
+                    <a class="btn btn-sm btn-success btn-action mr-1" href="<?php echo site_url('permohonan/edit/'.$P['psl_id']) ?>"><i class="fas fa-pencil-alt"></i></a>
+                    <a class="btn btn-sm btn-info btn-action mr-1" href="<?php echo site_url('permohonan/info/'.$P['psl_id']) ?>"><i class="fas fa-info"></i></a>
+                    <a id="sts<?php echo $P['psl_id'] ?>" status="<?php echo($P['psl_sts']); ?>" class="btn-sts btn btn-sm <?php echo $P['psl_sts']==0 ? 'btn-success':'btn-danger' ?> btn-action"  ><i id="icon-sts-<?php echo ($P['psl_id'])?>" class="fas fa-<?php echo ($P['psl_sts']==0?'check':'power-off') ?>"></i></a>
+                    <a id="remove<?php echo $P['psl_id'] ?>" onclick="return hapus(this)" class="btn btn-sm btn-danger btn-action"  ><i class="fas fa-trash ?>"></i></a>
+                </td>
+                <?php endif ?>
               </tr>
               <?php } ?>
             </tbody>

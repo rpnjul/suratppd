@@ -33,29 +33,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </tr>
                </thead>
                 <tbody>
-                    
-                    <?php foreach($surat_masuk as $i => $S){ ++$i; ?>
+                    <?php foreach($surat_masuk as $i => $S):  ?>
                     <tr id="srtms<?php echo $S['srtms_id'] ?>">
-                    <td><?php echo $S['srtms_no']; ?></td>
-                    <td><?php echo $S['srtms_sft']; ?></td>
-                    <td><?php echo $this->loader->konversi_tanggal($S['srtms_tgl']); ?></td>
-                    <td><?php echo (strlen($S['psl_prh'])>30?substr($S['psl_prh'], 0,30).'...':$S['psl_prh']); ?></td>
-                    <!-- <?php $direktur = $this->M_Direktur->get_direktur($S['direktur_id']); ?> -->
-                    <td><?php echo $S['direktur_nm']; ?></td>
-                    <td><?php echo $this->M_pegawai->get_pegawai_by_nip($S['pgw_nip'])['pgw_jab']; ?></td>
-                    <td>
-                        <div class="btn-group" role="group">
-                                <!-- <a type="button"href="<?php echo site_url('surat_masuk/cetak/'.$S['srtms_id']); ?>" class="btn btn-sm btn-primary btn-action mr-1"><span class="fas fa-print"></span></a>  -->
-                            <?php if ($level=='Kepala Kantor' | $level=='Admin'): ?>
-                                <a type="button" href="<?php echo site_url('surat_masuk/edit/'.$S['srtms_id']); ?>" class="btn btn-info btn-sm btn-action mr-1"><span class="fas fa-pencil-alt"></span></a> 
-                            <?php endif ?>
-                            <?php if ($level=='Kepala Kantor'): ?>
-                                <a type="button" id="sts<?php echo $S['srtms_id'] ?>" status="<?php echo($S['srtms_sts']); ?>" class="btn-sts btn btn-sm btn-danger btn-action" onclick="deletesrtms(<?php echo $S['srtms_id'] ?>)" ><i class="fas fa-trash"></i></a>    
-                            <?php endif ?>
-                        </div>
-                    </td>
+                        <td><?php echo $S['srtms_no']; ?></td>
+                        <td><?php echo $S['srtms_sft']; ?></td>
+                        <td><?php echo $this->loader->konversi_tanggal($S['srtms_tgl']); ?></td>
+                        <td><?php echo (strlen($S['psl_prh'])>30?substr($S['psl_prh'], 0,30).'...':$S['psl_prh']); ?></td>
+                        <td><?php echo $S['direktur_nm']; ?></td>
+                        <td><?php echo $this->M_pegawai->get_pegawai_by_nip($S['pgw_nip'])['pgw_jab']; ?></td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                    <!-- <a type="button"href="<?php echo site_url('surat_masuk/cetak/'.$S['srtms_id']); ?>" class="btn btn-sm btn-primary btn-action mr-1"><span class="fas fa-print"></span></a>  -->
+                                <?php if ($level=='Kepala Kantor' | $level=='Admin'): ?>
+                                    <a type="button" href="<?php echo site_url('surat_masuk/edit/'.$S['srtms_id']); ?>" class="btn btn-info btn-sm btn-action mr-1"><span class="fas fa-pencil-alt"></span></a> 
+                                <?php endif ?>
+                                <?php if ($level=='Kepala Kantor'): ?>
+                                    <a type="button" id="sts<?php echo $S['srtms_id'] ?>" status="<?php echo($S['srtms_sts']); ?>" class="btn-sts btn btn-sm btn-danger btn-action" onclick="deletesrtms(<?php echo $S['srtms_id'] ?>)" ><i class="fas fa-trash"></i></a>    
+                                <?php endif ?>
+                            </div>
+                        </td>
                     </tr>
-                <?php } ?>
+                <?php endforeach; ?>
                 </tbody>
             </table>                   
         </div>

@@ -2,6 +2,15 @@
     <div class="col-md-12">
       	<div class="card card-info">
       		<div class="card-header">
+			  <h4>Coming Soon</h4>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- <div class="row">
+    <div class="col-md-12">
+      	<div class="card card-info">
+      		<div class="card-header">
       		  <h4>Tambah Data Nota Dinas</h4>
       		  <div class="card-header-action">
       		      <a href="<?php echo base_url('nota_dinas') ?>" class="btn btn-sm btn-light"><span class="fas fa-chevron-left"></span> Kembali</a>
@@ -44,7 +53,7 @@
 					</div>
 				</div>
 				<div class="page-header">
-				  <h4>Pegawai yang menghadiri perkara sidang lanjutan : </h4>
+				  <h4>Pegawai yang melakukan Perjalanan Dinas : </h4>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
@@ -61,17 +70,13 @@
 							                	<input autocomplete="off" type="text" name="pgw_nip[]" placeholder="Masukan NIP" class="form-control" required="" />
 							                </td>  
 							                <td>
-							                	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Tanggal Sidang:</label>
-							                	<input autocomplete="off" type="text" name="pgwnds_tgl[]" placeholder="Tanggal sidang" class="form-control" required="" />
+							                	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Tanggal Perjalanan:</label>
+							                	<input autocomplete="off" type="text" name="pgwnds_tgl[]" placeholder="Tanggal Perjalanan" class="form-control" required="" />
 							                </td>  
 							                <td>
-							                	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Tempat Sidang :</label>
-							                	<input autocomplete="off" type="text" name="pgwnds_tmt[]" placeholder="Tempat sidang" class="form-control" required="" />
+							                	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Tempat Perjalanan :</label>
+							                	<input autocomplete="off" type="text" name="pgwnds_tmt[]" placeholder="Tempat Perjalanan" class="form-control" required="" />
 							                </td> 
-							            	<td>
-							            		<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>No. perkara &amp; acara :</label>
-							            		<input autocomplete="off" type="text" name="pgwnds_pkr[]" placeholder="Nomor perkara dan acara sidang" class="form-control" required="" />
-							            	</td>
 							            	<td>
 								            	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Keterangan :</label>
 								            	<div class="input-group">
@@ -168,4 +173,4 @@
 		  });
 		}); 
 	})
-</script>
+</script> -->

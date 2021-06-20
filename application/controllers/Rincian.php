@@ -52,6 +52,11 @@ class Rincian extends CI_Controller{
             $this->pagination->initialize($config);
 
             $data['daftar_rincian'] = $this->M_daftarrincian->get_all_daftar_rincian($params);
+            $data['daftar_rincian'] = array_map(function($val){
+                $val['detail'] = $this->M_detailrincian->get_daftar_rincian_by_rcn($val['rcn_id']);
+                $val['total'] = ($val['detail']['rnd_binap'] * $val['detail']['rnd_jmlinap']) + ($val['detail']['rnd_btrkt'] + $val['detail']['rnd_btrkt']) + ($val['detail']['rnd_sku'] * $val['detail']['rnd_jmlsaku']??1) + $val['detail']['rnd_btmbhn']??0;
+                return $val;
+            },$data['daftar_rincian']);
             $data['judul']='Daftar Rincian';
             $data['_view'] = 'v_daftar_rincian/index';
             $data['_landing'] = false;
@@ -77,14 +82,12 @@ class Rincian extends CI_Controller{
         }else{
             $this->load->library('form_validation');
 
-            $this->form_validation->set_rules('srtgs_no','Ref. Surat tugas','required|is_unique[tb_rcn.srtgs_no]|callback_cek_surattugas');
-            $this->form_validation->set_rules('rnd_binap','Biaya inap','required');
-            $this->form_validation->set_rules('rnd_jmlbinap','Hari inap','required');
-            $this->form_validation->set_rules('rnd_brkt','Biaya berangkat','required');
-            $this->form_validation->set_rules('rnd_bplg','Biaya pulang','required');
+            // $this->form_validation->set_rules('srtgs_no','Ref. Surat tugas','required|is_unique[tb_rcn.srtgs_no]|callback_cek_surattugas');
+            // $this->form_validation->set_rules('rnd_binap','Biaya inap','required');
+            // $this->form_validation->set_rules('rnd_jmlbinap','Hari inap','required');
+            // $this->form_validation->set_rules('rnd_brkt','Biaya berangkat','required');
+            // $this->form_validation->set_rules('rnd_bplg','Biaya pulang','required');
             $this->form_validation->set_rules('rnd_sku','Uang saku','required');
-            $this->form_validation->set_rules('rnd_ketlln','Keterangan lain','');
-            $this->form_validation->set_rules('rnd_lln','Biaya lain-lain','');
             $this->rules();
             $nip = $this->session->userdata('nip');
             //var_dump($nip);
@@ -99,14 +102,19 @@ class Rincian extends CI_Controller{
                 $daftar_rincian_id = $this->M_daftarrincian->add_daftar_rincian($params);
                // echo($daftar_rincian_id);
                 $param2 = array(
-                    'rcn_id' => $daftar_rincian_id,
-                    'rnd_binap' => intval(str_replace('.', '', ($this->input->post('rnd_binap')))),
-                    'rnd_jmlinap' => intval(str_replace('.', '', ($this->input->post('rnd_jmlinap')))),
-                    'rnd_btrkt' => intval(str_replace('.', '', ($this->input->post('rnd_btrkt')))),
-                    'rnd_bplg' => intval(str_replace('.', '', ($this->input->post('rnd_bplg')))),
-                    'rnd_sku' => intval(str_replace('.', '', ($this->input->post('rnd_sku')))),
-                    'rnd_ketlln' => ($this->input->post('rnd_ketlln')),
-                    'rnd_lln' => intval(str_replace('.', '', ($this->input->post('rnd_lln')))),
+                    'rcn_id'        => $daftar_rincian_id,
+                    'rnd_binap'     => intval(str_replace('.', '', ($this->input->post('rnd_binap')))),
+                    'rnd_jmlinap'   => $this->input->post('rnd_jmlinap'),
+                    'rnd_btrkt'     => intval(str_replace('.', '', ($this->input->post('rnd_btrkt')))),
+                    'rnd_bplg'      => intval(str_replace('.', '', ($this->input->post('rnd_bplg')))),
+                    'rnd_sku'       => intval(str_replace('.', '', ($this->input->post('rnd_sku')))),
+                    'rnd_jmlsaku'   => $this->input->post('rnd_jmlsaku'),
+                    'rnd_ketsaku'   => $this->input->post('rnd_ketsaku'),
+                    'rnd_ttype'     => $this->input->post('rnd_ttype')??'kereta',
+                    'rnd_tmbhn'     => $this->input->post('rnd_tmbhn'),
+                    'rnd_kettmbhn'  => $this->input->post('rnd_kettmbhn '),
+                    'rnd_btmbhn'    => intval(str_replace('.', '', ($this->input->post('rnd_btmbhn')))),
+                    'rnd_kettmbhn'  => $this->input->post('rnd_kettmbhn')??'0',
                 );  
                 $detail_rincian_id = $this->M_detailrincian->add_detail_rincian($param2);
                 $data = [];
@@ -226,26 +234,59 @@ class Rincian extends CI_Controller{
         }
     }
 
+    function penyebut($nilai) {
+        $nilai = abs($nilai);
+        $huruf = array("", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas");
+        $temp = "";
+        if ($nilai < 12) {
+            $temp = " ". $huruf[$nilai];
+        } else if ($nilai <20) {
+            $temp = $this->penyebut($nilai - 10). " belas";
+        } else if ($nilai < 100) {
+            $temp = $this->penyebut($nilai/10)." puluh". $this->penyebut($nilai % 10);
+        } else if ($nilai < 200) {
+            $temp = " seratus" . $this->penyebut($nilai - 100);
+        } else if ($nilai < 1000) {
+            $temp = $this->penyebut($nilai/100) . " ratus" . $this->penyebut($nilai % 100);
+        } else if ($nilai < 2000) {
+            $temp = " seribu" . $this->penyebut($nilai - 1000);
+        } else if ($nilai < 1000000) {
+            $temp = $this->penyebut($nilai/1000) . " ribu" . $this->penyebut($nilai % 1000);
+        } else if ($nilai < 1000000000) {
+            $temp = $this->penyebut($nilai/1000000) . " juta" . $this->penyebut($nilai % 1000000);
+        } else if ($nilai < 1000000000000) {
+            $temp = $this->penyebut($nilai/1000000000) . " milyar" . $this->penyebut(fmod($nilai,1000000000));
+        } else if ($nilai < 1000000000000000) {
+            $temp = $this->penyebut($nilai/1000000000000) . " trilyun" . $this->penyebut(fmod($nilai,1000000000000));
+        }     
+        return $temp;
+    }
+            
+    function terbilang($nilai) {
+        if($nilai<0) {
+            $hasil = "minus ". trim($this->penyebut($nilai));
+        } else {
+            $hasil = trim($this->penyebut($nilai));
+        }     		
+        return $hasil;
+    }
+
     public function cetak($value='')
     {
-        if($this->session->userdata('level')=='Kepala Kantor'){
-            $this->load->model('M_pengikuttgs');
-            $data['rincian'] = $this->M_daftarrincian->get_daftar_rincian($value);
-            if (isset($data['rincian']['rcn_id'])) {
-                $data['detail'] = $this->M_detailrincian->get_daftar_rincian_by_rcn($value);
-                $data['pengikut']=$this->M_pengikuttgs->get_pengikut_tgs_by_no_join($data['rincian']['srtgs_no']);
-                $data['st'] = $this->M_surattugas->get_surattugas_by_no($data['rincian']['srtgs_no']);
-                $data['pdf'] = $this->load->library('PDFGenerator');
-                //$this->pdfgenerator->set_paper(array(0,0,595,595),"portait");
-                
-                $data['nama_file']  = 'Rincian Biaya Perjalanan '.$this->loader->konversi_tanggal($data['rincian']['rcn_tgl']).' - '.$data['st']['srtgs_tmt'];
-                echo json_encode($data['nama_file']);
-                die();
-                $html = $this->load->view('template/cetak_rincian',$data, TRUE);
-                $this->pdfgenerator->generate($html,$data['nama_file']);
-            }else{
-                redirect('rincian');
-            }
+        $this->load->model('M_pengikuttgs');
+        $data['rincian'] = $this->M_daftarrincian->get_daftar_rincian($value);
+        if (isset($data['rincian']['rcn_id'])) {
+            $data['detail'] = $this->M_detailrincian->get_daftar_rincian_by_rcn($value);
+            $data['total'] = ($data['detail']['rnd_binap'] * $data['detail']['rnd_jmlinap']) + ($data['detail']['rnd_btrkt'] + $data['detail']['rnd_btrkt']) + ($data['detail']['rnd_sku'] * $data['detail']['rnd_jmlsaku']??1) + $data['detail']['rnd_btmbhn']??0;
+            $data['terbilang'] = $this->terbilang($data['total']);
+            $data['pengikut']=$this->M_pengikuttgs->get_pengikut_tgs_by_no_join($data['rincian']['srtgs_no']);
+            $data['st'] = $this->M_surattugas->get_surattugas_by_no($data['rincian']['srtgs_no']);
+            $data['pdf'] = $this->load->library('PDFGenerator');
+            //$this->pdfgenerator->set_paper(array(0,0,595,595),"portait");
+            
+            $data['nama_file']  = 'Rincian Biaya Perjalanan '.$this->loader->konversi_tanggal($data['rincian']['rcn_tgl']).' - '.$data['st']['srtgs_tmt'];
+            $html = $this->load->view('template/cetak_rincian',$data, TRUE);
+            $this->pdfgenerator->generate($html,$data['nama_file']);
         }else{
             redirect('rincian');
         }

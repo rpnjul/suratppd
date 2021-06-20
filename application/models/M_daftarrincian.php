@@ -35,7 +35,7 @@ class M_daftarrincian extends CI_Model
      */
     function get_all_daftar_rincian($params = array())
     {
-        $this->db->select('tb_rcn.rcn_id as `rcn_id`,tb_rcn.pgw_nip as `pgw_nip`,tb_rcn.rcn_tgl as `rcn_tgl`,tb_rcn.srtgs_no as `srtgs_no`,tb_pgw.pgw_nm as `pgw_nm`,((tb_rcndtl.rnd_binap*tb_rcndtl.rnd_jmlinap)+tb_rcndtl.rnd_btrkt+tb_rcndtl.rnd_bplg+tb_rcndtl.rnd_sku+IFNULL(tb_rcndtl.rnd_tmbhn,0)) AS `total`',false);   
+        $this->db->select('tb_rcn.rcn_id as `rcn_id`,tb_rcn.pgw_nip as `pgw_nip`,tb_rcn.rcn_tgl as `rcn_tgl`,tb_rcn.srtgs_no as `srtgs_no`,tb_pgw.pgw_nm as `pgw_nm`',false);   
         $this->db->join('tb_pgw', 'tb_rcn.pgw_nip = tb_pgw.pgw_nip', 'left');
         $this->db->join('tb_rcndtl', 'tb_rcndtl.rcn_id = tb_rcn.rcn_id', 'left');
         $this->db->order_by('tb_rcn.rcn_id', 'desc');

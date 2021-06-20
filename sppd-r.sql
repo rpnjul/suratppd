@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2021 at 07:29 AM
+-- Generation Time: Jun 20, 2021 at 07:47 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.4.16
 
@@ -43,7 +43,7 @@ CREATE TABLE `tb_direktur` (
 --
 
 INSERT INTO `tb_direktur` (`direktur_id`, `direktur_no`, `direktur_nm`, `direktur_tlp`, `direktur_eml`, `direktur_alm`, `direktur_snd`, `direktur_sts`) VALUES
-(3, '1', 'Dr. Satria M.KOM', '089537152960', 'direktur@satria.art', 'Jakarta', '1234', 1);
+(3, '1', 'Direktur Satria', '089537152960', 'direktur@satria.art', 'Jakarta', '1234', 1);
 
 -- --------------------------------------------------------
 
@@ -72,6 +72,13 @@ CREATE TABLE `tb_pgtgs` (
   `pgw_nip` char(25) NOT NULL COMMENT 'Pegawai pengikut '
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `tb_pgtgs`
+--
+
+INSERT INTO `tb_pgtgs` (`srtgs_no`, `pgw_nip`) VALUES
+('ST-001/WKN.08/2021', '10201011213');
+
 -- --------------------------------------------------------
 
 --
@@ -99,8 +106,9 @@ CREATE TABLE `tb_pgw` (
 
 INSERT INTO `tb_pgw` (`pgw_id`, `pgw_nip`, `pgw_nm`, `pgw_jnk`, `pgw_tlp`, `pgw_tlh`, `pgw_tll`, `pgw_gpt`, `pgw_jab`, `pgw_eml`, `pgw_snd`, `pgw_sts`) VALUES
 (36, '123011211111', 'Satria Admin', 'Laki-laki', '089253715296', 'Jakarta', '1998-04-18', 'Pembina (IV/a)', 'Admin', 'admin@satria.art', '1234', 1),
-(37, '10201011213', 'Satria Pejabat', 'Laki-laki', '089537152196', 'Jakarta', '1998-04-18', 'Pengatur Muda Tk. I (II/b)', 'Pejabat Lelang', 'pejabat@satria.art', '1234', 1),
+(37, '10201011213', 'Satria Pejabat', 'Laki-laki', '089537152196', 'Jakarta', '1998-04-18', 'Pengatur Muda Tk. I (II/b)', 'Pejabat', 'pejabat@satria.art', '1234', 1),
 (52, '123456456456', 'Satria bobobobo', 'Laki-laki', '089854651684', 'Jakarta', '1998-04-18', 'Pengatur (II/c)', 'Pegawai', 'satria1@gmail.com', '1234', 0),
+(53, '11', 'tes1', 'Laki-laki', '123123123123', 'tes1', '1998-04-18', 'Penatar Muda Tk. I (III/b)', 'Pegawai', 'tes1@tes1.com', '1234', 0),
 (44, '3123123541', 'Satria Kasubbag', 'Laki-laki', '089453715219', 'Jakarta', '1998-04-18', 'Pembina Utama (IV/e)', 'Kepala Sub Bagian Umum', 'kasubbag@satria.art', '1234', 1),
 (49, '1231181818', 'Satria KepalaK', 'Laki-laki', '512312512312', 'Jakarta', '1998-04-18', 'Pembina Utama Madya (IV/d)', 'Kepala Kantor', 'kepala@satria.art', '1234', 1),
 (51, '10101010', 'Satria Aprilian', 'Laki-laki', '089537152960', 'Jakarta', '1998-04-18', 'Pengatur Muda Tk. (II/b)', 'Pegawai', 'pegawai@satria.art', '1234', 1);
@@ -137,6 +145,13 @@ CREATE TABLE `tb_psl` (
   `psl_sts` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Status'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `tb_psl`
+--
+
+INSERT INTO `tb_psl` (`psl_id`, `direktur_no`, `psl_no`, `psl_tgl`, `psl_prh`, `psl_srt`, `psl_sts`) VALUES
+(22, '1', 'P-010/06.2021', '2021-06-16', 'Dinas Keluar Kota', '<p>Dinas Keluar Kota</p>\r\n', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -152,6 +167,13 @@ CREATE TABLE `tb_psllmp` (
   `psllmp_dok4` varchar(55) DEFAULT NULL COMMENT 'Foto perjanjian Pengalihan piutang'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `tb_psllmp`
+--
+
+INSERT INTO `tb_psllmp` (`psllmp_id`, `psl_id`, `psllmp_dok1`, `psllmp_dok2`, `psllmp_dok3`, `psllmp_dok4`) VALUES
+(11, 22, 'Permohonan12_22_1623853497.pdf', 'Permohonan12_22_16238534971.pdf', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -164,13 +186,6 @@ CREATE TABLE `tb_rcn` (
   `rcn_tgl` date NOT NULL,
   `pgw_nip` char(25) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `tb_rcn`
---
-
-INSERT INTO `tb_rcn` (`rcn_id`, `srtgs_no`, `rcn_tgl`, `pgw_nip`) VALUES
-(16, 'ST-001/WKN.08/2021', '2021-06-12', '123011211111');
 
 -- --------------------------------------------------------
 
@@ -195,13 +210,6 @@ CREATE TABLE `tb_rcndtl` (
   `rnd_filext` varchar(255) DEFAULT NULL COMMENT 'FILE PENDUKUNG'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `tb_rcndtl`
---
-
-INSERT INTO `tb_rcndtl` (`rnd_id`, `rcn_id`, `rnd_binap`, `rnd_jmlinap`, `rnd_btrkt`, `rnd_bplg`, `rnd_ttype`, `rnd_sku`, `rnd_jmlsaku`, `rnd_ketsaku`, `rnd_tmbhn`, `rnd_btmbhn`, `rnd_kettmbhn`, `rnd_filext`) VALUES
-(2, 16, 1, 1, 2, 2, 'klaut', 3, 3, '', '4', 4, '', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -220,6 +228,13 @@ CREATE TABLE `tb_srtgs` (
   `srtgs_sts` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Status'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `tb_srtgs`
+--
+
+INSERT INTO `tb_srtgs` (`srtgs_id`, `srtms_no`, `srtgs_no`, `pgw_nip`, `srtgs_tbr`, `srtgs_tmt`, `srtgs_tgl`, `srtgs_kmb`, `srtgs_sts`) VALUES
+(2, 'S-001/WKN.08/2021', '001/DJPB/SPT.S2/VII/2021', '123011211111', '', 'Bandung', '2021-06-15', '2021-06-17', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -235,13 +250,6 @@ CREATE TABLE `tb_srtms` (
   `pgw_nip` varchar(25) NOT NULL COMMENT 'Asal (Penerima) Surat',
   `srtms_sts` tinyint(4) DEFAULT 0 COMMENT 'Status'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `tb_srtms`
---
-
-INSERT INTO `tb_srtms` (`srtms_id`, `srtms_no`, `srtms_sft`, `srtms_tgl`, `psl_no`, `pgw_nip`, `srtms_sts`) VALUES
-(4, 'S-001/WKN.08/2021', 'Sangat Segera', '2021-06-13', 'P-001/BSI.08/06.2021', '123011211111', 0);
 
 --
 -- Indexes for dumped tables
@@ -356,7 +364,7 @@ ALTER TABLE `tb_nds`
 -- AUTO_INCREMENT for table `tb_pgw`
 --
 ALTER TABLE `tb_pgw`
-  MODIFY `pgw_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `pgw_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `tb_pgwnds`
@@ -368,31 +376,31 @@ ALTER TABLE `tb_pgwnds`
 -- AUTO_INCREMENT for table `tb_psl`
 --
 ALTER TABLE `tb_psl`
-  MODIFY `psl_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `psl_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `tb_psllmp`
 --
 ALTER TABLE `tb_psllmp`
-  MODIFY `psllmp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `psllmp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tb_rcn`
 --
 ALTER TABLE `tb_rcn`
-  MODIFY `rcn_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=17;
+  MODIFY `rcn_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tb_rcndtl`
 --
 ALTER TABLE `tb_rcndtl`
-  MODIFY `rnd_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=3;
+  MODIFY `rnd_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tb_srtgs`
 --
 ALTER TABLE `tb_srtgs`
-  MODIFY `srtgs_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=2;
+  MODIFY `srtgs_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tb_srtms`

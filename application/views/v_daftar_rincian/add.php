@@ -15,7 +15,7 @@
 						<div class="col-md-6">
 							<label for="srtgs_no" class="control-label"><span class="text-danger">* </span> Ref. Surat Tugas</label>
 							<div class="form-group">
-								<input autocomplete="off" name="srtgs_no" class="form-control" id="srtgs_no" value="<?php echo $this->input->post('srtgs_no'); ?>"/>
+								<input autocomplete="off" name="srtgs_no" class="form-control" id="srtgs_no" value="<?php echo $this->input->post('srtgs_no'); ?>" required/>
 								<span class="text-danger"><?php echo form_error('srtgs_no'); ?></span>
 							</div>
 						</div>
@@ -37,14 +37,14 @@
 						<div class="col-md-4">
 							<label for="rnd_binap" class="control-label"><span class="text-danger">* </span> Biaya Inap</label>
 							<div class="form-group">
-								<input autocomplete="off" name="rnd_binap" maxlength="14" class="form-control rupiah" id="rnd_binap" value="<?php echo $this->input->post('rnd_binap')??0; ?>"/>
+								<input autocomplete="off" name="rnd_binap"  class="form-control rupiah" id="rnd_binap" value="<?php echo $this->input->post('rnd_binap')??0; ?>"/>
 								<span class="text-danger"><?php echo form_error('rnd_binap'); ?></span>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<label for="rnd_jmlinap" class="control-label"><span class="text-danger">* </span> Jml. Hari</label>
 							<div class="form-group">
-								<input type="number" autocomplete="off" name="rnd_jmlinap" maxlength="14" class="form-control rupiah" id="rnd_jmlinap" value="<?php echo $this->input->post('rnd_jmlinap')??0; ?>"/>
+								<input type="number" autocomplete="off" name="rnd_jmlinap"  class="form-control" id="rnd_jmlinap" value="<?php echo $this->input->post('rnd_jmlinap')??0; ?>"/>
 								<span class="text-danger"><?php echo form_error('rnd_jmlinap'); ?></span>
 							</div>			
 						</div>
@@ -60,14 +60,14 @@
 						<div class="col-md-4">
 							<label for="rnd_btrkt" class="control-label"><span class="text-danger">* </span> Biaya Berangkat</label>
 							<div class="form-group">
-								<input type="number" autocomplete="off" name="rnd_btrkt" maxlength="14" class="form-control rupiah" id="rnd_btrkt" value="<?php echo $this->input->post('rnd_btrkt')??0; ?>"/>
+								<input type="text" autocomplete="off" name="rnd_btrkt"  class="form-control rupiah" id="rnd_btrkt" value="<?php echo $this->input->post('rnd_btrkt')??0; ?>"/>
 								<span class="text-danger"><?php echo form_error('rnd_btrkt'); ?></span>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<label for="rnd_bplg" class="control-label"><span class="text-danger">* </span> Biaya Pulang</label>
 							<div class="form-group">
-								<input type="number" autocomplete="off" name="rnd_bplg" maxlength="14" class="form-control rupiah" id="rnd_bplg" value="<?php echo $this->input->post('rnd_bplg')??0; ?>"/>
+								<input type="text" autocomplete="off" name="rnd_bplg"  class="form-control rupiah" id="rnd_bplg" value="<?php echo $this->input->post('rnd_bplg')??0; ?>"/>
 								<span class="text-danger"><?php echo form_error('rnd_bplg'); ?></span>
 							</div>			
 						</div>
@@ -95,14 +95,14 @@
 						<div class="col-md-4">
 							<label for="rnd_sku" class="control-label">Uang Saku</label>
 							<div class="form-group">
-								<input autocomplete="off" name="rnd_sku" maxlength="14" class="form-control rupiah" id="rnd_sku" value="<?php echo $this->input->post('rnd_sku')??0; ?>"/>
+								<input autocomplete="off" name="rnd_sku"  class="form-control rupiah" id="rnd_sku" value="<?php echo $this->input->post('rnd_sku')??0; ?>"/>
 								<span class="text-danger"><?php echo form_error('rnd_sku'); ?></span>
 							</div>
 						</div>
 						<div class="col-md-4">
 							<label for="rnd_jmlsaku" class="control-label">Jml. Hari</label>
 							<div class="form-group">
-								<input type="number" autocomplete="off" name="rnd_jmlsaku" maxlength="14" class="form-control rupiah" id="rnd_jmlsaku" value="<?php echo $this->input->post('rnd_jmlsaku')??0; ?>"/>
+								<input type="number" autocomplete="off" name="rnd_jmlsaku"  class="form-control" id="rnd_jmlsaku" value="<?php echo $this->input->post('rnd_jmlsaku')??0; ?>"/>
 								<span class="text-danger"><?php echo form_error('rnd_jmlsaku'); ?></span>
 							</div>			
 						</div>

@@ -43,20 +43,10 @@ class Nota_dinas extends CI_Controller{
 
         private function kodeotomatis()
             {
-
-                ///  ST-999/WKN.08/9999
                 $res = $this->db->query('select max(right(nds_no,4)) as `urut_tahun`,max(substring(nds_no,4,3)) as `urut` from tb_nds')->row();
                 $tgl = date('/Y');
-               // echo $res->urut.'<br>';
-                //echo substr($tgl, 1,4);
                 if (isset($res->urut)) {
-                    //$urut = intval($res->urut);
                     $urut = intval($res->urut);
-    /*                echo $urut.'<br>';
-                    echo $bln.'<br>';
-                    echo $thn.'<br>';
-                    echo substr($tgl, 1,2).'<br>';
-                    echo substr($tgl, 4,4).'<br>';*/
                     if (substr($tgl, 1,4)==$res->urut_tahun) { ## tahun
                         if ($urut >= 999) {
                                 $urut+=0;
@@ -71,7 +61,7 @@ class Nota_dinas extends CI_Controller{
                 }
                 $str_length = strlen($urut);
                 $dig = substr("000{$urut}", $str_length);
-                return 'ND-'.$dig.'/WKN.08'.$tgl;
+                return $dig.'/DPB/SPPD/VII'.$tgl;
         }
 
     public function cek_surattugas($nomor){
@@ -102,64 +92,50 @@ class Nota_dinas extends CI_Controller{
     function add()
     {   
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('nds_no','Nomor Nota','is_unique[tb_nds.nds_no]');
-        $this->form_validation->set_rules('nds_prh','Perihal surat','required|max_length[125]');
-        $this->form_validation->set_rules('nds_dsr','Isi surat','required');
         $this->form_validation->set_rules('srtgs_no','Ref. Surat tugas','required|callback_cek_surattugas');
+        $this->form_validation->set_rules('rcn_no','Nomor Rincian','required|max_length[125]');
+        // $this->form_validation->set_rules('nds_no','Isi surat','required');
+        $this->form_validation->set_rules('nds_dsr','Nomor Kwitansi','required');
+        $this->form_validation->set_rules('nds_tgl','Nomor Nota','is_unique[tb_nds.nds_no]');
         //$pengikut = ;
         //var_dump(sizeof($this->input->post('pengikut')));
-        if(! empty($this->input->post('pgw_nip'))):
-        foreach ($this->input->post('pgw_nip') as $key => $value) {
-            $this->form_validation->set_rules('pgw_nip['.$key.']','NIP pegawai','required|callback_cek_nip');
-            $this->form_validation->set_rules('pgwnds_tgl['.$key.']','Tanggal','required');
-            $this->form_validation->set_rules('pgwnds_tmt['.$key.']','Tempat','required|max_length[55]');
-            $this->form_validation->set_rules('pgwnds_pkr['.$key.']','Nomor Perkara','required|max_length[80]');
-            $this->form_validation->set_rules('pgwnds_ket['.$key.']','Keterangan','max_length[55]');
-        }endif;
+        
         $this->rules();
         if($this->form_validation->run())     
         {   
+            var_dump($this->input->post());
+            die();
+            $st = $this->M_surattugas->get_surattugas_by_no($this->input->post('srtgs_no'));
             $params = array(
-      				'srtgs_no' => $this->input->post('srtgs_no'),
-      				'nds_prh' => $this->input->post('nds_prh'),
-      				'nds_tgl' => date('Y-m-d'),
-                      'pgw_nip' => $this->session->userdata('nip'),
-      				'nds_no' => $this->kodeotomatis(),
-      				'nds_dsr' => $this->input->post('nds_dsr')
+                    'nds_no'    => $this->kodeotomatis(),
+      				'srtgs_no'  => $this->input->post('srtgs_no'),
+                    'rcn_no'    => $this->input->post('rcn_no'),
+                    'pgw_nip'   => $st['pgw_nip'],
+      				'nds_tgl'   => date('Y-m-d'),
+      				'nds_dsr'   => $this->input->post('nds_dsr'),
             );
             
-            $nota_dina_id = $this->M_notadinas->add_nota_dinas($params);
-            $st = $this->M_surattugas->get_surattugas_by_no($this->input->post('srtgs_no'));
+            $nota_dinas_id = $this->M_notadinas->add_nota_dinas($params);
             $par = array(
                 'srtgs_sts' => 2
             );
-            $st = $this->M_surattugas->update_surattugas($st['srtgs_id'],$par);
-            if ($st) {
-                if (!empty($this->input->post('pgw_nip'))) {
-                    foreach ($this->input->post('pgw_nip') as $key => $value) {
-                         $pgw_nip    = $this->input->post('pgw_nip');
-                         $pgwnds_tgl = $this->input->post('pgwnds_tgl');
-                         $pgwnds_tmt = $this->input->post('pgwnds_tmt');
-                         $pgwnds_pkr = $this->input->post('pgwnds_pkr');
-                         $pgwnds_ket = $this->input->post('pgwnds_ket');
-                         $p = explode(' - ', $pgw_nip[$key])[0];
-                         $tgl = strtotime($pgwnds_tgl[$key]);
-                         $tgl = date('Y-m-d',$tgl);
-                         //var_dump($pgwnds_ket[$key]);
-                         if ($this->cek_nip($pgw_nip[$key]) & !empty($tgl) & $this->cek_tgl($pgwnds_tgl[$key]) ) {
-                             $pare = array(
-                                   'nds_id'=>$nota_dina_id,
-                                   'pgw_nip'=>$p,
-                                   'pgwnds_tgl'=>$tgl,
-                                   'pgwnds_tmt'=>$pgwnds_tmt[$key],
-                                   'pgwnds_pkr'=>$pgwnds_pkr[$key],
-                                   'pgwnds_ket'=>$pgwnds_ket[$key]
-                             );
-                             $this->M_dinaspegawai->add_dinas_pegawai($pare); 
-                         }
+            $stt = $this->M_surattugas->update_surattugas($st['srtgs_id'],$par);
+            if ($stt) {
+                $pegawai = $this->M_pegawai->get_pegawai_by_nip($st->pgw_nip);
+                if($pegawai){
+                    if (!empty($this->input->post('pgw_nip'))) {
+                             if (!empty($tgl) & $this->cek_tgl($pgwnds_tgl) ) {
+                                 $pare = array(
+                                       'nds_id'     =>  $nota_dinas_id,
+                                       'pgw_nip'    =>  $st->pgw_nip,
+                                       'pgwnds_tgl' =>  $tgl,
+                                       'pgwnds_tmt' =>  $pgwnds_tmt,
+                                       'pgwnds_pkr' =>  $pgwnds_pkr,
+                                       'pgwnds_ket' =>  $pgwnds_ket
+                                 );
+                                 $this->M_dinaspegawai->add_dinas_pegawai($pare); 
+                             }
                     }
-                }else{
-
                 }
             }
             redirect('nota_dinas/index');
@@ -184,6 +160,7 @@ class Nota_dinas extends CI_Controller{
     }
 
 
+
     function rules(){
         $this->form_validation->set_message('max_length', '{field} tidak dapat lebih dari {param} karakter.');
         $this->form_validation->set_message('min_length', '{field} tidak dapat kurang dari {param} karakter.');
@@ -206,7 +183,7 @@ class Nota_dinas extends CI_Controller{
                 $this->load->library('form_validation');
               //  $nomor =  ($this->input->post('nds_no') !=  $data['nota_dinas']['nds_no']) ? '|is_unique[tb_nds.nds_no]' : '';         
               //$this->form_validation->set_rules('nds_no','Nomor Surat Tugas','required|max_length[30]'.$nomor);
-              $this->form_validation->set_rules('nds_prh','Perihal surat','required|max_length[125]');
+            //   $this->form_validation->set_rules('nds_prh','Perihal surat','required|max_length[125]');
               $this->form_validation->set_rules('nds_dsr','Isi surat','required');
               $this->form_validation->set_rules('srtgs_no','Ref. Surat tugas','required|callback_cek_surattugas');
               if(! empty($this->input->post('pgw_nip'))):
@@ -223,6 +200,7 @@ class Nota_dinas extends CI_Controller{
                   $params = array(
                    'srtgs_no' => $this->input->post('srtgs_no'),
                    'nds_prh' => $this->input->post('nds_prh'),
+                   'nds_prh' => NULL,
                    'nds_tgl' => date('Y-m-d'),
                    'pgw_nip' => $this->session->userdata('nip'),
                    'nds_no' => $this->input->post('nds_no'),

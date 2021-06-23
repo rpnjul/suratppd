@@ -20,6 +20,16 @@ class M_daftarrincian extends CI_Model
         $this->db->join('tb_rcndtl', 'tb_rcndtl.rcn_id = tb_rcn.rcn_id', 'left');
         return $this->db->get_where('tb_rcn',array('tb_rcn.rcn_id'=>$rcn_id))->row_array();
     }
+
+    function search_rincian_by_surattugas($no){
+        $this->db->like('srtgs_no', $no , 'both');
+        $this->db->order_by('srtgs_no', 'ASC');
+        $this->db->join('tb_pgw', 'tb_rcn.pgw_nip = tb_pgw.pgw_nip', 'left');
+        $this->db->join('tb_rcndtl', 'tb_rcndtl.rcn_id = tb_rcn.rcn_id', 'left');
+        $this->db->limit(10);
+        //var_dump($this->db->get('tb_srtgs')->result());
+        return $this->db->get('tb_rcn')->result();
+    }
     
     /*
      * Get all daftar_rincian count

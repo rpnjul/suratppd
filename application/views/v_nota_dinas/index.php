@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-header">
                 <h4>Data Nota Dinas</h4>
-                <?php if( $level=='Kepala Sub Bagian Umum'){ ?>
+                <?php if( $level=='Kepala Sub Bagian Umum' OR $level=='Direktur'){ ?>
                 <div class="card-header-action">
                     <a href="<?php echo site_url('nota_dinas/add'); ?>" class="btn btn-success btn-sm">Tambah</a> 
                 </div>

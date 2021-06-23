@@ -33,6 +33,39 @@ class Rincian extends CI_Controller{
        return TRUE;
     }
 
+    function get_autocomplete(){
+        if (isset($_GET['term'])) {
+            $result = $this->M_daftarrincian->search_rincian_by_surattugas($_GET['term']);
+            if (count($result) > 0) {
+                foreach ($result as $row)
+                    // $arr_result[] = $row->srtgs_no;
+                    $arr_result[] = array(
+                        'label'         => $row->srtgs_no,
+                        'description'   => ($row->rnd_binap * $row->rnd_jmlinap) + ($row->rnd_btrkt + $row->rnd_btrkt) + ($row->rnd_sku * $row->rnd_jmlsaku??1) + $row->rnd_btmbhn??0,
+                );
+                    echo json_encode($arr_result);
+            }
+        }
+    }
+
+    function ajax_select2(){
+        if (isset($_GET['id'])) {
+            $result = $this->M_daftarrincian->search_rincian_by_surattugas(htmlspecialchars_decode($_GET['id']));
+            if (count($result) > 0) {
+                foreach ($result as $row){
+                    $price = ($row->rnd_binap * $row->rnd_jmlinap) + ($row->rnd_btrkt + $row->rnd_btrkt) + ($row->rnd_sku * $row->rnd_jmlsaku??1) + $row->rnd_btmbhn??0;
+                    $data['results'][] = [
+                        'id'    => $row->rcn_id,
+                        'text'    => 'Pegawai : '.$row->pgw_nm.' | Total Pembayaran : '.$this->loader->rupiah($price),
+                    ];
+                }
+                echo json_encode($data);
+            }
+        }else{
+            echo json_encode(array('status'=>'failure'));
+        }
+    }
+
 
 
     /*

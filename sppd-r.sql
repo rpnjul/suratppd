@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2021 at 07:47 PM
--- Server version: 10.4.18-MariaDB
--- PHP Version: 7.4.16
+-- Waktu pembuatan: 23 Jun 2021 pada 12.59
+-- Versi server: 10.4.11-MariaDB
+-- Versi PHP: 7.4.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_direktur`
+-- Struktur dari tabel `tb_direktur`
 --
 
 CREATE TABLE `tb_direktur` (
@@ -39,7 +39,7 @@ CREATE TABLE `tb_direktur` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `tb_direktur`
+-- Dumping data untuk tabel `tb_direktur`
 --
 
 INSERT INTO `tb_direktur` (`direktur_id`, `direktur_no`, `direktur_nm`, `direktur_tlp`, `direktur_eml`, `direktur_alm`, `direktur_snd`, `direktur_sts`) VALUES
@@ -48,15 +48,15 @@ INSERT INTO `tb_direktur` (`direktur_id`, `direktur_no`, `direktur_nm`, `direktu
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_nds`
+-- Struktur dari tabel `tb_nds`
 --
 
 CREATE TABLE `tb_nds` (
   `nds_id` int(11) NOT NULL COMMENT 'ID',
   `nds_no` varchar(30) NOT NULL COMMENT 'Nota dinas',
   `srtgs_no` char(30) NOT NULL COMMENT 'No Surat Tugas',
+  `rcn_no` varchar(191) NOT NULL,
   `pgw_nip` char(25) NOT NULL COMMENT 'Pegawai yang bikin',
-  `nds_prh` varchar(125) NOT NULL COMMENT 'Perihal',
   `nds_tgl` date NOT NULL COMMENT 'Tanggal',
   `nds_dsr` text NOT NULL COMMENT 'Dasar nota'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -64,7 +64,7 @@ CREATE TABLE `tb_nds` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_pgtgs`
+-- Struktur dari tabel `tb_pgtgs`
 --
 
 CREATE TABLE `tb_pgtgs` (
@@ -73,7 +73,7 @@ CREATE TABLE `tb_pgtgs` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `tb_pgtgs`
+-- Dumping data untuk tabel `tb_pgtgs`
 --
 
 INSERT INTO `tb_pgtgs` (`srtgs_no`, `pgw_nip`) VALUES
@@ -82,7 +82,7 @@ INSERT INTO `tb_pgtgs` (`srtgs_no`, `pgw_nip`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_pgw`
+-- Struktur dari tabel `tb_pgw`
 --
 
 CREATE TABLE `tb_pgw` (
@@ -101,7 +101,7 @@ CREATE TABLE `tb_pgw` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `tb_pgw`
+-- Dumping data untuk tabel `tb_pgw`
 --
 
 INSERT INTO `tb_pgw` (`pgw_id`, `pgw_nip`, `pgw_nm`, `pgw_jnk`, `pgw_tlp`, `pgw_tlh`, `pgw_tll`, `pgw_gpt`, `pgw_jab`, `pgw_eml`, `pgw_snd`, `pgw_sts`) VALUES
@@ -116,7 +116,7 @@ INSERT INTO `tb_pgw` (`pgw_id`, `pgw_nip`, `pgw_nm`, `pgw_jnk`, `pgw_tlp`, `pgw_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_pgwnds`
+-- Struktur dari tabel `tb_pgwnds`
 --
 
 CREATE TABLE `tb_pgwnds` (
@@ -132,7 +132,7 @@ CREATE TABLE `tb_pgwnds` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_psl`
+-- Struktur dari tabel `tb_psl`
 --
 
 CREATE TABLE `tb_psl` (
@@ -146,7 +146,7 @@ CREATE TABLE `tb_psl` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `tb_psl`
+-- Dumping data untuk tabel `tb_psl`
 --
 
 INSERT INTO `tb_psl` (`psl_id`, `direktur_no`, `psl_no`, `psl_tgl`, `psl_prh`, `psl_srt`, `psl_sts`) VALUES
@@ -155,7 +155,7 @@ INSERT INTO `tb_psl` (`psl_id`, `direktur_no`, `psl_no`, `psl_tgl`, `psl_prh`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_psllmp`
+-- Struktur dari tabel `tb_psllmp`
 --
 
 CREATE TABLE `tb_psllmp` (
@@ -168,7 +168,7 @@ CREATE TABLE `tb_psllmp` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `tb_psllmp`
+-- Dumping data untuk tabel `tb_psllmp`
 --
 
 INSERT INTO `tb_psllmp` (`psllmp_id`, `psl_id`, `psllmp_dok1`, `psllmp_dok2`, `psllmp_dok3`, `psllmp_dok4`) VALUES
@@ -177,7 +177,7 @@ INSERT INTO `tb_psllmp` (`psllmp_id`, `psl_id`, `psllmp_dok1`, `psllmp_dok2`, `p
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_rcn`
+-- Struktur dari tabel `tb_rcn`
 --
 
 CREATE TABLE `tb_rcn` (
@@ -187,10 +187,17 @@ CREATE TABLE `tb_rcn` (
   `pgw_nip` char(25) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data untuk tabel `tb_rcn`
+--
+
+INSERT INTO `tb_rcn` (`rcn_id`, `srtgs_no`, `rcn_tgl`, `pgw_nip`) VALUES
+(22, '001/DJPB/SPT.S2/VII/2021', '2021-06-22', '123011211111');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_rcndtl`
+-- Struktur dari tabel `tb_rcndtl`
 --
 
 CREATE TABLE `tb_rcndtl` (
@@ -210,10 +217,17 @@ CREATE TABLE `tb_rcndtl` (
   `rnd_filext` varchar(255) DEFAULT NULL COMMENT 'FILE PENDUKUNG'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data untuk tabel `tb_rcndtl`
+--
+
+INSERT INTO `tb_rcndtl` (`rnd_id`, `rcn_id`, `rnd_binap`, `rnd_jmlinap`, `rnd_btrkt`, `rnd_bplg`, `rnd_ttype`, `rnd_sku`, `rnd_jmlsaku`, `rnd_ketsaku`, `rnd_tmbhn`, `rnd_btmbhn`, `rnd_kettmbhn`, `rnd_filext`) VALUES
+(6, 22, 1000000, 3, 3000000, 200000, 'tonline', 200000, 3, '', '', 0, '', NULL);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_srtgs`
+-- Struktur dari tabel `tb_srtgs`
 --
 
 CREATE TABLE `tb_srtgs` (
@@ -229,7 +243,7 @@ CREATE TABLE `tb_srtgs` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `tb_srtgs`
+-- Dumping data untuk tabel `tb_srtgs`
 --
 
 INSERT INTO `tb_srtgs` (`srtgs_id`, `srtms_no`, `srtgs_no`, `pgw_nip`, `srtgs_tbr`, `srtgs_tmt`, `srtgs_tgl`, `srtgs_kmb`, `srtgs_sts`) VALUES
@@ -238,7 +252,7 @@ INSERT INTO `tb_srtgs` (`srtgs_id`, `srtms_no`, `srtgs_no`, `pgw_nip`, `srtgs_tb
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_srtms`
+-- Struktur dari tabel `tb_srtms`
 --
 
 CREATE TABLE `tb_srtms` (
@@ -256,7 +270,7 @@ CREATE TABLE `tb_srtms` (
 --
 
 --
--- Indexes for table `tb_direktur`
+-- Indeks untuk tabel `tb_direktur`
 --
 ALTER TABLE `tb_direktur`
   ADD PRIMARY KEY (`direktur_id`),
@@ -264,7 +278,7 @@ ALTER TABLE `tb_direktur`
   ADD UNIQUE KEY `kln_no` (`direktur_no`);
 
 --
--- Indexes for table `tb_nds`
+-- Indeks untuk tabel `tb_nds`
 --
 ALTER TABLE `tb_nds`
   ADD PRIMARY KEY (`nds_id`),
@@ -273,14 +287,14 @@ ALTER TABLE `tb_nds`
   ADD KEY `pgw nds` (`pgw_nip`);
 
 --
--- Indexes for table `tb_pgtgs`
+-- Indeks untuk tabel `tb_pgtgs`
 --
 ALTER TABLE `tb_pgtgs`
   ADD KEY `sppd no` (`srtgs_no`),
   ADD KEY `pgw pengikut` (`pgw_nip`);
 
 --
--- Indexes for table `tb_pgw`
+-- Indeks untuk tabel `tb_pgw`
 --
 ALTER TABLE `tb_pgw`
   ADD PRIMARY KEY (`pgw_id`),
@@ -289,7 +303,7 @@ ALTER TABLE `tb_pgw`
   ADD UNIQUE KEY `pgw_tlp` (`pgw_tlp`);
 
 --
--- Indexes for table `tb_pgwnds`
+-- Indeks untuk tabel `tb_pgwnds`
 --
 ALTER TABLE `tb_pgwnds`
   ADD PRIMARY KEY (`pgwnds_id`),
@@ -297,7 +311,7 @@ ALTER TABLE `tb_pgwnds`
   ADD KEY `Pgw nds` (`pgw_nip`);
 
 --
--- Indexes for table `tb_psl`
+-- Indeks untuk tabel `tb_psl`
 --
 ALTER TABLE `tb_psl`
   ADD PRIMARY KEY (`psl_id`),
@@ -305,14 +319,14 @@ ALTER TABLE `tb_psl`
   ADD KEY `kln_id` (`direktur_no`);
 
 --
--- Indexes for table `tb_psllmp`
+-- Indeks untuk tabel `tb_psllmp`
 --
 ALTER TABLE `tb_psllmp`
   ADD PRIMARY KEY (`psllmp_id`),
   ADD UNIQUE KEY `psl id` (`psl_id`) USING BTREE;
 
 --
--- Indexes for table `tb_rcn`
+-- Indeks untuk tabel `tb_rcn`
 --
 ALTER TABLE `tb_rcn`
   ADD PRIMARY KEY (`rcn_id`),
@@ -320,14 +334,14 @@ ALTER TABLE `tb_rcn`
   ADD KEY `pgw_nip` (`pgw_nip`);
 
 --
--- Indexes for table `tb_rcndtl`
+-- Indeks untuk tabel `tb_rcndtl`
 --
 ALTER TABLE `tb_rcndtl`
   ADD PRIMARY KEY (`rnd_id`),
   ADD KEY `rcn_id` (`rcn_id`);
 
 --
--- Indexes for table `tb_srtgs`
+-- Indeks untuk tabel `tb_srtgs`
 --
 ALTER TABLE `tb_srtgs`
   ADD PRIMARY KEY (`srtgs_id`),
@@ -336,7 +350,7 @@ ALTER TABLE `tb_srtgs`
   ADD KEY `pgw_nip` (`pgw_nip`);
 
 --
--- Indexes for table `tb_srtms`
+-- Indeks untuk tabel `tb_srtms`
 --
 ALTER TABLE `tb_srtms`
   ADD PRIMARY KEY (`srtms_id`),
@@ -345,65 +359,65 @@ ALTER TABLE `tb_srtms`
   ADD KEY `tb_srtms_FK` (`psl_no`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `tb_direktur`
+-- AUTO_INCREMENT untuk tabel `tb_direktur`
 --
 ALTER TABLE `tb_direktur`
   MODIFY `direktur_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `tb_nds`
+-- AUTO_INCREMENT untuk tabel `tb_nds`
 --
 ALTER TABLE `tb_nds`
   MODIFY `nds_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID';
 
 --
--- AUTO_INCREMENT for table `tb_pgw`
+-- AUTO_INCREMENT untuk tabel `tb_pgw`
 --
 ALTER TABLE `tb_pgw`
   MODIFY `pgw_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
--- AUTO_INCREMENT for table `tb_pgwnds`
+-- AUTO_INCREMENT untuk tabel `tb_pgwnds`
 --
 ALTER TABLE `tb_pgwnds`
   MODIFY `pgwnds_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `tb_psl`
+-- AUTO_INCREMENT untuk tabel `tb_psl`
 --
 ALTER TABLE `tb_psl`
   MODIFY `psl_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT for table `tb_psllmp`
+-- AUTO_INCREMENT untuk tabel `tb_psllmp`
 --
 ALTER TABLE `tb_psllmp`
   MODIFY `psllmp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `tb_rcn`
+-- AUTO_INCREMENT untuk tabel `tb_rcn`
 --
 ALTER TABLE `tb_rcn`
-  MODIFY `rcn_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=22;
+  MODIFY `rcn_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT for table `tb_rcndtl`
+-- AUTO_INCREMENT untuk tabel `tb_rcndtl`
 --
 ALTER TABLE `tb_rcndtl`
-  MODIFY `rnd_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=6;
+  MODIFY `rnd_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `tb_srtgs`
+-- AUTO_INCREMENT untuk tabel `tb_srtgs`
 --
 ALTER TABLE `tb_srtgs`
   MODIFY `srtgs_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `tb_srtms`
+-- AUTO_INCREMENT untuk tabel `tb_srtms`
 --
 ALTER TABLE `tb_srtms`
   MODIFY `srtms_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=5;

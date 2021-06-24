@@ -833,7 +833,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 
 	public function info($psl_id)
 	{
-		if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Admin' | $this->session->userdata('level')=='Kepala Kantor')) {
+		if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Admin' | $this->session->userdata('level')=='Direktur')) {
 				$data['permohonan'] = $this->M_permohonan->get_permohonan($psl_id);
 				$data['_view'] = 'v_permohonan/view';
 				$data['_landing'] = false;

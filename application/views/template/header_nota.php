@@ -5,6 +5,7 @@
 <style type="text/css">
 body{
 	margin: 37px 37px;
+	padding-top: .5in; padding-bottom: .5in; border: 2in solid black; 
 }
 .header{
 	margin-bottom: 10px;
@@ -71,76 +72,144 @@ body{
 	border:1px solid black;border-collapse:collapse;
 }
 .tabel tr{vertical-align: top;}
-.tabel tr td,.tabel tr th{padding: 8px 4px; word-break: break-all;}
+.tabel tr td,.tabel tr th{padding: 8px 4px; word-break: break-all;
+	
+}
+.body {
+	border: 1px solid black;
+}
+@page { margin: 0in; }
 
+.tabell td{
+	vertical-align: left;
+}
+.tabell th{
+	font-weight: normal;
+}
+.tabell,.tabell th,.tabell td{
+	border:none;
+	padding: 8px;
+}
+.tabell tr{vertical-align: top;}
+.tabell tr td,.tabell tr th{padding: 8px 4px 0px 4px;word-break: break-all;}
+.tabelll td{
+	vertical-align: left;
+}
+.tabelll,.tabelll th,.tabelll td{
+	border:none;
+	padding: 0px;
+}
+.tabelll tr{vertical-align: top;}
+.tabelll tr td,.tabelll tr th{padding: 0px;word-break: break-all;}
 </style>
 </head>
-<body>
-	<div class="header">
-		<img src="<?php echo $logo ?>" alt="KPKNL" class="logo">
-		<div class="head-1">
-			KEMENTERIAN KEUANGAN REPUBLIK INDONESIA<br>	
-			DIREKTORAT JENDRAL KEKAYAAN NEGARA<br>
-			KANTOR PELAYANAN KEKAYAAN NEGARA DAN LELANG<br>Bekasi
-		</div>
-		<small style="margin-top:-10px;margin-left:24px;position:relative;text-align:center;display:block;font-weight: normal;line-height: 1.0;font-size: 10px;">JALAN SERSAN ASWAN NO. 8D, BEKASI.<br>TELEPON (021) 880-8888, FAKSIMILE (021) 880-3832</small>
-	</div>
-	<div class="line-separator"></div>
+<body class="body">
 	<div class="header">
 		<div class="head-2">
 			nota dinas
 		</div>
 		<div class="head-2" style="font-weight: normal;font-stretch: normal;text-decoration: none;text-transform: normal;">
-			Nomor : <?php echo $nota_dinas['nds_no'] ?>
+			Tanggal : 18 April 2020 Nomor : 001/DPB/SPPD/V11/2021
 		</div>
 		<br>
-		<table>
-			<tr>
-				<td class="list-normal">Tanggal<span class="spacer-1">: <?php echo $this->loader->konversi_tanggal($nota_dinas['nds_tgl']); ?></span></td>
-				<td class="list-normal">Perihal<span class="spacer-1">: <?php echo $nota_dinas['nds_prh'] ?></span></td>
-				<td class="list-normal">Tembusan<span class="spacer-1">: <?php echo ($tembusan['pgw_jab']=='Kepala Sub Bagian Umum'?'Kasubbag Umum':$tembusan['pgw_jab']); ?></span></td>
-				<td class="list-normal">Dari<span class="spacer-1">: <?php echo $permintaan['pgw_jab']; ?></span></td>
-				<td class="list-normal">Kepada<span class="spacer-1">: Kepala KPKNL Bekasi</span></td>
-			</tr>
-		</table>
+		
 	</div>
 	<div class="line-separator"></div>
-	<div style="text-indent: 3em;line-height: 1.5"><?php echo $nota_dinas['nds_dsr']; ?></div>
-	<?php if(isset($pgw_dinas[0]['pgwnds_id'])): ?>
-	<br>
-		<table class="tabel">
-			<thead>
-				<tr>
-					<th width="24px">No.</th>
-					<th>Nama Pegawai</th>
-					<th>Jabatan</th>
-					<th>Tanggal &amp; tempat sidang</th>
-					<th width="96px">No perkara dan acara sidang</th>
-					<th width="40px">Keterangan</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php $i=0; foreach ($pgw_dinas as $key => $value): ++$i; ?>
-				<tr>
-					<td align="center"><?php echo ($i); ?></td>
-					<td><?php echo $value['pgw_nm']; ?></td>
-					<td><?php echo $value['pgw_jab']; ?></td>
-					<td><?php echo $this->loader->hari($value['pgwnds_tgl']).', '.$this->loader->konversi_tanggal($value['pgwnds_tgl']).' '.$value['pgwnds_tmt']; ?></td>
-					<td width="96px"><?php echo $value['pgwnds_pkr']; ?></td>
-					<td width="40px"><?php echo $value['pgwnds_ket']; ?></td>
-				</tr>
-				<?php endforeach ?>
-			</tbody>
-		</table>
-	<?php endif; ?>
-	<p style="text-indent: 3em">Demikian kami sampaikan, mohon petunjuk Bapak/Ibu lebih lanjut.</p>
-	<br>
-	<div style="float: right;text-align: left;display: block;">
-		<span><?php echo $permintaan['pgw_jab']; ?></span>
-		<br><br><br><br>
-		<span><?php echo $permintaan['pgw_nm']; ?></span>
-		<br>
-		<span><?php echo 'NIP '.$permintaan['pgw_nip']; ?></span>
-	</div>
+	<table class="tabell" style="padding-top:0px !important;">
+		<tr>
+			<td> Saya yang bertanda tangan dibawah ini selaku Pejabat Pembuat Komitmen memerintahkan Bendahara Pengeluaran agar melakukan pembayaran Sejumlah : </td>
+		</tr>
+	</table>
+	<table class="tabell" style="width: 100%;">
+		<thead>
+			<tr>
+				<th width="1%" align="left">Rp </th>
+				<th align="left" style="border-bottom: 1px dotted black">300.000</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th width="2%" align="left">Terbilang: </th>
+				<th align="left" style="border-bottom: 1px dotted black">Sembilan Juta Bla Bla bla</th>
+			</tr>
+		</tbody>
+	</table>
+	<div class="line-separator"></div>
+	<table  class="tabell"  style="width: 100%;" cellspacing="0" cellpadding="0">
+		<thead>
+			<tr>
+				<th colspan="3" align="left">Atas dasar: </th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td width="2%">1</td>
+				<td>Kuitansi / Bukti pembelian</td>
+				<td style="border-bottom: 1px dotted black">: a</td>
+			</tr>
+			<tr>
+				<td width="2%">2</td>
+				<td>Nota/bukti penerimaan barang/jasa / (bukti lainnya)</td>
+				<td style="border-bottom: 1px dotted black">: c</td>
+			</tr>
+		</tbody><br>
+	</table>
+	<div class="line-separator"></div>
+	<table  class="tabell"  style="width: 100%;" cellspacing="0" cellpadding="0">
+		<thead>
+			<tr>
+				<th align="left">Setuju/lunas dibayar,</th>
+				<th align="left">Diterima Tanggal</th>
+				<th align="left">Jakarta .............</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td align="left">Tanggal: </td>
+				<td align="left">Penerima Uang / Uang Muka Kerja</td>
+				<td align="left">Kuasa Pengguna Anggaran</td>
+			</tr>
+			<tr>
+				<td align="left">Bendahara Pengeluaran</td>
+				<td align="left"></td>
+				<td align="left"></td>
+			</tr>
+			<tr>
+				<td align="left"> </td>
+				<td align="left"> </td>
+				<td align="left"> </td>
+			</tr>
+			<tr>
+				<td align="left"> </td>
+				<td align="left"> </td>
+				<td align="left"> </td>
+			</tr>
+			<tr>
+				<td align="left"> </td>
+				<td align="left"> </td>
+				<td align="left"> </td>
+			</tr>
+			<tr>
+				<td align="left"> </td>
+				<td align="left"> </td>
+				<td align="left"> </td>
+			</tr>
+			<tr>
+				<td align="left"> </td>
+				<td align="left"> </td>
+				<td align="left"> </td>
+			</tr>
+			<tr>
+				<td align="left"> </td>
+				<td align="left"> </td>
+				<td align="left"> </td>
+			</tr>
+			<tr>
+				<td align="left">PAIDIN</td>
+				<td align="left">Bayu Aji, S.Si,M.Si</td>
+				<td align="left">Dr. Ir. Slamet Soebjakto, M.Si</td>
+			</tr>
+		</tbody>
+	</table>
 </body>
 </html>

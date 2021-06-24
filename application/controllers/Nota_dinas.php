@@ -103,8 +103,6 @@ class Nota_dinas extends CI_Controller{
         $this->rules();
         if($this->form_validation->run())     
         {   
-            var_dump($this->input->post());
-            die();
             $st = $this->M_surattugas->get_surattugas_by_no($this->input->post('srtgs_no'));
             $params = array(
                     'nds_no'    => $this->kodeotomatis(),
@@ -278,23 +276,15 @@ class Nota_dinas extends CI_Controller{
         if($this->session->has_userdata('status')){
             $this->load->model('M_suratmasuk');
             $this->load->model('M_pegawai');
-            //if ($this->session->userdata('level')!='Pejabat Lelang'||$this->session->userdata('level')!='Pelaksana') {
-                //$data['logo'] = site_url('resources/img/logo.png');
-                $data['judul']="Nota Dinas";
-                $data['nota_dinas']= $this->M_notadinas->get_nota_dinas($value);
-                $data['pgw_dinas']= $this->M_dinaspegawai->get_dinas_pegawai_join_by_id($value);
-                $data['permintaan']= $this->M_pegawai->get_pegawai_by_nip($data['nota_dinas']['pgw_nip']);
-                $data['nota_dinas']['surat_tugas']= $this->M_surattugas->get_surattugas_by_no($data['nota_dinas']['srtgs_no']);
-                $data['nota_dinas']['surat_masuk']= $this->M_suratmasuk->get_suratmasuk_by_no($data['nota_dinas']['surat_tugas']['srtms_no']);
-                $data['tembusan'] = $this->M_suratmasuk->get_suratmasuk_by_join($data['nota_dinas']['surat_masuk']['srtms_id']);
-                $data['nama_file']  = 'Nota dinas '.$this->loader->konversi_tanggal($data['nota_dinas']['nds_tgl']).' - '.$data['nota_dinas']['nds_prh'];
-                $data['pdf'] = $this->load->library('PDFGenerator');
-                $html = $this->load->view('template/header_nota',$data, TRUE);
-                $this->pdfgenerator->generate($html,$data['nama_file']);
-                //
-/*            }else{
-                redirect('login');
-            }*/
+            $data['judul']="Nota Dinas";
+            $data['nota_dinas']= $this->M_notadinas->get_nota_dinas($value);
+            $data['pgw_dinas']= $this->M_dinaspegawai->get_dinas_pegawai_join_by_id($value);
+            $data['permintaan']= $this->M_pegawai->get_pegawai_by_nip($data['nota_dinas']['pgw_nip']);
+            $data['nota_dinas']['surat_tugas']= $this->M_surattugas->get_surattugas_by_no($data['nota_dinas']['srtgs_no']);
+            $data['nama_file']  = 'Nota dinas '.$this->loader->konversi_tanggal($data['nota_dinas']['nds_tgl']).' - '.$data['nota_dinas']['nds_id'];
+            $data['pdf'] = $this->load->library('PDFGenerator');
+            $html = $this->load->view('template/header_nota',$data, TRUE);
+            $this->pdfgenerator->generate($html,$data['nama_file']);
         }else{
             redirect('login');
         }

@@ -18,7 +18,7 @@
                         <tr>
                         <th>Nomor Nota</th>
                         <th>Ref. Surat Tugas</th>
-                        <th>Perihal</th>
+                        <th>No Kwitansi</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
                     </tr>
@@ -28,7 +28,7 @@
                         <tr>
                             <td><?php echo $N['nds_no']; ?></td>
                             <td><?php echo $N['srtgs_no']; ?></td>
-                            <td><?php echo $N['nds_prh']; ?></td>
+                            <td><?php echo $N['nds_dsr']; ?></td>
                             <td><?php echo $this->loader->konversi_tanggal($N['nds_tgl']); ?></td>
                             <td>
                                 <div class="btn-group">

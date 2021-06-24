@@ -7,7 +7,7 @@
       <div class="card-header">
         <h4>Data Direktur</h4>
         <div class="card-header-action">
-          <?php if ($level=='Admin'||$level=='Kepala Kantor'): ?>
+          <?php if ($level=='Admin'||$level=='Kepala Kantor' ||$level=='Kepala Sub Bagian Umum'): ?>
             <a href="<?php echo site_url('direktur/add') ?>" class="btn btn-success">Tambah</a>
             <a href="<?php echo site_url('direktur/cetak') ?>" class="btn btn-light">Cetak</a>
           <?php else: ?>

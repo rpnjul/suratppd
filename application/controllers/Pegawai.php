@@ -92,7 +92,7 @@ class Pegawai extends CI_Controller{
      */
     function add()
     {    
-        if ($this->session->has_userdata('status')&& ($this->session->userdata('level')=='Admin' || $this->session->userdata('level')=='Kepala Kantor')) {
+        if ($this->session->has_userdata('status')&& ($this->session->userdata('level')=='Admin' || $this->session->userdata('level')=='Kepala Kantor' || $this->session->userdata('level')=='Direktur')) {
         $this->load->library('form_validation');
 		$this->form_validation->set_rules('pgw_nip', 'NIP', 'required|trim|is_unique[tb_pgw.pgw_nip]|max_length[25]');
         $this->form_validation->set_rules('pgw_nm','Nama Lengkap','required|max_length[45]');

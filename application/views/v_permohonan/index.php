@@ -61,7 +61,7 @@
                 
                   <?php if ($level=='Direktur'): ?>
                     <td>
-                      <a class="btn btn-sm btn-success btn-action mr-1" href="<?php echo site_url('permohonan/edit/'.$P['psl_id']) ?>"><i class="fas fa-pencil-alt"></i></a>
+                      <!-- <a class="btn btn-sm btn-success btn-action mr-1" href="<?php echo site_url('permohonan/edit/'.$P['psl_id']) ?>"><i class="fas fa-pencil-alt"></i></a> -->
                       <a class="btn btn-sm btn-info btn-action mr-1" href="<?php echo site_url('permohonan/info/'.$P['psl_id']) ?>"><i class="fas fa-info"></i></a>
                     </td>
                   <?php endif ?>

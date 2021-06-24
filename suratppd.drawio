@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-06-24T09:46:59.544Z" agent="5.0 (Windows)" etag="O6aJLtQmAHN382UaUvq3" version="14.8.0" type="github">
+<mxfile host="app.diagrams.net" modified="2021-06-24T10:49:53.484Z" agent="5.0 (Windows)" etag="Z9zSwBdan_dMm5LQSLP6" version="14.8.0" type="github">
   <diagram id="7KBXduqILSjG5q8MCGv4" name="Page-1">
-    <mxGraphModel dx="1422" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1185" dy="650" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -255,14 +255,8 @@
         <mxCell id="zJp7o7V6sukcPG7aJ3fY-40" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="zJp7o7V6sukcPG7aJ3fY-36" target="zJp7o7V6sukcPG7aJ3fY-34">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="zJp7o7V6sukcPG7aJ3fY-36" value="Cetak Data" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1110" y="450" width="85" height="40" as="geometry" />
-        </mxCell>
         <mxCell id="zJp7o7V6sukcPG7aJ3fY-41" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="zJp7o7V6sukcPG7aJ3fY-37" target="zJp7o7V6sukcPG7aJ3fY-34">
           <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="zJp7o7V6sukcPG7aJ3fY-37" value="Melihat Data" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1210" y="450" width="90" height="40" as="geometry" />
         </mxCell>
         <mxCell id="zJp7o7V6sukcPG7aJ3fY-42" value="" style="swimlane;startSize=0;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="950" y="50.00000000000001" width="538.49" height="518.91" as="geometry" />
@@ -288,10 +282,22 @@
         <mxCell id="zJp7o7V6sukcPG7aJ3fY-45" value="Logout" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="zJp7o7V6sukcPG7aJ3fY-42">
           <mxGeometry x="70" y="183.90999999999997" width="60" height="40" as="geometry" />
         </mxCell>
+        <mxCell id="zJp7o7V6sukcPG7aJ3fY-37" value="Melihat Data" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="zJp7o7V6sukcPG7aJ3fY-42">
+          <mxGeometry x="300" y="393.91" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zJp7o7V6sukcPG7aJ3fY-36" value="Cetak Data" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="zJp7o7V6sukcPG7aJ3fY-42">
+          <mxGeometry x="250" y="433.90999999999997" width="85" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="zJp7o7V6sukcPG7aJ3fY-51" value="Tambah Data" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="zJp7o7V6sukcPG7aJ3fY-42">
+          <mxGeometry x="150" y="420" width="85" height="40" as="geometry" />
+        </mxCell>
         <mxCell id="zJp7o7V6sukcPG7aJ3fY-46" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="zJp7o7V6sukcPG7aJ3fY-45" target="zJp7o7V6sukcPG7aJ3fY-5">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="zJp7o7V6sukcPG7aJ3fY-48" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="zJp7o7V6sukcPG7aJ3fY-47" target="9-0OQLkkKcLO5UEKQbR6-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zJp7o7V6sukcPG7aJ3fY-52" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="zJp7o7V6sukcPG7aJ3fY-51" target="zJp7o7V6sukcPG7aJ3fY-34">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>

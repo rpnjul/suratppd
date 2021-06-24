@@ -31,6 +31,16 @@ class M_pegawai extends CI_Model
         return $q->num_rows();
     }
 
+    function cek_kasubbag(){
+        $q = $this->db->query("SELECT * FROM tb_pgw WHERE pgw_jab = 'Kepala Sub Bagian Umum'");
+        return $q->num_rows();
+    }
+    function kasubbag(){
+        $q = $this->db->query("SELECT * FROM tb_pgw WHERE pgw_jab = 'Kepala Sub Bagian Umum'");
+        return $q->row_array();
+    }
+
+
     function cek_kepala()
     {
         $q = $this->db->query("select * from tb_pgw where pgw_jab = 'Kepala Kantor' ");

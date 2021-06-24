@@ -297,9 +297,9 @@ class Rincian extends CI_Controller{
             
     function terbilang($nilai) {
         if($nilai<0) {
-            $hasil = "minus ". trim($this->penyebut($nilai));
+            $hasil = "minus ". trim($this->penyebut($nilai)).' rupiah';
         } else {
-            $hasil = trim($this->penyebut($nilai));
+            $hasil = trim($this->penyebut($nilai)).' rupiah';
         }     		
         return $hasil;
     }

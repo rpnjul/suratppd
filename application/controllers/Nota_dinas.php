@@ -13,6 +13,7 @@ class Nota_dinas extends CI_Controller{
         $this->load->model('M_pegawai');
         $this->load->model('M_surattugas');
         $this->load->model('M_dinaspegawai');
+        $this->load->model('M_daftarrincian');
         $this->sesi = $this->session->has_userdata('status');
         if (!$this->sesi) {
             redirect('login','refresh');
@@ -279,9 +280,14 @@ class Nota_dinas extends CI_Controller{
             $data['judul']="Nota Dinas";
             $data['nota_dinas']= $this->M_notadinas->get_nota_dinas($value);
             $data['pgw_dinas']= $this->M_dinaspegawai->get_dinas_pegawai_join_by_id($value);
-            $data['permintaan']= $this->M_pegawai->get_pegawai_by_nip($data['nota_dinas']['pgw_nip']);
+            $data['pegawai']= $this->M_pegawai->get_pegawai_by_nip($data['nota_dinas']['pgw_nip']);
+            $data['rincian'] = $this->M_daftarrincian->search_rincian_by_surattugas2($data['nota_dinas']['srtgs_no']);
+            $data['total'] = ($data['rincian']['rnd_binap'] * $data['rincian']['rnd_jmlinap']) + ($data['rincian']['rnd_btrkt'] + $data['rincian']['rnd_btrkt']) + ($data['rincian']['rnd_sku'] * $data['rincian']['rnd_jmlsaku']??1) + $data['rincian']['rnd_btmbhn']??0;
+            $data['total_terbilang'] = $this->terbilang($data['total']);
             $data['nota_dinas']['surat_tugas']= $this->M_surattugas->get_surattugas_by_no($data['nota_dinas']['srtgs_no']);
             $data['nama_file']  = 'Nota dinas '.$this->loader->konversi_tanggal($data['nota_dinas']['nds_tgl']).' - '.$data['nota_dinas']['nds_id'];
+            $data['kasubbag'] = $this->M_pegawai->kasubbag();
+           
             $data['pdf'] = $this->load->library('PDFGenerator');
             $html = $this->load->view('template/header_nota',$data, TRUE);
             $this->pdfgenerator->generate($html,$data['nama_file']);
@@ -315,6 +321,43 @@ class Nota_dinas extends CI_Controller{
         }
         else
             show_error('Data tidak ditemukan.');
+    }
+
+    function penyebut($nilai) {
+        $nilai = abs($nilai);
+        $huruf = array("", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas");
+        $temp = "";
+        if ($nilai < 12) {
+            $temp = " ". $huruf[$nilai];
+        } else if ($nilai <20) {
+            $temp = $this->penyebut($nilai - 10). " belas";
+        } else if ($nilai < 100) {
+            $temp = $this->penyebut($nilai/10)." puluh". $this->penyebut($nilai % 10);
+        } else if ($nilai < 200) {
+            $temp = " seratus" . $this->penyebut($nilai - 100);
+        } else if ($nilai < 1000) {
+            $temp = $this->penyebut($nilai/100) . " ratus" . $this->penyebut($nilai % 100);
+        } else if ($nilai < 2000) {
+            $temp = " seribu" . $this->penyebut($nilai - 1000);
+        } else if ($nilai < 1000000) {
+            $temp = $this->penyebut($nilai/1000) . " ribu" . $this->penyebut($nilai % 1000);
+        } else if ($nilai < 1000000000) {
+            $temp = $this->penyebut($nilai/1000000) . " juta" . $this->penyebut($nilai % 1000000);
+        } else if ($nilai < 1000000000000) {
+            $temp = $this->penyebut($nilai/1000000000) . " milyar" . $this->penyebut(fmod($nilai,1000000000));
+        } else if ($nilai < 1000000000000000) {
+            $temp = $this->penyebut($nilai/1000000000000) . " trilyun" . $this->penyebut(fmod($nilai,1000000000000));
+        }     
+        return $temp;
+    }
+            
+    function terbilang($nilai) {
+        if($nilai<0) {
+            $hasil = "minus ". trim($this->penyebut($nilai)).' rupiah';
+        } else {
+            $hasil = trim($this->penyebut($nilai)).' rupiah';
+        }     		
+        return $hasil;
     }
     
 }

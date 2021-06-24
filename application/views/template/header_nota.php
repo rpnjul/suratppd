@@ -109,7 +109,7 @@ body{
 			nota dinas
 		</div>
 		<div class="head-2" style="font-weight: normal;font-stretch: normal;text-decoration: none;text-transform: normal;">
-			Tanggal : 18 April 2020 Nomor : 001/DPB/SPPD/V11/2021
+			Tanggal : <?php echo $this->loader->konversi_tanggal($nota_dinas['nds_tgl']);?> |  Nomor : <?php echo $nota_dinas['nds_no']??0;?>
 		</div>
 		<br>
 		
@@ -117,20 +117,24 @@ body{
 	<div class="line-separator"></div>
 	<table class="tabell" style="padding-top:0px !important;">
 		<tr>
-			<td> Saya yang bertanda tangan dibawah ini selaku Pejabat Pembuat Komitmen memerintahkan Bendahara Pengeluaran agar melakukan pembayaran Sejumlah : </td>
+			<td> Saya yang bertanda tangan dibawah ini selaku Pejabat Pembuat Komitmen memerintahkan Bendahara Pengeluaran agar melakukan pembayaran sejumlah : </td>
 		</tr>
 	</table>
 	<table class="tabell" style="width: 100%;">
 		<thead>
 			<tr>
 				<th width="1%" align="left">Rp </th>
-				<th align="left" style="border-bottom: 1px dotted black">300.000</th>
+				<th align="left" style="border-bottom: 1px dotted black"><?php echo $this->loader->rupiahs($total)??0; ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
 				<th width="2%" align="left">Terbilang: </th>
-				<th align="left" style="border-bottom: 1px dotted black">Sembilan Juta Bla Bla bla</th>
+				<th align="left" style="border-bottom: 1px dotted black"><?php echo $total_terbilang;?></th>
+			</tr>
+			<tr>
+				<th width="2%" align="left"></th>
+				<th align="left" style="border-bottom: 1px dotted black ; margin-top: 10px;" ></th>
 			</tr>
 		</tbody>
 	</table>
@@ -145,16 +149,19 @@ body{
 			<tr>
 				<td width="2%">1</td>
 				<td>Kuitansi / Bukti pembelian</td>
-				<td style="border-bottom: 1px dotted black">: a</td>
+				<td style="border-bottom: 1px dotted black">: <?php echo $rincian['srtgs_no'];?></td>
 			</tr>
 			<tr>
 				<td width="2%">2</td>
-				<td>Nota/bukti penerimaan barang/jasa / (bukti lainnya)</td>
-				<td style="border-bottom: 1px dotted black">: c</td>
+				<td>Nota/bukti penerimaan barang/ bukti lainnya</td>
+				<td style="border-bottom: 1px dotted black">: <?php echo $nota_dinas['nds_dsr']??null;?></td>
 			</tr>
 		</tbody><br>
 	</table>
 	<div class="line-separator"></div>
+	<?php for($a=0;$a<8;$a++):?>
+	<br>
+	<?php endfor;?>
 	<table  class="tabell"  style="width: 100%;" cellspacing="0" cellpadding="0">
 		<thead>
 			<tr>
@@ -166,48 +173,128 @@ body{
 		<tbody>
 			<tr>
 				<td align="left">Tanggal: </td>
-				<td align="left">Penerima Uang / Uang Muka Kerja</td>
-				<td align="left">Kuasa Pengguna Anggaran</td>
-			</tr>
-			<tr>
-				<td align="left">Bendahara Pengeluaran</td>
 				<td align="left"></td>
 				<td align="left"></td>
 			</tr>
 			<tr>
-				<td align="left"> </td>
-				<td align="left"> </td>
-				<td align="left"> </td>
+				<td align="left">Pegawai yang bertugas</td>
+				<td align="left">Kepala Sub Bagian Umum</td>
+				<td align="left">Direktorat Ditjen Perikanan Budidaya</td>
+			</tr>
+			<?php for($i=0;$i<15;$i++): ?>
+			<tr>
+				<td align="left"></td>
+				<td align="left"></td>
+				<td align="left"></td>
+			</tr>
+			<?php endfor;?>
+			<tr>
+				<td align="left"><?php echo $pegawai['pgw_nm'];?></td>
+				<td align="left"><?php echo $kasubbag['pgw_nm'];?></td>
+				<td align="left">Joco Kokarkin Soetrisno, M.Sc</td>
 			</tr>
 			<tr>
-				<td align="left"> </td>
-				<td align="left"> </td>
-				<td align="left"> </td>
+				<td align="left"><?php echo $pegawai['pgw_nip'];?></td>
+				<td align="left"><?php echo $kasubbag['pgw_nip'];?></td>
+				<td align="left">NIP : 19610926 198603 1 002</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+<body class="body">
+	<div class="header">
+		<div class="head-2">
+			nota dinas
+		</div>
+		<div class="head-2" style="font-weight: normal;font-stretch: normal;text-decoration: none;text-transform: normal;">
+			Tanggal : <?php echo $this->loader->konversi_tanggal($nota_dinas['nds_tgl']);?> |  Nomor : <?php echo $nota_dinas['nds_no']??0;?>
+		</div>
+		<br>
+		
+	</div>
+	<div class="line-separator"></div>
+	<table class="tabell" style="padding-top:0px !important;">
+		<tr>
+			<td> Saya yang bertanda tangan dibawah ini selaku Pejabat Pembuat Komitmen memerintahkan Bendahara Pengeluaran agar melakukan pembayaran sejumlah : </td>
+		</tr>
+	</table>
+	<table class="tabell" style="width: 100%;">
+		<thead>
+			<tr>
+				<th width="1%" align="left">Rp </th>
+				<th align="left" style="border-bottom: 1px dotted black"><?php echo $this->loader->rupiahs($total)??0; ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th width="2%" align="left">Terbilang: </th>
+				<th align="left" style="border-bottom: 1px dotted black"><?php echo $total_terbilang;?></th>
 			</tr>
 			<tr>
-				<td align="left"> </td>
-				<td align="left"> </td>
-				<td align="left"> </td>
+				<th width="2%" align="left"></th>
+				<th align="left" style="border-bottom: 1px dotted black ; margin-top: 10px;" ></th>
+			</tr>
+		</tbody>
+	</table>
+	<div class="line-separator"></div>
+	<table  class="tabell"  style="width: 100%;" cellspacing="0" cellpadding="0">
+		<thead>
+			<tr>
+				<th colspan="3" align="left">Atas dasar: </th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td width="2%">1</td>
+				<td>Kuitansi / Bukti pembelian</td>
+				<td style="border-bottom: 1px dotted black">: <?php echo $rincian['srtgs_no'];?></td>
 			</tr>
 			<tr>
-				<td align="left"> </td>
-				<td align="left"> </td>
-				<td align="left"> </td>
+				<td width="2%">2</td>
+				<td>Nota/bukti penerimaan barang/ bukti lainnya</td>
+				<td style="border-bottom: 1px dotted black">: <?php echo $nota_dinas['nds_dsr']??null;?></td>
+			</tr>
+		</tbody><br>
+	</table>
+	<div class="line-separator"></div>
+	<?php for($a=0;$a<8;$a++):?>
+	<br>
+	<?php endfor;?>
+	<table  class="tabell"  style="width: 100%;" cellspacing="0" cellpadding="0">
+		<thead>
+			<tr>
+				<th align="left">Setuju/lunas dibayar,</th>
+				<th align="left">Diterima Tanggal</th>
+				<th align="left">Jakarta .............</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td align="left">Tanggal: </td>
+				<td align="left"></td>
+				<td align="left"></td>
 			</tr>
 			<tr>
-				<td align="left"> </td>
-				<td align="left"> </td>
-				<td align="left"> </td>
+				<td align="left">Pegawai yang bertugas</td>
+				<td align="left">Kepala Sub Bagian Umum</td>
+				<td align="left">Direktorat Ditjen Perikanan Budidaya</td>
+			</tr>
+			<?php for($i=0;$i<15;$i++): ?>
+			<tr>
+				<td align="left"></td>
+				<td align="left"></td>
+				<td align="left"></td>
+			</tr>
+			<?php endfor;?>
+			<tr>
+				<td align="left"><?php echo $pegawai['pgw_nm'];?></td>
+				<td align="left"><?php echo $kasubbag['pgw_nm'];?></td>
+				<td align="left">Joco Kokarkin Soetrisno, M.Sc</td>
 			</tr>
 			<tr>
-				<td align="left"> </td>
-				<td align="left"> </td>
-				<td align="left"> </td>
-			</tr>
-			<tr>
-				<td align="left">PAIDIN</td>
-				<td align="left">Bayu Aji, S.Si,M.Si</td>
-				<td align="left">Dr. Ir. Slamet Soebjakto, M.Si</td>
+				<td align="left"><?php echo $pegawai['pgw_nip'];?></td>
+				<td align="left"><?php echo $kasubbag['pgw_nip'];?></td>
+				<td align="left">NIP : 19610926 198603 1 002</td>
 			</tr>
 		</tbody>
 	</table>

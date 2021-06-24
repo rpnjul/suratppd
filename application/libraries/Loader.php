@@ -208,6 +208,10 @@ class Loader extends FPDF
 		$hasil_rupiah = "Rp " . number_format((int)$angka,0,',','.');
 		return $hasil_rupiah; 
 	}
+	function rupiahs($angka){	
+		$hasil_rupiah = number_format((int)$angka,0,',','.');
+		return $hasil_rupiah; 
+	}
 
 	function WriteTable($data, $w)
 {

@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-header">
                 <h4>Data Surat Tugas</h4>
-            	<?php if ($level=='Kepala Sub Bagian Umum' | $level=='Admin' | $level=='Direktur' | $level=='Pegawai') {?>
+            	<?php if ($level=='Admin' | $level=='Direktur' | $level=='Pegawai' | $level =='Admin') {?>
                     <div class="card-header-action">
                         <a class="btn btn-success btn-sm" href="<?php echo site_url('surat_tugas/add'); ?>" > <span class="fa fa-plus"></span> Tambah</a> 
                     </div>
@@ -39,7 +39,7 @@
                             <td>
                                 <div class="btn-group">
                                     <a target="_blank" href="<?php echo site_url('surat_tugas/cetak/'.$S['srtgs_id']); ?>" class="btn btn-primary btn-sm"><span class="fa fa-print"></span> Cetak</a>     
-                                    <?php if ($level=='Kepala Sub Bagian Umum') { ?>
+                                    <?php if ($level=='Direktur' | $level=='Pegawai') { ?>
                                         <a href="<?php echo site_url('surat_tugas/edit/'.$S['srtgs_id']); ?>" class="btn btn-info btn-sm"><span class="fa fa-edit"></span> Ubah</a> 
                                         <a onclick="deletesrtgs(<?php echo $S['srtgs_id'] ?>)" class="btn btn-danger text-white btn-sm"><span class="fa fa-trash"></span> Hapus</a>
                                     <?php } ?> 

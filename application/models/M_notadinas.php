@@ -27,6 +27,13 @@ class M_notadinas extends CI_Model
         $this->db->from('tb_nds');
         return $this->db->count_all_results();
     }
+
+    function get_success_by_srtgs($srtgs_no)
+    {
+        $array = array('status'=> 1, 'srtgs_no' => $srtgs_no);
+        $this->db->where($array);
+        return  $this->db->from('tb_nds')->count_all_results();
+    }
         
     /*
      * Get all nota_dinas

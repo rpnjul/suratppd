@@ -228,8 +228,8 @@ body{
 				<td align="left">Telah Menerima Uang Sebesar</td>
 			</tr>
 			<tr>
-				<td align="left"><b>Rp. 0</b></td>
-				<td align="left"><b>Rp. 0</b></td>
+				<td align="left"><b><?php if($isConfirm): ?><?php echo $this->loader->rupiah($total); ?><?php else: ?> Rp. 0 <?php endif; ?></b></td>
+				<td align="left"><b><?php if($isConfirm): ?><?php echo $this->loader->rupiah($total); ?><?php else: ?> Rp. 0 <?php endif; ?></b></td>
 			</tr>
 			<tr>
 				<td align="left">Bendahara Pengeluaran.</td>

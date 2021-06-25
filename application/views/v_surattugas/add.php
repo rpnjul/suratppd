@@ -13,7 +13,7 @@
           			    <div class="col-md-6">
           			    	<div class="form-group">
           			    	    <label for="#srtms_no"><span class="text-danger">*</span> Ref. Surat Masuk</label>
-          			    	    <input required="" class="form-control" type="text" id="srtms_no" name="srtms_no" value="<?php echo $this->input->post('srtms_no'); ?>">
+          			    	    <input required="" class="form-control" type="text" id="srtms_no" name="srtms_no" placeholder="Ketik 3 digit No Surat Masuk" value="<?php echo $this->input->post('srtms_no'); ?>">
           			    	    <span class="text-danger"><?php echo form_error('srtms_no');?></span>
           			    	</div>
                       <div class="form-group">
@@ -23,12 +23,12 @@
                       </div>
                       <div class="form-group">
                           <label for="#srtgs_tbr"><span class="text-danger">*</span> Tempat Berangkat</label>
-                          <input  required="" class="form-control" type="text" id="srtgs_tbr" name="srtgs_tbr" value="<?php echo $this->input->post('srtgs_tbr'); ?>">
+                          <input  required="" class="form-control" type="text" id="srtgs_tbr" placeholder="Ketik Nama Kota" name="srtgs_tbr" value="<?php echo $this->input->post('srtgs_tbr'); ?>">
                           <span class="text-danger"><?php echo form_error('srtgs_tbr');?></span>
                       </div>
                       <div class="form-group">
                           <label for="#srtgs_tmt"><span class="text-danger">*</span> Tempat Bertugas</label>
-                          <input  required="" class="form-control" type="text" id="srtgs_tmt" name="srtgs_tmt" value="<?php echo $this->input->post('srtgs_tmt'); ?>">
+                          <input  required="" class="form-control" type="text" id="srtgs_tmt" placeholder="Ketik Nama Kota" name="srtgs_tmt" value="<?php echo $this->input->post('srtgs_tmt'); ?>">
                           <span class="text-danger"><?php echo form_error('srtgs_tmt');?></span>
                       </div>
           			    </div>
@@ -37,7 +37,7 @@
                           <label for="#pgw_nip"><span class="text-danger">*</span> Pegawai Ditugaskan</label>
                           <div class="row">
                             <div class="col">
-                              <input type="text" class="form-control" name="pgw_nip" id="pgw_nip" value="<?php echo $this->input->post('pgw_nip') ?>" />
+                              <input type="text" class="form-control" name="pgw_nip" id="pgw_nip" placeholder="ketik 3 digit NIP Pegawai" value="<?php echo $this->input->post('pgw_nip') ?>" />
                               <span class="text-danger"><?php echo form_error('pgw_nip');?></span>
                             </div>
                             <div class="col">
@@ -47,12 +47,12 @@
                       </div>
           			   		<div class="form-group">
           			   		    <label for="#srtgs_tgl"><span class="text-danger">*</span> Tanggal Bertugas</label>
-          			   		    <input required="" class="form-control" type="text" id="srtgs_tgl" name="srtgs_tgl" value="<?php echo $this->input->post('srtgs_tgl'); ?>">
+          			   		    <input required="" class="form-control" type="text" id="srtgs_tgl" name="srtgs_tgl" placeholder="YYYY-MM-DD" value="<?php echo $this->input->post('srtgs_tgl'); ?>">
           			   		    <span class="text-danger"><?php echo form_error('srtgs_tgl');?></span>
           			   		</div>
                       <div class="form-group">
                           <label for="#srtgs_kmb"><span class="text-danger">*</span> Tanggal Kembali</label>
-                          <input required="" class="form-control" type="text" id="srtgs_kmb" name="srtgs_kmb" value="<?php echo $this->input->post('srtgs_kmb'); ?>">
+                          <input required="" class="form-control" type="text" id="srtgs_kmb" name="srtgs_kmb" placeholder="YYYY-MM-DD" value="<?php echo $this->input->post('srtgs_kmb'); ?>">
                           <span class="text-danger"><?php echo form_error('srtgs_kmb');?></span>
                       </div>
                       <div class="form-group">
@@ -66,7 +66,7 @@
                                   <tr id="row1">  
                                     <td>
                                       <div class="input-group">
-                                        <input type="text" name="pengikut[][pgw_nip]" id="pengikut[]" placeholder="Masukan NIP" class="form-control findpgw" required />
+                                        <input type="text" name="pengikut[][pgw_nip]" id="pengikut[]" placeholder="Ketik 3 digit NIP Pegawai" class="form-control findpgw" required />
                                         <span class="input-group-append">
                                           <button type="button" name="remove" id="1" class="btn btn-danger btn_remove"><span class="fas fa-times"></span></button>
                                         </span>

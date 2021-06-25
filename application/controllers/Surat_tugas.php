@@ -126,7 +126,7 @@ class Surat_tugas extends CI_Controller{
     function add()
     {   
 
-        if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Direktur' | $this->session->userdata('level')=='Kepala Sub Bagian Umum' | $this->session->userdata('level')=='Admin' | $this->session->userdata('level')=='Pegawai')) {
+        if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Direktur' | $this->session->userdata('level')=='Admin' | $this->session->userdata('level')=='Pegawai')) {
         $this->load->library('form_validation');
 
 		//$this->form_validation->set_rules('srtgs_no','Nomor Surat Tugas','required|is_unique[`tb_srtgs`.srtgs_no]|max_length[30]');

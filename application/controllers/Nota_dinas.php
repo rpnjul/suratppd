@@ -294,6 +294,25 @@ class Nota_dinas extends CI_Controller{
        }
     } 
 
+    function accept($id)
+    {
+        if($this->session->has_userdata('status') && $this->session->userdata('level') =='Kepala Sub Bagian Umum') {
+            $params = array(
+                'status'    => 1,
+            );
+            $this->M_notadinas->update_nota_dinas($id, $params);
+            return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(500)
+                        ->set_output(json_encode(['status' => 200, 'desc'=> 'ok']));
+        }else{
+            return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(500)
+                        ->set_output(json_encode(['status' => 400, 'desc'=> 'You dont have access']));
+        }
+    }
+
     public function cetak($value='')
     {
         if($this->session->has_userdata('status')){

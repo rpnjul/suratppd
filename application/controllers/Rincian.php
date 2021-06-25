@@ -315,6 +315,10 @@ class Rincian extends CI_Controller{
             $data['pengikut']=$this->M_pengikuttgs->get_pengikut_tgs_by_no_join($data['rincian']['srtgs_no']);
             $data['st'] = $this->M_surattugas->get_surattugas_by_no($data['rincian']['srtgs_no']);
             $data['pdf'] = $this->load->library('PDFGenerator');
+            $data['isConfirm'] = false;
+            $this->load->model('M_notadinas');
+            $cek = $this->M_notadinas->get_success_by_srtgs($data['rincian']['srtgs_no']);
+            if($cek > 0) $data['isConfirm'] = true;
             //$this->pdfgenerator->set_paper(array(0,0,595,595),"portait");
             
             $data['nama_file']  = 'Rincian Biaya Perjalanan '.$this->loader->konversi_tanggal($data['rincian']['rcn_tgl']).' - '.$data['st']['srtgs_tmt'];

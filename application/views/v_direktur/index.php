@@ -34,19 +34,17 @@
                 <td><?php echo $i; ?></td>
                 <td><?php echo $P['direktur_no']; ?></td>
                 <td><?php echo $P['direktur_nm']; ?></td>
-                <td><?php echo ($level=='Pejabat Lelang'?substr_replace($P['direktur_tlp'], str_repeat('X', 6),strlen($P['direktur_tlp'])-6):$P['direktur_tlp']); ?></td>
-                <td><?php echo ($level=='Pejabat Lelang'?substr_replace(explode('@', $P['direktur_eml'])[0], str_repeat('X', 4), 0,4).'@'.explode('@', $P['direktur_eml'])[1]:$P['direktur_eml']) ?></td>
+                <td><?php echo ($level=='Kepala Suku Bagian Umum'?substr_replace($P['direktur_tlp'], str_repeat('X', 6),strlen($P['direktur_tlp'])-6):$P['direktur_tlp']); ?></td>
+                <td><?php echo ($level=='Kepala Suku Bagian Umum'?substr_replace(explode('@', $P['direktur_eml'])[0], str_repeat('X', 4), 0,4).'@'.explode('@', $P['direktur_eml'])[1]:$P['direktur_eml']) ?></td>
                 <td><?php echo (strlen($P['direktur_alm'])>30 ? substr($P['direktur_alm'], 0,28).'...' : $P['direktur_alm']); ?></td>
                 <td>
                   <div class="btn-group">
-                      <?php if ($level=='Admin' || $level=='Kepala Kantor'): ?>
-                      <a type="button" class="btn btn-sm btn-success btn-action mr-1" href="<?php echo site_url('permohonan/add?direktur='.$P['direktur_id']) ?>"><i class="fas fa-plus"></i></a>
+                      <?php if ($level=='Admin' | $level=='Kepala Kantor' | $P['direktur_no'] == $this->session->userdata('nip')): ?>
                       <a type="button" class="btn btn-sm btn-primary btn-action mr-1" href="<?php echo site_url('direktur/edit/'.$P['direktur_id']) ?>"><i class="fas fa-pencil-alt"></i></a>
-                        
                       <?php endif ?>
                       <a type="button" class="btn btn-sm btn-info btn-action mr-1" href="<?php echo site_url('direktur/info/'.$P['direktur_id']) ?>"><i class="fas fa-info"></i></a>
                       <!-- <a type="button" href="" class="btn btn-danger btn-action" ><i class="fas fa-trash"></i></a> -->                
-                    <?php if ($level=='Kepala Kantor' ): ?>
+                    <?php if ($level=='Kepala Kantor' | $level=='Admin' ): ?>
                          <a type="button" id="sts<?php echo $P['direktur_id'] ?>" status="<?php echo($P['direktur_sts']); ?>" class="btn-sts btn btn-sm <?php echo $P['direktur_sts']==0 ? 'btn-success':'btn-danger' ?> btn-action"  ><i id="icon-sts-<?php echo ($P['direktur_id'])?>" class="fas fa-<?php echo ($P['direktur_sts']==0?'check':'power-off') ?>"></i></a>
                     <?php endif ?>
                   </div>

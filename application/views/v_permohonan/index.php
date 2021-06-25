@@ -11,7 +11,7 @@
               <label for="">Cari</label>
               <input type="text" class="form-control" id="cari_periode">
           </div>  -->
-          <?php if ($this->session->userdata('level')=='Admin' || $this->session->userdata('level')=='Kepala Kantor' || $this->session->userdata('level')=='Direktur'): ?>
+          <?php if ($this->session->userdata('level')=='Admin' | $this->session->userdata('level')=='Direktur'): ?>
             <a href="<?php echo site_url('permohonan/add') ?>" class="btn btn-success">Tambah</a>
           <?php else: ?>
           <?php endif ?>

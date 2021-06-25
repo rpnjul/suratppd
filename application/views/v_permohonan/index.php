@@ -44,7 +44,7 @@
                 <th>Tanggal</th>
                 <th>Perihal</th>
                 <th>Status</th>
-                <?php if ($level=='Direktur' OR $level == 'Admin' OR $level=='Kepala Kantor' OR $level=='Kepala Sub Bagian Umum' OR $level == 'Admin'): ?>
+                <?php if ($level=='Direktur' OR $level=='Kepala Sub Bagian Umum' OR $level == 'Admin'): ?>
                 <th>Aksi</th>
                 <?php endif ?>
               </tr>
@@ -65,7 +65,7 @@
                       <a class="btn btn-sm btn-info btn-action mr-1" href="<?php echo site_url('permohonan/info/'.$P['psl_id']) ?>"><i class="fas fa-info"></i></a>
                     </td>
                   <?php endif ?>
-                <?php if ($level=='Kepala Kantor' OR $level=='Kepala Sub Bagian Umum'): ?>
+                <?php if ($level=='Kepala Sub Bagian Umum'): ?>
                   <td>
                      <a id="sts<?php echo $P['psl_id'] ?>" status="<?php echo($P['psl_sts']); ?>" class="btn-sts btn btn-sm <?php echo $P['psl_sts']==0 ? 'btn-success':'btn-danger' ?> btn-action"  ><i id="icon-sts-<?php echo ($P['psl_id'])?>" class="fas fa-<?php echo ($P['psl_sts']==0?'check':'power-off') ?>"></i></a>
                      <a id="remove<?php echo $P['psl_id'] ?>" onclick="return hapus(this)" class="btn btn-sm btn-danger btn-action"  ><i class="fas fa-trash ?>"></i></a>

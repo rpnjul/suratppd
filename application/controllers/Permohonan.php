@@ -438,7 +438,7 @@ public function kirim($direktur_nm,$direktur_eml,$judul,$pesan_judul,$pesan_isi)
 	    public function nonactive()
 	    {
 	        $id = $this->input->post('id');
-	       	if ($this->session->has_userdata('status') & $this->session->userdata('level')=='Kepala Kantor') {
+	       	if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Kepala Sub Bagian Umum' || $this->session->userdata('level')=='Admin')) {
 	           $data= $this->M_permohonan->get_permohonan($id);
 	           if(isset($data['psl_id']))
 	           {

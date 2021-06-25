@@ -9,7 +9,7 @@
             </div>
 
           	<div class="card-body">
-          		<?php echo form_open('rincian/add'); ?>
+          		<?php echo form_open_multipart('rincian/add'); ?>
           		<div class="row clearfix">
 					<div class="col-md-12 row">
 						<div class="col-md-6">

@@ -44,7 +44,7 @@ class Nota_dinas extends CI_Controller{
 
         private function kodeotomatis()
             {
-                $res = $this->db->query('select max(right(nds_no,4)) as `urut_tahun`,max(substring(nds_no,4,3)) as `urut` from tb_nds')->row();
+                $res = $this->db->query('select max(right(nds_no,4)) as `urut_tahun`,max(substring(nds_no,1,3)) as `urut` from tb_nds')->row();
                 $tgl = date('/Y');
                 if (isset($res->urut)) {
                     $urut = intval($res->urut);
@@ -95,52 +95,74 @@ class Nota_dinas extends CI_Controller{
         $this->load->library('form_validation');
         $this->form_validation->set_rules('srtgs_no','Ref. Surat tugas','required|callback_cek_surattugas');
         $this->form_validation->set_rules('rcn_no','Nomor Rincian','required|max_length[125]');
-        // $this->form_validation->set_rules('nds_no','Isi surat','required');
-        $this->form_validation->set_rules('nds_dsr','Nomor Kwitansi','required');
-        $this->form_validation->set_rules('nds_tgl','Nomor Nota','is_unique[tb_nds.nds_no]');
-        //$pengikut = ;
-        //var_dump(sizeof($this->input->post('pengikut')));
-        
+        $this->form_validation->set_rules('nds_no','Isi surat','required|is_unique[tb_nds.nds_no]');
+        $this->form_validation->set_rules('nds_tgl','Nomor Nota',);
         $this->rules();
         if($this->form_validation->run())     
         {   
             $st = $this->M_surattugas->get_surattugas_by_no($this->input->post('srtgs_no'));
+            $count = count($_FILES['files']['name']);
+            $object = null;
+            for($i=0;$i<$count;$i++){
+                if(!empty($_FILES['files']['name'][$i])){
+                    $_FILES['file']['name'] = $_FILES['files']['name'][$i];
+                    $_FILES['file']['type'] = $_FILES['files']['type'][$i];
+                    $_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
+                    $_FILES['file']['error'] = $_FILES['files']['error'][$i];
+                    $_FILES['file']['size'] = $_FILES['files']['size'][$i];
+                    $config['upload_path'] = 'upload/nota/'; 
+                    $config['allowed_types'] = 'gif|jpg|jpeg|bmp|png';
+                    $config['max_size'] = '5000'; // max_size in kb
+                    $tmp = explode('.', $_FILES['files']['name'][$i]);
+                    $file_ext = end($tmp);
+                    $config['file_name'] = 'Nota Dinas'.'_'.strtotime(date('Y-m-d H:i:s')).'.'.$file_ext;
+                    $this->load->library('upload',$config); 
+                    if($this->upload->do_upload('file')){
+                        $uploadData = $this->upload->data();
+                        $file_encode[$i]=$uploadData['file_name'];
+                    }
+                    $object = [
+                        'image1'=>$file_encode[0]??NULL,
+                        'image2'=>$file_encode[1]??NULL,
+                        'image3'=>$file_encode[2]??NULL,
+                        'image4'=>$file_encode[3]??NULL
+                    ];
+                }
+            }
             $params = array(
                     'nds_no'    => $this->kodeotomatis(),
-      				'srtgs_no'  => $this->input->post('srtgs_no'),
+                    'srtgs_no'  => $this->input->post('srtgs_no'),
                     'rcn_no'    => $this->input->post('rcn_no'),
                     'pgw_nip'   => $st['pgw_nip'],
-      				'nds_tgl'   => date('Y-m-d'),
-      				'nds_dsr'   => $this->input->post('nds_dsr'),
+                    'nds_tgl'   => date('Y-m-d'),
+                    'nds_dsr'   => $this->input->post('nds_dsr'),
+                    'file_ext'  => json_encode($object),
             );
-            
             $nota_dinas_id = $this->M_notadinas->add_nota_dinas($params);
             $par = array(
                 'srtgs_sts' => 2
             );
             $stt = $this->M_surattugas->update_surattugas($st['srtgs_id'],$par);
             if ($stt) {
-                $pegawai = $this->M_pegawai->get_pegawai_by_nip($st->pgw_nip);
+                $pegawai = $this->M_pegawai->get_pegawai_by_nip($st['pgw_nip']);
                 if($pegawai){
                     if (!empty($this->input->post('pgw_nip'))) {
-                             if (!empty($tgl) & $this->cek_tgl($pgwnds_tgl) ) {
-                                 $pare = array(
-                                       'nds_id'     =>  $nota_dinas_id,
-                                       'pgw_nip'    =>  $st->pgw_nip,
-                                       'pgwnds_tgl' =>  $tgl,
-                                       'pgwnds_tmt' =>  $pgwnds_tmt,
-                                       'pgwnds_pkr' =>  $pgwnds_pkr,
-                                       'pgwnds_ket' =>  $pgwnds_ket
-                                 );
-                                 $this->M_dinaspegawai->add_dinas_pegawai($pare); 
-                             }
+                        if (!empty($tgl) & $this->cek_tgl($pgwnds_tgl) ) {
+                            $pare = array(
+                                'nds_id'     =>  $nota_dinas_id,
+                                'pgw_nip'    =>  $st->pgw_nip,
+                                'pgwnds_tgl' =>  $tgl,
+                                'pgwnds_tmt' =>  $pgwnds_tmt,
+                                'pgwnds_pkr' =>  $pgwnds_pkr,
+                                'pgwnds_ket' =>  $pgwnds_ket
+                            );
+                            $this->M_dinaspegawai->add_dinas_pegawai($pare); 
+                        }
                     }
                 }
             }
             redirect('nota_dinas/index');
-        }
-        else
-        {            
+        }else{            
             $data['_view'] = 'v_nota_dinas/add';
             $data['_landing'] = false;
             $data['judul'] = "Nota dinas";
@@ -287,7 +309,9 @@ class Nota_dinas extends CI_Controller{
             $data['nota_dinas']['surat_tugas']= $this->M_surattugas->get_surattugas_by_no($data['nota_dinas']['srtgs_no']);
             $data['nama_file']  = 'Nota dinas '.$this->loader->konversi_tanggal($data['nota_dinas']['nds_tgl']).' - '.$data['nota_dinas']['nds_id'];
             $data['kasubbag'] = $this->M_pegawai->kasubbag();
-           
+            // echo json_encode(json_decode($data['nota_dinas']['file_ext']));
+            // echo pathinfo(json_decode($data['nota_dinas']['file_ext']), PATHINFO_EXTENSION);
+            // die();
             $data['pdf'] = $this->load->library('PDFGenerator');
             $html = $this->load->view('template/header_nota',$data, TRUE);
             $this->pdfgenerator->generate($html,$data['nama_file']);

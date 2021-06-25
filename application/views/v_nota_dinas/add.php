@@ -7,32 +7,32 @@
       		      <a href="<?php echo base_url('nota_dinas') ?>" class="btn btn-sm btn-light"><span class="fas fa-chevron-left"></span> Kembali</a>
       		  </div>
       		</div>
-            <?php echo form_open('nota_dinas/add'); ?>
+            <?php echo form_open_multipart('nota_dinas/add'); ?>
           	<div class="card-body">
           		<div class="row clearfix">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="srtgs_no" class="control-label">Ref. Nomor Surat Tugas</label>
+							<label for="srtgs_no" class="control-label">Ref. Nomor Surat Tugas <i class="text-danger">*</i></label>
 							<input autocomplete="off" type="text" name="srtgs_no" value="<?php echo $this->input->post('srtgs_no'); ?>" placeholder="Ketik 3 digit surat tugas" class="form-control" id="srtgs_no" />
 							<span class="text-danger"><?php echo form_error('srtgs_no');?></span>
 						</div>
 						<div class="form-group">
-							<label for="nds_no" class="control-label">Nomor Surat Dinas</label>
-							<input autocomplete="off" type="text" name="nds_no" disabled="" value="<?php echo $kode; ?>" class="form-control" id="nds_no" />
+							<label for="nds_no" class="control-label">Nomor Surat Dinas <i class="text-danger">*</i></label>
+							<input autocomplete="off" type="text" name="nds_no" readonly value="<?php echo $kode; ?>" class="form-control" id="nds_no" />
 							<span class="text-danger"><?php echo form_error('nds_no');?></span>
 							
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="rcn_no" class="control-label">Ref. Nomor Rincian</label>
+							<label for="rcn_no" class="control-label">Ref. Nomor Rincian <i class="text-danger">*</i></label>
 							<!-- <input autocomplete="off" type="text" name="rcn_no" value="<?php echo $this->input->post('rcn_no'); ?>" placeholder="Ketik 3 digit nomor rincian" class="form-control" id="rcn_no" /> -->
 							<select class="form-control" name="rcn_no" id="rcn_no"></select>
 							<span class="text-danger"><?php echo form_error('rcn_no');?></span>
 						</div>
 						<label for="nds_tgl" class="control-label">Tanggal</label>
 						<div class="form-group">
-							<input autocomplete="off"  disabled type="text" name="nds_tgl" value="<?php echo $this->loader->konversi_tanggal(date("Y-m-d")); ?>" readonly class="form-control" id="nds_tgl" />
+							<input autocomplete="off"  readonly type="text" name="nds_tgl" value="<?php echo $this->loader->konversi_tanggal(date("Y-m-d")); ?>" readonly class="form-control" id="nds_tgl" />
 							<span class="text-danger"><?php echo form_error('nds_tgl');?></span>
 						</div>
 					</div>
@@ -41,6 +41,28 @@
 							<label for="nds_dsr" class="control-label">Nomor Kwitansi</label>
 							<input autocomplete="off" type="text" name="nds_dsr" value="<?php echo $this->input->post('nds_dsr'); ?>" placeholder="Masukan Nomor Kwitansi" class="form-control" id="nds_dsr" />
 							<span class="text-danger"><?php echo form_error('nds_dsr');?></span>
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="row">
+						<?php for($i=1;$i<=4; $i++): ?>
+							<div class="col-3">
+								<label for="" class="control-label">Gambar Tambahan <?php echo $i; ?></label>
+								<input type="file" id="dok<?php echo $i; ?>" name="files[]" class="form-control-file"  accept=".jpe, .jpg, .jpeg .png, .bmp">
+							</div>
+							<!-- <div class="col-3">
+								<label for="" class="control-label">Gambar 2</label>
+								<input type="file" name="files[]" class="form-control">
+							</div>
+							<div class="col-3">
+								<label for="" class="control-label">Gambar 3</label>
+								<input type="file" name="files[]" class="form-control">
+							</div>
+							<div class="col-3">
+								<label for="" class="control-label">Gambar 4</label>
+								<input type="file" name="files[]" class="form-control">
+							</div> -->
+						<?php endfor; ?>
 						</div>
 					</div>
 					

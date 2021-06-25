@@ -179,7 +179,7 @@ class Rincian extends CI_Controller{
                         );
                     }
                 }
-                redirect('rincian/index');
+                return redirect('rincian/index');
             }else{            
                 $data['judul']='Daftar Rincian';
                 $data['_view'] = 'v_daftar_rincian/add';

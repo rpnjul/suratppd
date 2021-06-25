@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Jun 2021 pada 13.00
+-- Waktu pembuatan: 25 Jun 2021 pada 06.43
 -- Versi server: 10.4.11-MariaDB
 -- Versi PHP: 7.4.6
 
@@ -58,15 +58,17 @@ CREATE TABLE `tb_nds` (
   `rcn_no` varchar(191) NOT NULL,
   `pgw_nip` char(25) NOT NULL COMMENT 'Pegawai yang bikin',
   `nds_tgl` date NOT NULL COMMENT 'Tanggal',
-  `nds_dsr` text NOT NULL COMMENT 'Dasar nota'
+  `nds_dsr` text NOT NULL COMMENT 'Dasar nota',
+  `file_ext` varchar(191) NOT NULL COMMENT 'File Tambahan'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data untuk tabel `tb_nds`
 --
 
-INSERT INTO `tb_nds` (`nds_id`, `nds_no`, `srtgs_no`, `rcn_no`, `pgw_nip`, `nds_tgl`, `nds_dsr`) VALUES
-(1, '001/DPB/SPPD/VII/2021', '001/DJPB/SPT.S2/VII/2021', '22', '123011211111', '2021-06-24', '8123/12308/123/');
+INSERT INTO `tb_nds` (`nds_id`, `nds_no`, `srtgs_no`, `rcn_no`, `pgw_nip`, `nds_tgl`, `nds_dsr`, `file_ext`) VALUES
+(11, '010/DPB/SPPD/VII/2021', '001/DJPB/SPT.S2/VII/2021', '22', '123011211111', '2021-06-25', 'S', '{\"image1\":\"Nota_Dinas_1624591694.jpg\",\"image2\":null,\"image3\":null,\"image4\":null}'),
+(10, '009/DPB/SPPD/VII/2021', '001/DJPB/SPT.S2/VII/2021', '22', '123011211111', '2021-06-25', 'S', '{\"image1\":\"Nota_Dinas_1624591607.jpg\",\"image2\":null,\"image3\":null,\"image4\":null}');
 
 -- --------------------------------------------------------
 
@@ -379,7 +381,7 @@ ALTER TABLE `tb_direktur`
 -- AUTO_INCREMENT untuk tabel `tb_nds`
 --
 ALTER TABLE `tb_nds`
-  MODIFY `nds_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=2;
+  MODIFY `nds_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_pgw`

@@ -201,6 +201,7 @@ body{
 		</tbody>
 	</table>
 </body>
+<?php if($nota_dinas['file_ext']!=null): ?>
 <body class="body">
 	<div class="header">
 		<div class="head-2">
@@ -212,91 +213,64 @@ body{
 		<br>
 		
 	</div>
+	<?php
+		$images = json_decode($nota_dinas['file_ext']);
+		// image 1
+		if($images->image1!=null){
+			$data1 = file_get_contents('upload/nota/'.$images->image1);
+			$type1 = pathinfo($images->image1, PATHINFO_EXTENSION);
+			$base64_1 = 'data:image/' . $type1 . ';base64,' . base64_encode($data1);
+		}
+		// image 2
+		if($images->image2!=null){
+			$data2 = file_get_contents('upload/nota/'.$images->image2);
+			$type2 = pathinfo($images->image2, PATHINFO_EXTENSION);
+			$base64_2 = 'data:image/' . $type2 . ';base64,' . base64_encode($data2);
+		}		
+		
+		// image 3
+		if($images->image3!=null){
+			$data3 = file_get_contents('upload/nota/'.$images->image3);
+			$type3 = pathinfo($images->image3, PATHINFO_EXTENSION);
+			$base64_3 = 'data:image/' . $type3 . ';base64,' . base64_encode($data3);
+		}
+
+		// image 4
+		if($images->image4!=null){
+			$data4 = file_get_contents('upload/nota/'.$images->image4);
+			$type4 = pathinfo($images->image4, PATHINFO_EXTENSION);
+			$base64_4 = 'data:image/' . $type4 . ';base64,' . base64_encode($data4);
+		}
+	?>
 	<div class="line-separator"></div>
 	<table class="tabell" style="padding-top:0px !important;">
 		<tr>
-			<td> Saya yang bertanda tangan dibawah ini selaku Pejabat Pembuat Komitmen memerintahkan Bendahara Pengeluaran agar melakukan pembayaran sejumlah : </td>
+			<td> Dokumen Tambahan</td>
 		</tr>
-	</table>
-	<table class="tabell" style="width: 100%;">
-		<thead>
+		<?php if($images->image1!=null): ?>
 			<tr>
-				<th width="1%" align="left">Rp </th>
-				<th align="left" style="border-bottom: 1px dotted black"><?php echo $this->loader->rupiahs($total)??0; ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<th width="2%" align="left">Terbilang: </th>
-				<th align="left" style="border-bottom: 1px dotted black"><?php echo $total_terbilang;?></th>
+				<td>Gambar 1 : </td>
 			</tr>
 			<tr>
-				<th width="2%" align="left"></th>
-				<th align="left" style="border-bottom: 1px dotted black ; margin-top: 10px;" ></th>
+				<td><img src="<?php echo $base64_1;?>" style="width: 670px; object-fit:contain;" alt=""></td>
 			</tr>
-		</tbody>
-	</table>
-	<div class="line-separator"></div>
-	<table  class="tabell"  style="width: 100%;" cellspacing="0" cellpadding="0">
-		<thead>
+		<?php endif; ?>
+		<?php if($images->image2!=null): ?>
 			<tr>
-				<th colspan="3" align="left">Atas dasar: </th>
+				<td><img src="<?php echo $base64_2;?>" alt=""></td>
 			</tr>
-		</thead>
-		<tbody>
+		<?php endif; ?>
+		<?php if($images->image3!=null): ?>
 			<tr>
-				<td width="2%">1</td>
-				<td>Kuitansi / Bukti pembelian</td>
-				<td style="border-bottom: 1px dotted black">: <?php echo $rincian['srtgs_no'];?></td>
+				<td><img src="<?php echo $base64_3;?>" alt=""></td>
 			</tr>
+		<?php endif; ?>
+		<?php if($images->image4!=null): ?>
 			<tr>
-				<td width="2%">2</td>
-				<td>Nota/bukti penerimaan barang/ bukti lainnya</td>
-				<td style="border-bottom: 1px dotted black">: <?php echo $nota_dinas['nds_dsr']??null;?></td>
+				<td><img src="<?php echo $base64_4;?>" alt=""></td>
 			</tr>
-		</tbody><br>
-	</table>
-	<div class="line-separator"></div>
-	<?php for($a=0;$a<8;$a++):?>
-	<br>
-	<?php endfor;?>
-	<table  class="tabell"  style="width: 100%;" cellspacing="0" cellpadding="0">
-		<thead>
-			<tr>
-				<th align="left">Setuju/lunas dibayar,</th>
-				<th align="left">Diterima Tanggal</th>
-				<th align="left">Jakarta .............</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td align="left">Tanggal: </td>
-				<td align="left"></td>
-				<td align="left"></td>
-			</tr>
-			<tr>
-				<td align="left">Pegawai yang bertugas</td>
-				<td align="left">Kepala Sub Bagian Umum</td>
-				<td align="left">Direktorat Ditjen Perikanan Budidaya</td>
-			</tr>
-			<?php for($i=0;$i<15;$i++): ?>
-			<tr>
-				<td align="left"></td>
-				<td align="left"></td>
-				<td align="left"></td>
-			</tr>
-			<?php endfor;?>
-			<tr>
-				<td align="left"><?php echo $pegawai['pgw_nm'];?></td>
-				<td align="left"><?php echo $kasubbag['pgw_nm'];?></td>
-				<td align="left">Joco Kokarkin Soetrisno, M.Sc</td>
-			</tr>
-			<tr>
-				<td align="left"><?php echo $pegawai['pgw_nip'];?></td>
-				<td align="left"><?php echo $kasubbag['pgw_nip'];?></td>
-				<td align="left">NIP : 19610926 198603 1 002</td>
-			</tr>
-		</tbody>
+		<?php endif; ?>
 	</table>
 </body>
+<?php endif; ?>
 </html>

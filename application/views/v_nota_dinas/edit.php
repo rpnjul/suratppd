@@ -1,153 +1,101 @@
 <div class="row">
     <div class="col-md-12">
       	<div class="card card-info">
-                <div class="card-header">
-      		  <h4>Ubah Data Nota Dinas</h4>
+      		<div class="card-header">
+      		  <h4>Tambah Data Nota Dinas</h4>
       		  <div class="card-header-action">
       		      <a href="<?php echo base_url('nota_dinas') ?>" class="btn btn-sm btn-light"><span class="fas fa-chevron-left"></span> Kembali</a>
       		  </div>
       		</div>
-			<?php echo form_open('nota_dinas/edit/'.$nota_dinas['nds_id']); ?>
-			<?php $jml = intval($count_pgw); ?>
-			<div class="card-body">
+            <?php echo form_open_multipart('nota_dinas/add'); ?>
+          	<div class="card-body">
           		<div class="row clearfix">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="srtgs_no" class="control-label">Ref. Nomor Surat Tugas</label>
-							<input autocomplete="off" type="text" name="srtgs_no" value="<?php echo ($this->input->post('srtgs_no')?$this->input->post('srtgs_no'):$nota_dinas['srtgs_no']); ?>" class="form-control" id="srtgs_no" />
+							<label for="srtgs_no" class="control-label">Ref. Nomor Surat Tugas <i class="text-danger">*</i></label>
+							<input autocomplete="off" type="text" name="srtgs_no" value="<?php echo ($this->input->post('srtgs_no')?$this->input->post('srtgs_no'):$nota_dinas['srtgs_no']); ?>" placeholder="Ketik 3 digit surat tugas" class="form-control" id="srtgs_no" readonly/>
 							<span class="text-danger"><?php echo form_error('srtgs_no');?></span>
 						</div>
 						<div class="form-group">
-							<label for="nds_no" class="control-label">Nomor Surat Dinas</label>
-							<input autocomplete="off" type="text" name="nds_no" value="<?php echo ($this->input->post('nds_no')?$this->input->post('nds_no'):$nota_dinas['nds_no']); ?>" class="form-control" id="nds_no" />
+							<label for="nds_no" class="control-label">Nomor Surat Dinas <i class="text-danger">*</i></label>
+							<input autocomplete="off" type="text" name="nds_no" readonly value="<?php echo ($this->input->post('nds_no')?$this->input->post('nds_no'):$nota_dinas['nds_no']); ?>" class="form-control" id="nds_no" />
 							<span class="text-danger"><?php echo form_error('nds_no');?></span>
 							
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="nds_prh" class="control-label">Perihal Surat</label>
-							<input autocomplete="off" type="text" name="nds_prh" value="<?php echo ($this->input->post('nds_prh')?$this->input->post('nds_prh'):$nota_dinas['nds_prh']); ?>" class="form-control" id="nds_prh" />
-							<span class="text-danger"><?php echo form_error('nds_prh');?></span>
+							<label for="rcn_no" class="control-label">Ref. Nomor Rincian <i class="text-danger">*</i></label>
+							<input autocomplete="off" type="text" name="rcn_no" readonly value="<?php echo ($this->input->post('rcn_no')?$this->input->post('rcn_no'):$nota_dinas['rcn_no']); ?>" class="form-control" id="rcn_no" />
+							<span class="text-danger"><?php echo form_error('rcn_no');?></span>
 						</div>
 						<label for="nds_tgl" class="control-label">Tanggal</label>
 						<div class="form-group">
-							<input autocomplete="off" type="text" name="nds_tgl" value="<?php echo $this->loader->konversi_tanggal($nota_dinas['nds_tgl']); ?>" readonly class="form-control" id="nds_tgl" />
+							<input autocomplete="off"  readonly type="text" name="nds_tgl" value="<?php echo $this->loader->konversi_tanggal(date("Y-m-d")); ?>" readonly class="form-control" id="nds_tgl" />
 							<span class="text-danger"><?php echo form_error('nds_tgl');?></span>
 						</div>
 					</div>
-					<div class="col-md-12">
-						<label for="nds_dsr" class="control-label">Isi surat</label>
+					<div class="col-12">
 						<div class="form-group">
-							<textarea name="nds_dsr" class="form-control" id="nds_dsr" ><?php echo ($this->input->post('nds_dsr')?$this->input->post('nds_dsr'):$nota_dinas['nds_dsr']); ?></textarea>
+							<label for="nds_dsr" class="control-label">Nomor Kwitansi</label>
+							<input autocomplete="off" type="text" name="nds_dsr" value="<?php echo ($this->input->post('nds_dsr')?$this->input->post('nds_dsr'):$nota_dinas['nds_dsr']); ?>" placeholder="Masukan Nomor Kwitansi" class="form-control" id="nds_dsr" />
 							<span class="text-danger"><?php echo form_error('nds_dsr');?></span>
 						</div>
 					</div>
-				</div>
-				<div class="page-header">
-				  <h4>Pegawai yang menghadiri perkara sidang lanjutan : </h4>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-group">
-						    <label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Pegawai :</label>
-						    <div class="btn-group">
-						      <button type="button" name="add" id="add" class="btn btn-success btn-xs">Tambah pegawai</button>
-						    </div>
-						    <div class="table-responsive">  
-						        <table class="table table-bordered"> 
-									<tbody  id="pengikutField">
-										    <?php if($jml>0) {?>
-										    	<?php foreach ($pengikut_dinas as $i => $value){ ?>
-										    		<?php $pgk = $this->M_pegawai->get_pegawai_by_nip($value->pgw_nip); ?>
-										    <tr id="row<?php echo($i) ?>">  
-										        <td><label for="pgw_nip[]" class="control-label" ><span class="text-danger">*</span>Pegawai :</label>
-										        	<input autocomplete="off" type="text" name="pgw_nip[]" placeholder="Masukan NIP" class="form-control" required="" value="<?php echo ($pgk['pgw_nip'].' - '.$pgk['pgw_nm'].' ('.$pgk['pgw_jab'].')'); ?>" />
-										        </td>  
-										        <td>
-										        	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Tanggal Sidang:</label>
-										        	<input autocomplete="off" type="text" name="pgwnds_tgl[]" placeholder="Tanggal sidang" class="form-control" required="" value="<?php echo($value->pgwnds_tgl) ?>" />
-										        </td>  
-										        <td>
-										        	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Tempat Sidang :</label>
-										        	<input autocomplete="off" type="text" name="pgwnds_tmt[]" placeholder="Tempat sidang" class="form-control" required="" value="<?php echo($value->pgwnds_tmt) ?>" />
-										        </td> 
-										    	<td>
-										    		<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>No. perkara &amp; acara :</label>
-										    		<input autocomplete="off" type="text" name="pgwnds_pkr[]" placeholder="Nomor perkara dan acara sidang" class="form-control" required="" value="<?php echo($value->pgwnds_pkr) ?>" />
-										    	</td>
-										    	<td>
-										    		<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Keterangan :</label>
-										    			
-										    		<div class="input-group">
-										    			<input autocomplete="off" type="text" name="pgwnds_ket[]" placeholder="Keterangan" class="form-control" value="<?php echo(!empty($value->pgwnds_ket)?$value->pgwnds_ket:'') ?>" />
-										    			<span class="input-group-btn">
-										    				<button type="button"  name="remove" id="<?php echo $i; ?>" class="btn btn-danger btn_remove">&times;</button>
-										    			</span>
-										    		</div>
-										    	</td>  
-										   	
-										    </tr> 
-										<?php } ?>
-
-										<?php }else{ ?>
-											<tr id="row1">  
-											    <td><label for="pgw_nip[]" class="control-label" ><span class="text-danger">*</span>Pegawai :</label>
-											    	<input autocomplete="off" type="text" name="pgw_nip[]" placeholder="Masukan NIP" class="form-control" required="" />
-											    </td>  
-											    <td>
-											    	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Tanggal Sidang:</label>
-											    	<input autocomplete="off" type="text" name="pgwnds_tgl[]" placeholder="Tanggal sidang" class="form-control" required="" />
-											    </td>  
-											    <td>
-											    	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Tempat Sidang :</label>
-											    	<input autocomplete="off" type="text" name="pgwnds_tmt[]" placeholder="Tempat sidang" class="form-control" required="" />
-											    </td> 
-												<td>
-													<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>No. perkara &amp; acara :</label>
-													<input autocomplete="off" type="text" name="pgwnds_pkr[]" placeholder="Nomor perkara dan acara sidang" class="form-control" required="" />
-												</td>
-												<td>
-													<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Keterangan :</label>
-													<div class="input-group">
-														<input autocomplete="off" type="text" name="pgwnds_ket[]" placeholder="Keterangan" class="form-control" />
-														<div class="input-group-btn">
-															<button type="button"  name="remove" id="1" class="btn btn-danger btn_remove">&times;</button>
-														</div>
-													</div>
-												</td>
-											</tr> 
-										<?php } ?>
-										      
-									</tbody>
-						        </table> 
-						    </div>
+					<?php if($nota_dinas['file_ext']!=null): ?>
+						<?php
+							$images = json_decode($nota_dinas['file_ext']);
+						?>
+					<?php endif;?>
+					<div class="col-12">
+						<div class="row">
+							<div class="col-3">
+								<label for="" class="control-label">Gambar Tambahan 1</label>
+								<input type="file" id="dok1" name="files[]" value="<?php if($images->image1!=null): ?><?php echo 'upload/nota/'.$images->image1 ?> <?php endif; ?>" class="form-control-file"  accept=".jpe, .jpg, .jpeg .png, .bmp">
+							</div>
+							<div class="col-3">
+								<label for="" class="control-label">Gambar Tambahan 2</label>
+								<input type="file" id="dok2" name="files[]" value="<?php if($images->image2!=null): ?><?php echo 'upload/nota/'.$images->image1 ?> <?php endif; ?>" class="form-control-file"  accept=".jpe, .jpg, .jpeg .png, .bmp">
+							</div>
+							<div class="col-3">
+								<label for="" class="control-label">Gambar Tambahan 3</label>
+								<input type="file" id="dok3" name="files[]" value="<?php if($images->image3!=null): ?><?php echo 'upload/nota/'.$images->image1 ?> <?php endif; ?>" class="form-control-file"  accept=".jpe, .jpg, .jpeg .png, .bmp">
+							</div>
+							<div class="col-3">
+								<label for="" class="control-label">Gambar Tambahan 4</label>
+								<input type="file" id="dok4" name="files[]" value="<?php if($images->image4!=null): ?><?php echo 'upload/nota/'.$images->image1 ?> <?php endif; ?>" class="form-control-file"  accept=".jpe, .jpg, .jpeg .png, .bmp">
+							</div>
 						</div>
 					</div>
+					
 				</div>
 			</div>
-			<div class="card-footer">
+          	<div class="card-footer">
             	<button type="submit" class="btn btn-success">
-					<i class="fa fa-check"></i> Save
-				</button>
-	        </div>				
-			<?php echo form_close(); ?>
-		</div>
+            		<i class="fa fa-check"></i> Tambah
+            	</button>
+          	</div>
+            <?php echo form_close(); ?>
+      	</div>
     </div>
 </div>
 <script src="<?php echo site_url('resources/ckeditor/ckeditor.js') ?>"></script>
 <script src="<?php echo site_url('resources/ckeditor/adapters/jquery.js') ?>"></script>
 <script src="<?php echo site_url('resources/ckeditor/config.js') ?>"></script>
 <script src="<?php echo site_url('resources/ckeditor/styles.js') ?>"></script>
+<link rel="stylesheet" href="<?php echo site_url('assets/select2/css/select2.min.css') ?>">
+<script src="<?php echo site_url('assets/select2/js/select2.min.js') ?>"></script>
+
 <script>
-	CKEDITOR.replace( 'nds_dsr' );
+	// CKEDITOR.replace( 'nds_dsr' );
 	$(function() {
 		$('#srtgs_no').autocomplete({
 		  	source:"<?php echo site_url('surat_tugas/get_autocomplete/?'); ?>",
 		});
-		$('input[name^="pgwnds_tgl"').datepicker({
-		                dateFormat:"yy-mm-dd",changeYear: true,
-            changeMonth: true
+		$('input[name^="pgwnds_tgl"]').datepicker({
+		    dateFormat:"yy-mm-dd",
+		    changeYear: true,
+		    changeMonth: true
 		});
 		var i=1;  
 		$(document).on('click', '.btn_remove', function(){  
@@ -158,42 +106,43 @@
 
 		$('#add').click(function(){  
 		     i++;  
-	    $('#pengikutField').append(`
-	    	<tr id="row`+i+`">
-	     	    <td>
-	     	    	<label for="pgw_nip[]" class="control-label" ><span class="text-danger">*</span>Pegawai :</label>
-	     	    	<input autocomplete="off" type="text" name="pgw_nip[]" placeholder="Masukan NIP" class="form-control" required="" />
-	     	    </td>  
-	     	    <td>
-	     	    	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Tanggal Sidang:</label>
-	     	    	<input autocomplete="off" type="text" name="pgwnds_tgl[]" placeholder="Tanggal sidang" class="form-control" required="" />
-	     	    </td>  
-	     	    <td>
-	     	    	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Tempat Sidang :</label>
-	     	    	<input autocomplete="off" type="text" name="pgwnds_tmt[]" placeholder="Tempat sidang" class="form-control" required="" />
-	     	    </td> 
-	     		<td>
-	     			<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>No. perkara &amp; acara :</label>
-	     			<input autocomplete="off" type="text" name="pgwnds_pkr[]" placeholder="Nomor perkara dan acara sidang" class="form-control" required="" />
-	     		</td>
-	     		<td>
-	     			<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Keterangan :</label>
-					<div class="input-group">
-						<input autocomplete="off" type="text" name="pgwnds_ket[]" placeholder="Keterangan" class="form-control" />
-						<span class="input-group-btn">
-							<button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove">&times;</button>
-						</span>
-					</div>
-	     		</td>  
-	     		</tr>`);  
+		     $('#pengikutField').append(`
+		     	<tr id="row`+i+`">
+		     	    <td>
+		     	    	<label for="pgw_nip[]" class="control-label" ><span class="text-danger">*</span>Pegawai :</label>
+		     	    	<input autocomplete="off" type="text" name="pgw_nip[]" placeholder="Masukan NIP" class="form-control" required="" />
+		     	    </td>  
+		     	    <td>
+		     	    	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Tanggal Sidang:</label>
+		     	    	<input autocomplete="off" type="text" name="pgwnds_tgl[]" placeholder="Tanggal sidang" class="form-control" required="" />
+		     	    </td>  
+		     	    <td>
+		     	    	<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Tempat Sidang :</label>
+		     	    	<input autocomplete="off" type="text" name="pgwnds_tmt[]" placeholder="Tempat sidang" class="form-control" required="" />
+		     	    </td> 
+		     		<td>
+		     			<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>No. perkara &amp; acara :</label>
+		     			<input autocomplete="off" type="text" name="pgwnds_pkr[]" placeholder="Nomor perkara dan acara sidang" class="form-control" required="" />
+		     		</td>
+		     		<td>
+		     			<label for="#pengikut" class="control-label" ><span class="text-danger">*</span>Keterangan :</label>
+						<div class="input-group">
+							<input autocomplete="off" type="text" name="pgwnds_ket[]" placeholder="Keterangan" class="form-control" />
+							<div class="input-group-append">
+								<button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove">&times;</button>
+							</div>
+						</div>
+		     		</td>  
+		     		</tr>`);  
 			$('input[name^="pgw_nip"]').each(function() {
 			  $(this).autocomplete({
 			    source:"<?php echo site_url('pegawai/get_autocomplete/?'); ?>"
 			  });
 			}); 
 			$('input[name^="pgwnds_tgl"]').datepicker({
-			                dateFormat:"yy-mm-dd",changeYear: true,
-            changeMonth: true
+			    dateFormat:"yy-mm-dd",
+			    changeYear: true,
+			    changeMonth: true
 			});
 		});
 		$('input[name^="pgw_nip"]').each(function() {
@@ -201,5 +150,19 @@
 		    source:"<?php echo site_url('pegawai/get_autocomplete/?'); ?>"
 		  });
 		}); 
-	})
+		$('#srtgs_no').on('change blur',function(){
+		
+			$('#rcn_no').select2({
+				ajax: {
+					url: '<?php echo site_url('rincian/ajax_select2/'); ?>',
+					dataType: 'json',
+					data: { id :$('#srtgs_no').val() },
+				}
+			});
+		});
+	});
+	// $('#srtgs_no').on('change blur',function(){
+		
+	// });
+	// $('#rcn_no').select2();
 </script>

@@ -70,7 +70,7 @@ class Surat_tugas extends CI_Controller{
             {
 
                 ///  ST-999/WKN.08/9999
-                $res = $this->db->query('select max(right(srtgs_no,4)) as `urut_tahun`,max(substring(srtgs_no,4,3)) as `urut` from tb_srtgs')->row();
+                $res = $this->db->query('select max(right(srtgs_no,4)) as `urut_tahun`,max(substring(srtgs_no,1,3)) as `urut` from tb_srtgs')->row();
                 $tgl = date('/Y');
                // echo $res->urut.'<br>';
                 //echo substr($tgl, 1,4);
@@ -192,7 +192,7 @@ class Surat_tugas extends CI_Controller{
     function edit($st_no)
     {   
         // check if Data  surat_tuga exists before trying to edit it
-        if ($this->session->has_userdata('status') & $this->session->userdata('level')=='Kepala Sub Bagian Umum') {
+        if ($this->session->has_userdata('status') & ($this->session->userdata('level')=='Kepala Sub Bagian Umum' | $this->session->userdata('level')=='Admin')) {
         
         $data['surat_tugas'] = $this->M_surattugas->get_surattugas($st_no);
         $pgw = $this->M_pegawai->get_pegawai_by_nip($data['surat_tugas']['pgw_nip']);
@@ -267,7 +267,7 @@ class Surat_tugas extends CI_Controller{
     function remove()
     {
         $st_no = $this->input->post('id');
-            if ($this->session->has_userdata('status') & $this->session->userdata('level')=='Kepala Sub Bagian Umum') {
+            if ($this->session->has_userdata('status')) {
                 $surat_tuga = $this->M_surattugas->get_surattugas($st_no);
                 if(isset($surat_tuga['srtgs_no']))
                 {

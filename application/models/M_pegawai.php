@@ -85,7 +85,7 @@ class M_pegawai extends CI_Model
     }
 
     function search_pegawai_pejabat_lelang($nip){
-           $q = $this->db->query("select * from tb_pgw where (pgw_nip like '%$nip%' or pgw_nm like '%$nip%') and pgw_id != ".$this->session->userdata('id_login')."");
+           $q = $this->db->query("select * from tb_pgw where (pgw_nip like '%$nip%' or pgw_nm like '%$nip%')");
           // var_dump($q->result());
            return $q->result();
     }   

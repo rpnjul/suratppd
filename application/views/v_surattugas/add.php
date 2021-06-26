@@ -56,7 +56,7 @@
                           <span class="text-danger"><?php echo form_error('srtgs_kmb');?></span>
                       </div>
                       <div class="form-group">
-                          <label for="#pengikut"><span class="text-danger">*</span>Pengikut bertugas</label>
+                          <label for="#pengikut">Pengikut bertugas</label>
                           <div class="float-right">
                             <button type="button" name="add" id="add" class="btn btn-success btn-sm"><span class="fas fa-plus"></span></button>
                           </div>
@@ -66,7 +66,7 @@
                                   <tr id="row1">  
                                     <td>
                                       <div class="input-group">
-                                        <input type="text" name="pengikut[][pgw_nip]" id="pengikut[]" placeholder="Ketik 3 digit NIP Pegawai" class="form-control findpgw" required />
+                                        <input type="text" name="pengikut[][pgw_nip]" id="pengikut[]" placeholder="Ketik 3 digit NIP Pegawai" class="form-control findpgw" />
                                         <span class="input-group-append">
                                           <button type="button" name="remove" id="1" class="btn btn-danger btn_remove"><span class="fas fa-times"></span></button>
                                         </span>

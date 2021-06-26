@@ -33,7 +33,7 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a target="_blank" href="<?php echo site_url('rincian/cetak/'.$value['rcn_id']); ?>" class="btn btn-primary btn-sm"><span class="fa fa-eye"></span> Cetak</a> 
-                                        <?php if ($nip==$value['pgw_nip']): ?>
+                                        <?php if ($nip==$value['pgw_nip'] | ($level=='Admin' | $level=='Direktur')): ?>
                                             <a href="<?php echo site_url('rincian/edit/'.$value['rcn_id']); ?>" class="btn btn-info btn-sm"><span class="fa fa-edit"></span> Ubah</a> 
                                             <a onclick="deleterincian(<?php echo $value['rcn_id']; ?>)" class="btn btn-danger text-white btn-sm"><span class="fa fa-trash"></span> Hapus</a>
                                         <?php endif ?>
@@ -47,7 +47,7 @@
         </div>
     </div>
 </div>
-<?php if (isset($value['pgw_nip']) && $nip==$value['pgw_nip']): ?>
+<?php if (isset($value['pgw_nip']) && $nip==$value['pgw_nip'] | ($level=='Admin' | $level=='Direktur')): ?>
 <script>
 function deleterincian(a) {
     swal({ 

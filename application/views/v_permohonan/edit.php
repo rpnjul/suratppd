@@ -130,17 +130,6 @@
 								<span class="text-danger"><?php echo form_error('psl_srt');?></span>
 							</div>
 						</div>
-						<div class="col-12">
-							<div class="form-group">
-								<label for="#psl_sts" class="control-label"><span class="text-danger">*</span>Ubah Status</label>
-								<select name="psl_sts" class="form-control" id="psl_sts">
-									<option value="0" <?php if($permohonan['psl_sts']==0):?> selected <?php endif; ?>>Belum Disetujui</option>
-									<option value="1" <?php if($permohonan['psl_sts']!=0):?> selected <?php endif; ?>>Telah Disetujui</option>
-								</select>
-								<span class="text-danger"><?php echo form_error('psl_sts');?></span>
-							</div>
-						</div>
-
 	          		</div>	   	          		
 	        </div>
 	    <div class="card-footer text-right">

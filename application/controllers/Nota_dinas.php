@@ -102,7 +102,6 @@ class Nota_dinas extends CI_Controller{
         {   
             $st = $this->M_surattugas->get_surattugas_by_no($this->input->post('srtgs_no'));
             $count = count($_FILES['files']['name']);
-            $object = null;
             for($i=0;$i<$count;$i++){
                 if(!empty($_FILES['files']['name'][$i])){
                     $_FILES['file']['name'] = $_FILES['files']['name'][$i];
@@ -136,7 +135,7 @@ class Nota_dinas extends CI_Controller{
                     'pgw_nip'   => $st['pgw_nip'],
                     'nds_tgl'   => date('Y-m-d'),
                     'nds_dsr'   => $this->input->post('nds_dsr'),
-                    'file_ext'  => json_encode($object),
+                    'file_ext'  => $object?json_encode($object):NULL,
             );
             $nota_dinas_id = $this->M_notadinas->add_nota_dinas($params);
             $par = array(
@@ -303,12 +302,12 @@ class Nota_dinas extends CI_Controller{
             $this->M_notadinas->update_nota_dinas($id, $params);
             return $this->output
                         ->set_content_type('application/json')
-                        ->set_status_header(500)
-                        ->set_output(json_encode(['status' => 200, 'desc'=> 'ok']));
+                        ->set_status_header(200)
+                        ->set_output(json_encode(['status' => 200, 'desc'=> 'Success']));
         }else{
             return $this->output
                         ->set_content_type('application/json')
-                        ->set_status_header(500)
+                        ->set_status_header(200)
                         ->set_output(json_encode(['status' => 400, 'desc'=> 'You dont have access']));
         }
     }

@@ -59,7 +59,7 @@
   </div>
 </div>
 
-<?php if ($level='Kepala Kantor'): ?>
+<?php if ($level='Kepala Kantor' | $level == 'Admin'): ?>
   <script>
 
     $('.btn-sts').each(function() {

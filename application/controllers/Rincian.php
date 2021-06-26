@@ -110,9 +110,7 @@ class Rincian extends CI_Controller{
      */
     function add()
     {   
-        if ($this->session->userdata('level')!='Kepala Sub Bagian Umum' && $this->session->userdata('level')!='Direktur' && $this->session->userdata('level') != 'Admin') {
-           redirect('rincian');
-        }else{
+        if ($this->session->userdata('level')=='Pegawai' || $this->session->userdata('level')=='Direktur' || $this->session->userdata('level') == 'Admin') {
             $this->load->library('form_validation');
 
             // $this->form_validation->set_rules('srtgs_no','Ref. Surat tugas','required|is_unique[tb_rcn.srtgs_no]|callback_cek_surattugas');
@@ -187,6 +185,8 @@ class Rincian extends CI_Controller{
                 $load = $this->loader->load($data);
                 $this->load->view('layouts/content',$load);
             }
+        }else{
+            redirect('rincian');
         }
     }  
 
@@ -195,9 +195,8 @@ class Rincian extends CI_Controller{
      */
     function edit($rcn_id)
     { 
-        if ($this->session->userdata('level')!='Kepala Sub Bagian Umum' && $this->session->userdata('level')!='Pejabat Lelang') {
-           redirect('rincian');
-        }else{
+        if ($this->session->userdata('level')=='Pegawai' || $this->session->userdata('level')=='Direktur' || $this->session->userdata('level') == 'Admin') {
+
             $data['daftar_rincian'] = $this->M_daftarrincian->get_daftar_rincian($rcn_id);
             
             if(isset($data['daftar_rincian']['rcn_id']))
@@ -241,6 +240,8 @@ class Rincian extends CI_Controller{
             }else{
                 redirect('rincian');
             }
+        }else{
+           redirect('rincian');
         }
     } 
 
@@ -314,6 +315,7 @@ class Rincian extends CI_Controller{
             $data['terbilang'] = $this->terbilang($data['total']);
             $data['pengikut']=$this->M_pengikuttgs->get_pengikut_tgs_by_no_join($data['rincian']['srtgs_no']);
             $data['st'] = $this->M_surattugas->get_surattugas_by_no($data['rincian']['srtgs_no']);
+            if(!isset($data['st'])) redirect('rincian');
             $data['pdf'] = $this->load->library('PDFGenerator');
             $data['isConfirm'] = false;
             $this->load->model('M_notadinas');

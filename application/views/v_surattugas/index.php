@@ -39,7 +39,7 @@
                             <td>
                                 <div class="btn-group">
                                     <a target="_blank" href="<?php echo site_url('surat_tugas/cetak/'.$S['srtgs_id']); ?>" class="btn btn-primary btn-sm"><span class="fa fa-print"></span> Cetak</a>     
-                                    <?php if ($level=='Direktur' | $level=='Pegawai') { ?>
+                                    <?php if ($level=='Direktur' | $level=='Admin' | ($S['pgw_nip'] == $this->session->userdata('nip'))) { ?>
                                         <a href="<?php echo site_url('surat_tugas/edit/'.$S['srtgs_id']); ?>" class="btn btn-info btn-sm"><span class="fa fa-edit"></span> Ubah</a> 
                                         <a onclick="deletesrtgs(<?php echo $S['srtgs_id'] ?>)" class="btn btn-danger text-white btn-sm"><span class="fa fa-trash"></span> Hapus</a>
                                     <?php } ?> 
@@ -53,7 +53,7 @@
         </div>
     </div>
 </div>
-<?php if ($level=='Kepala Sub Bagian Umum'): ?>
+<?php if ($level=='Direktur' | $level=='Pegawai' | $level =='Admin'): ?>
     <script>
    function deletesrtgs(a) {
     swal({ title: "Anda Yakin?", text: "Data yang dipilih akan di hapus, termasuk data yang berkaitan dengan ini !",        type: 'warning', 
@@ -66,7 +66,7 @@
        }).then((result) => {
         if (result.value) {
             $.ajax({
-                url: "http://kpknl-sppd.epizy.com/surat_tugas/remove/",
+                url: "<?php echo base_url();?>surat_tugas/remove/",
                 type: "post",
                 data: { id: a },
                 success: function () {

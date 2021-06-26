@@ -43,11 +43,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <td><?php echo $this->M_pegawai->get_pegawai_by_nip($S['pgw_nip'])['pgw_jab']; ?></td>
                         <td>
                             <div class="btn-group" role="group">
-                                    <!-- <a type="button"href="<?php echo site_url('surat_masuk/cetak/'.$S['srtms_id']); ?>" class="btn btn-sm btn-primary btn-action mr-1"><span class="fas fa-print"></span></a>  -->
                                 <?php if ($level=='Kepala Kantor' | $level=='Admin'): ?>
                                     <a type="button" href="<?php echo site_url('surat_masuk/edit/'.$S['srtms_id']); ?>" class="btn btn-info btn-sm btn-action mr-1"><span class="fas fa-pencil-alt"></span></a> 
-                                <?php endif ?>
-                                <?php if ($level=='Kepala Kantor'): ?>
                                     <a type="button" id="sts<?php echo $S['srtms_id'] ?>" status="<?php echo($S['srtms_sts']); ?>" class="btn-sts btn btn-sm btn-danger btn-action" onclick="deletesrtms(<?php echo $S['srtms_id'] ?>)" ><i class="fas fa-trash"></i></a>    
                                 <?php endif ?>
                             </div>
@@ -60,7 +57,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
     </div>
 </div>
-<?php if ($level=='Kepala Kantor'): ?>
+<?php if ($level=='Kepala Kantor' | $level=='Admin'): ?>
     <script>
    function deletesrtms(a) {
     swal({ title: "Anda Yakin?", text: "Data yang dipilih akan di hapus, termasuk data yang berkaitan dengan ini !", type: 'warning', 
